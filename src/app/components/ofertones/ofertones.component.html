@@ -1,13 +1,33 @@
 <section class="ofertones">
   <h2>Ofertones del día</h2>
-  <div class="ofertas">
-    <div class="oferta">
-      <img src="assets/fifa25.png" alt="Oferta 1" />
-      <p>Oferta Flash<span class="descuento">-46%</span></p>
+  <div class="carrusel">
+    <button class="flecha izquierda" (click)="previous()">←</button>
+    <div class="ofertas">
+      <!-- Primera posición del carrusel -->
+      <div class="oferta">
+        <img [src]="oferta1.imagen" [alt]="oferta1.titulo" />
+        <p>
+          {{ oferta1.titulo }}
+          <span class="descuento">{{ oferta1.descuento }}</span>
+        </p>
+      </div>
+      <!-- Segunda posición del carrusel -->
+      <div class="oferta">
+        <img [src]="oferta2.imagen" [alt]="oferta2.titulo" />
+        <p>
+          {{ oferta2.titulo }}
+          <span class="descuento">{{ oferta2.descuento }}</span>
+        </p>
+      </div>
+      <!-- Tercera posición del carrusel -->
+      <div class="oferta">
+        <img [src]="oferta3.imagen" [alt]="oferta3.titulo" />
+        <p>
+          {{ oferta3.titulo }}
+          <span class="descuento">{{ oferta3.descuento }}</span>
+        </p>
+      </div>
     </div>
-    <div class="oferta">
-      <img src="assets/panales.png" alt="Oferta 2" />
-      <p>Oferta Flash<span class="descuento">-20%</span></p>
-    </div>
+    <button class="flecha derecha" (click)="next()">→</button>
   </div>
 </section>

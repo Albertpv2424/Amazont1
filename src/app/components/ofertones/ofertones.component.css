@@ -3,34 +3,56 @@
   margin: 20px 0;
 }
 
+.carrusel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
 .ofertas {
   display: flex;
-  justify-content: center;
   gap: 20px;
 }
 
 .oferta {
-  color: red;
-  border: none; /* Borde más grueso */
+  text-align: center;
+  flex: 0 0 auto;
+  width: 220px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
+  background-color: white;
   padding: 10px;
-  width: 220px; /* Ancho ajustado para las ofertas */
-  position: relative; /* Para posicionar el descuento */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-  background-color: white; /* Fondo blanco para las ofertas */
+  color: red;
 }
 
-.oferta img {
-  max-width: 100%; /* Asegura que la imagen no exceda el contenedor */
-  border-radius: 5px; /* Bordes redondeados para la imagen */
+.flecha {
+  width: 60px; /* Ancho del botón */
+  height: 60px; /* Alto del botón */
+  border: 1px solid #ccc; /* Borde del botón */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: white; /* Color de fondo */
+  font-size: 24px; /* Tamaño de la flecha */
+  cursor: pointer; /* Cambia el cursor al pasar el mouse */
+  display: flex; /* Para centrar el contenido */
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+.flecha:hover {
+  background-color: #F19D38; /* Color de fondo al pasar el mouse */
 }
 
 .descuento {
-  background-color: red; /* Fondo rojo para el descuento */
-  color: white; /* Texto blanco */
-  padding: 5px 10px; /* Padding ajustado */
-  border-radius: 5px; /* Bordes redondeados */
-  font-weight: bold; /* Texto en negrita */
-  margin-left: 10px; /* Espacio entre el texto y el descuento */
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-left: 10px;
 }
+
+
 
