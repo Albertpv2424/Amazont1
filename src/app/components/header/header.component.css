@@ -1,18 +1,21 @@
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   background: linear-gradient(to right, #D9D9D9, #737373);
+  border-left: 0%;
+  border-right: 0%;
 }
 
 .logo h1 {
   font-size: 24px;
 }
 
-img {
+a img {
   max-width: 120px;
   height: auto;
+  margin-left: 50%;
+  margin-right: 2%;
 }
 
 .search-container {
@@ -21,6 +24,9 @@ img {
   border-radius: 20px;
   border: 0px solid #ccc;
   background-color: #f0f0f0; /* Color de fondo general */
+  width: 500px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 .dropdown {
@@ -39,7 +45,7 @@ img {
 
 .search-button-container {
   background-color: #f9a825; /* Color del botón */
-  border-radius: 0 20px 20px 0; /* Bordes redondeados a la derecha */
+  border-radius: 0 1em 1em 0; /* Bordes redondeados a la derecha */
   padding-top: 2px;
   padding-bottom: 1px;
 }
@@ -52,6 +58,21 @@ img {
 }
 
 .icons img {
-  width: 24px;
-  margin-left: 15px;
+  width: 5vh;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 5%;
+  
+}
+.icons{
+  display: flex; /* Activa Flexbox */
+  justify-content: space-between; /* Espacio entre las imágenes */
+  align-items: center;
+}
+.button {
+  margin-left: 10%;
+}
+body{
+  background-color: transparent;
+  
 }

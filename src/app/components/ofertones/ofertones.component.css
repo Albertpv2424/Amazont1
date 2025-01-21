@@ -46,6 +46,7 @@
 }
 
 .descuento {
+<<<<<<< Updated upstream
   background-color: red;
   color: white;
   padding: 5px 10px;
@@ -56,3 +57,13 @@
 
 
 
+=======
+  background-color: red; /* Fondo rojo para el descuento */
+  color: white; /* Texto blanco */
+  padding: 5px 10px; /* Padding ajustado */
+  border-radius: 5px; /* Bordes redondeados */
+  font-weight: bold; /* Texto en negrita */
+  margin-left: 10px; /* Espacio entre el texto y el descuento */
+
+}
+>>>>>>> Stashed changes
