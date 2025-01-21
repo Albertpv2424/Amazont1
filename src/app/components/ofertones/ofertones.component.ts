@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./ofertones.component.css']
 })
 export class OfertonesComponent {
+  @Input() isDarkMode: boolean = false;
+
   ofertas = [
     { imagen: 'assets/fifa25.png', titulo: 'Oferta Flash', descuento: '-46%' },
     { imagen: 'assets/panales.png', titulo: 'Oferta Flash', descuento: '-29%' },

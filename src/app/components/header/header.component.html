@@ -1,7 +1,7 @@
 <header class="header">
   <div class="logo">
-  </div><a><img src="assets/amazont.png" alt="Buscar" /></a>
-
+    <a><img src="assets/amazont.png" alt="Logo" /></a>
+  </div>
 
 <div class="search-container">
   <select class="dropdown">
@@ -20,7 +20,8 @@
   <div class="icons">
     <img src="assets/cart.png" alt="Carrito" />
     <img src="assets/settings.png" alt="Ajustes" />
-    <button (click)="toggleBackground()">Toggle Background</button>
+    <button (click)="toggleBackground()" class="toggle-button">
+      <img [src]="isDarkMode ? 'assets/sol.png' : 'assets/luna.png'" alt="Toggle Background" />
+    </button>
   </div>
-
 </header>

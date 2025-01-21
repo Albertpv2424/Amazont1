@@ -12,11 +12,11 @@ import { FooterComponent } from "./components/footer/footer.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   imports: [CommonModule, HeaderComponent, OfertonesComponent, RecomendadosComponent, CategoriasComponent, FooterComponent] // Asegúrate de incluir HeaderComponent aquí
- // Asegúrate de incluir HeaderComponent aquí
+ 
 })
 export class AppComponent {
   isDarkMode = false; // Estado del modo oscuro
-
+  component: any = null;
   toggleBackground() {
     this.isDarkMode = !this.isDarkMode; // Alternar el estado
   }

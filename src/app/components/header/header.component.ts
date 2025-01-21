@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class HeaderComponent {
+  @Input() isDarkMode: boolean = false;
   @Output() backgroundToggled = new EventEmitter<void>();
 
   toggleBackground() {
