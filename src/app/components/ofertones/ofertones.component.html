@@ -3,7 +3,6 @@
   <div class="carrusel">
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
-      <!-- Primera posición del carrusel -->
       <div class="oferta">
         <img [src]="oferta1.imagen" [alt]="oferta1.titulo" />
         <p>
@@ -11,7 +10,6 @@
           <span class="descuento">{{ oferta1.descuento }}</span>
         </p>
       </div>
-      <!-- Segunda posición del carrusel -->
       <div class="oferta">
         <img [src]="oferta2.imagen" [alt]="oferta2.titulo" />
         <p>
@@ -19,12 +17,18 @@
           <span class="descuento">{{ oferta2.descuento }}</span>
         </p>
       </div>
-      <!-- Tercera posición del carrusel -->
       <div class="oferta">
         <img [src]="oferta3.imagen" [alt]="oferta3.titulo" />
         <p>
           {{ oferta3.titulo }}
           <span class="descuento">{{ oferta3.descuento }}</span>
+        </p>
+      </div>
+      <div class="oferta">
+        <img [src]="oferta4.imagen" [alt]="oferta4.titulo" />
+        <p>
+          {{ oferta4.titulo }}
+          <span class="descuento">{{ oferta4.descuento }}</span>
         </p>
       </div>
     </div>

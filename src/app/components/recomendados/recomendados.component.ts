@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class RecomendadosComponent {
   recomendados = [
-    { imagen: 'assets/maquillaje.jpg', descripcion: 'Belleza y Regalos' },
-    { imagen: 'assets/regalos.jpg', descripcion: 'Regalos perfectos para tus seres queridos' }
+    { imagen: 'assets/maquillaje.png', descripcion: 'Belleza y Regalos' },
+    { imagen: 'assets/regalos.png', descripcion: 'Regalos perfectos para tus seres queridos' }
   ];
 }

@@ -1,15 +1,29 @@
 .categorias {
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+  font-family: sans-serif;
 }
 
-.categorias-grid {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
+.categoria {
+  text-align: center;
+  width: 30%;
 }
 
 .categoria img {
-  max-width: 100px;
-  border-radius: 5px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.ver-mas {
+  display: block;
+  margin-top: 10px;
+  color: blue;
+  text-decoration: none;
+  text-align: left;
+}
+
+.ver-mas:hover {
+  text-decoration: underline;
 }

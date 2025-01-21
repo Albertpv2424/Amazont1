@@ -23,7 +23,7 @@ a img {
   align-items: center;
   border-radius: 20px;
   border: 0px solid #ccc;
-  background-color: #f0f0f0; /* Color de fondo general */
+  background-color: #f0f0f0;
   width: 500px;
   margin-left: 20%;
   margin-right: 20%;
@@ -39,20 +39,20 @@ a img {
 .search-input {
   flex: 1;
   border: none;
-  background-color: #e0e0e0; /* Color de fondo del input */
+  background-color: #e0e0e0;
   padding: 25px;
 }
 
 .search-button-container {
-  background-color: #f9a825; /* Color del botón */
-  border-radius: 0 1em 1em 0; /* Bordes redondeados a la derecha */
+  background-color: #f9a825;
+  border-radius: 0 1em 1em 0;
   padding-top: 2px;
   padding-bottom: 1px;
 }
 
 .search-button {
   border: none;
-  background: none; /* Sin fondo para el botón */
+  background: none;
   padding: 10px;
   cursor: pointer;
 }
@@ -62,11 +62,11 @@ a img {
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 5%;
-  
 }
+
 .icons{
-  display: flex; /* Activa Flexbox */
-  justify-content: space-between; /* Espacio entre las imágenes */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .button {
@@ -74,5 +74,5 @@ a img {
 }
 body{
   background-color: transparent;
-  
+
 }

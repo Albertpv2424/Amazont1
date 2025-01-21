@@ -1,10 +1,17 @@
-<section class="categorias">
-  <h2>Categorías</h2>
-  <div class="categorias-grid">
-    <div class="categoria" *ngFor="let categoria of categorias">
-      <img [src]="categoria.imagen" [alt]="categoria.nombre" />
-      <p>{{ categoria.nombre }}</p>
-      <a href="#">Ver Más</a>
-    </div>
+<div class="categorias">
+  <div class="categoria">
+    <h2>Tecnologia</h2>
+    <img src="assets/tecnologia.png" alt="Tecnologia">
+    <a href="#" class="ver-mas">Ver Más</a>
   </div>
-</section>
+  <div class="categoria">
+    <h2>Deportes</h2>
+    <img src="assets/deportes.png" alt="Deportes">
+    <a href="#" class="ver-mas">Ver Más</a>
+  </div>
+  <div class="categoria">
+    <h2>Cocina</h2>
+    <img src="assets/cocina.png" alt="Cocina">
+    <a href="#" class="ver-mas">Ver Más</a>
+  </div>
+</div>

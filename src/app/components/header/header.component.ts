@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  standalone: true, // Indica que este es un componente independiente
+  standalone: true,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  imports: [CommonModule] // Asegúrate de incluir CommonModule aquí
+  imports: [CommonModule]
 })
 export class HeaderComponent {
-  @Output() backgroundToggled = new EventEmitter<void>(); // Evento para notificar el cambio
+  @Output() backgroundToggled = new EventEmitter<void>();
 
   toggleBackground() {
-    this.backgroundToggled.emit(); // Emitir el evento al componente padre
+    this.backgroundToggled.emit();
   }
 }
