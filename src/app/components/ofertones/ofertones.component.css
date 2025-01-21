@@ -1,25 +1,36 @@
 .ofertones {
   text-align: center;
-  padding: 20px;
+  margin: 20px 0;
 }
 
 .ofertas {
   display: flex;
-  gap: 20px;
   justify-content: center;
+  gap: 20px;
 }
 
 .oferta {
-  border: 1px solid #ccc;
+  color: red;
+  border: none; /* Borde más grueso */
+  border-radius: 8px;
   padding: 10px;
-  text-align: center;
+  width: 220px; /* Ancho ajustado para las ofertas */
+  position: relative; /* Para posicionar el descuento */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  background-color: white; /* Fondo blanco para las ofertas */
 }
 
 .oferta img {
-  max-width: 100px;
+  max-width: 100%; /* Asegura que la imagen no exceda el contenedor */
+  border-radius: 5px; /* Bordes redondeados para la imagen */
 }
 
 .descuento {
-  color: red;
-  font-weight: bold;
+  background-color: red; /* Fondo rojo para el descuento */
+  color: white; /* Texto blanco */
+  padding: 5px 10px; /* Padding ajustado */
+  border-radius: 5px; /* Bordes redondeados */
+  font-weight: bold; /* Texto en negrita */
+  margin-left: 10px; /* Espacio entre el texto y el descuento */
 }
+
