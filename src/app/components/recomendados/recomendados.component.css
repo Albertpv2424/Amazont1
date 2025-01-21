@@ -1,15 +1,27 @@
+
 .recomendados {
   text-align: center;
-  padding: 20px;
+  margin: 20px;
 }
 
 .recomendaciones {
   display: flex;
-  gap: 20px;
   justify-content: center;
+  gap: 20px;
 }
 
 .recomendado img {
-  max-width: 100px;
-  border-radius: 5px;
+  width: 300px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  margin-top: 10px;
 }
