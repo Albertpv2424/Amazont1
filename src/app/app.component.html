@@ -1,0 +1,7 @@
+
+    <app-header (backgroundToggled)="toggleBackground()"></app-header> <!-- Componente de encabezado -->
+<div [ngClass]="{'dark-mode': isDarkMode}">
+    <app-ofertones></app-ofertones>
+    <app-categorias></app-categorias>
+    <app-recomendados></app-recomendados>
+</div>
