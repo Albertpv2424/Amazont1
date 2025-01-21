@@ -1,0 +1,15 @@
+.categorias {
+  text-align: center;
+  padding: 20px;
+}
+
+.categorias-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.categoria img {
+  max-width: 100px;
+  border-radius: 5px;
+}

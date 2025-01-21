@@ -1,0 +1,10 @@
+<section class="ofertones">
+  <h2>Ofertones del día</h2>
+  <div class="ofertas">
+    <div class="oferta" *ngFor="let oferta of ofertas">
+      <img [src]="oferta.imagen" [alt]="oferta.titulo" />
+      <p>{{ oferta.titulo }}</p>
+      <span class="descuento">{{ oferta.descuento }}</span>
+    </div>
+  </div>
+</section>

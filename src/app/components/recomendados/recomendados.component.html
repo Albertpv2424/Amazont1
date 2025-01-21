@@ -1,0 +1,9 @@
+<section class="recomendados">
+  <h2>Recomendados del día</h2>
+  <div class="recomendaciones">
+    <div class="recomendado" *ngFor="let item of recomendados">
+      <img [src]="item.imagen" [alt]="item.descripcion" />
+      <p>{{ item.descripcion }}</p>
+    </div>
+  </div>
+</section>

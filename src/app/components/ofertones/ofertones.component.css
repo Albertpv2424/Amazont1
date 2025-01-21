@@ -1,0 +1,25 @@
+.ofertones {
+  text-align: center;
+  padding: 20px;
+}
+
+.ofertas {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.oferta {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.oferta img {
+  max-width: 100px;
+}
+
+.descuento {
+  color: red;
+  font-weight: bold;
+}

@@ -1,0 +1,10 @@
+<section class="categorias">
+  <h2>Categorías</h2>
+  <div class="categorias-grid">
+    <div class="categoria" *ngFor="let categoria of categorias">
+      <img [src]="categoria.imagen" [alt]="categoria.nombre" />
+      <p>{{ categoria.nombre }}</p>
+      <a href="#">Ver Más</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+.recomendados {
+  text-align: center;
+  padding: 20px;
+}
+
+.recomendaciones {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.recomendado img {
+  max-width: 100px;
+  border-radius: 5px;
+}
