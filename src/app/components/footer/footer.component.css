@@ -29,7 +29,7 @@
 }
 
 .footer-logo img {
-  max-width: 100px; /* Ajusta el tamaño del logo */
+  max-width: 100px;
 }
 
 .footer-newsletter {
@@ -43,19 +43,19 @@
 .footer-newsletter input {
   padding: 10px;
   margin-right: 5px;
-  border-radius: 20px; /* Bordes redondeados */
+  border-radius: 20px;
   border: 1px solid #ccc;
 }
 
 .subscribe-button {
   padding: 10px 15px;
-  background-color: orange; /* Color del botón */
+  background-color: orange;
   color: white;
   border: none;
-  border-radius: 20px; /* Bordes redondeados */
+  border-radius: 20px;
   cursor: pointer;
 }
 
 .subscribe-button:hover {
-  background-color: darkorange; /* Color al pasar el mouse */
+  background-color: darkorange;
 }

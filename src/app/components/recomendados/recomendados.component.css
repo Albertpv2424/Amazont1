@@ -1,8 +1,7 @@
-
 .recomendados {
   text-align: center;
   margin: 20px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .recomendaciones {
@@ -20,13 +19,13 @@
 }
 
 .recomendado {
-  cursor: pointer; /* Cambia el cursor a una mano al pasar sobre la recomendación */
+  cursor: pointer;
   text-align: center;
-  transition: transform 0.3s; /* Suaviza la transición */
+  transition: transform 0.3s;
 }
 
 .recomendado:hover {
-  transform: scale(1.1); /* Aumenta el tamaño de la recomendación al pasar el mouse */
+  transform: scale(1.1);
 }
 
 h2 {

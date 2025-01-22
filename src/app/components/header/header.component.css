@@ -45,22 +45,26 @@ a img {
 
 .search-button-container {
   background-color: #f9a825;
-  border-radius: 0 1em 1em 0;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 50px;
 }
 
 .search-button {
   border: none;
   background: none;
-  padding: 1px;
+  padding: 0;
   cursor: pointer;
-  width: 8vh;
+  width: 100%;
+  height: 100%;
 }
 
 .search-button img {
-  width: 69%;
-  height: 70%;
+  width: 50%;
+  height: auto;
 }
 
 .icons img {
@@ -75,10 +79,19 @@ a img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  justify-content: flex-end; /* Alinea los iconos a la derecha */
-  margin-left: auto; /* Empuja los iconos a la derecha */
+  justify-content: flex-end;
+  margin-left: auto;
 }
 
 body{
   background-color: transparent;
+}
+
+.icons img {
+  width: 5vh;
+  height: 5vh;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 5%;
+  cursor: pointer;
 }
