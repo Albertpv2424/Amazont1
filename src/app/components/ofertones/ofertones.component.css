@@ -2,34 +2,39 @@
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 2rem; 
+  height: 400px;
 }
 
 .carrusel {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 1rem; /* Usa rem para el gap */
   position: relative;
+  margin: 0 5%;
 }
 
 .ofertas {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem; /* Usa rem para el gap */
+  flex-wrap: wrap; /* Permite que las ofertas se envuelvan */
 }
 
 .oferta {
   cursor: pointer;
   text-align: center;
   flex: 0 0 auto;
-  width: 220px;
+  height: 30vh;
+  width: 10vw;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: #FFFACD;
-  padding: 15px;
+  padding: 1rem; /* Usa rem para el padding */
   color: #333;
   font-family: 'Poppins', sans-serif;
-  font-size: 16px;
+  font-size: 1rem; /* Usa rem para tamaños de fuente */
   font-weight: 400;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -40,7 +45,7 @@
   border: 1px solid #ccc;
   border-radius: 50%;
   background-color: white;
-  font-size: 18px;
+  font-size: 1.125rem; /* Usa rem para tamaños de fuente */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -56,12 +61,12 @@
 .descuento {
   background-color: red;
   color: white;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem; /* Usa rem para el padding */
   border-radius: 5px;
   font-weight: bold;
   font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  margin-top: 10px;
+  font-size: 0.875rem; /* Usa rem para tamaños de fuente */
+  margin-top: 0.625rem; /* Usa rem para el margen */
 }
 
 .oferta:hover {
@@ -69,9 +74,18 @@
   transition: transform 0.3s;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
-h2{
- margin-top: 0px;
+
+h2 {
+  margin-top: 0;
 }
-.hola{
+
+.hola {
   height: 1em;
+}
+
+img {
+  width: 8vw;
+}
+html{
+  width: 2000px;
 }
