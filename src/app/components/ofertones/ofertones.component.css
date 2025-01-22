@@ -18,12 +18,13 @@
 }
 
 .oferta {
+  cursor: pointer;
   text-align: center;
   flex: 0 0 auto;
   width: 220px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   padding: 10px;
   color: red;
 }
@@ -31,7 +32,7 @@
 .flecha {
   width: 60px;
   height: 60px;
-  border: 1px solid #ccc;
+  border: 0,5px solid #ccc;
   border-radius: 5px;
   background-color: white;
   font-size: 24px;
@@ -53,4 +54,13 @@
   border-radius: 5px;
   font-weight: bold;
   margin-left: 10px;
+}
+
+.oferta:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s;
+}
+
+.oferta p, .oferta .descuento {
+  transform: scale(1);
 }

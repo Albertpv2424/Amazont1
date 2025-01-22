@@ -1,8 +1,31 @@
 <!-- src/app/components/footer/footer.component.html -->
 <footer class="footer">
-  <div class="footer-links">
-      <a href="#">Inicio</a>
-      <a href="#">Acerca de</a>
-      <a href="#">Contacto</a>
+  <div class="footer-content">
+      <p>© {{ currentYear }} Mi Empresa. Todos los derechos reservados.</p>
+      <div class="footer-links">
+          <a href="#">Inicio</a>
+          <a href="#">Acerca de</a>
+          <a href="#">Contacto</a>
+          <a href="#">Política de privacidad</a>
+          <a href="#">Mapa de sitio</a>
+      </div>
+      <div class="footer-logo">
+          <img src="assets/amazont.png" alt="Logo de la empresa" />
+      </div>
+      <div class="footer-contact">
+          <p>Información de contacto: info.amazont.com</p>
+      </div>
+      <div class="footer-social">
+        <a href="#"><img src="assets/facebook.png" alt="Facebook" style="width: 20px; height: 20px;" /></a>
+        <a href="#"><img src="assets/x.png" alt="Twitter" style="width: 20px; height: 20px;" /></a>
+        <a href="#"><img src="assets/instagram.png" alt="Instagram" style="width: 20px; height: 20px;" /></a>
+      </div>
+      <div class="footer-newsletter">
+          <form>
+              <label for="email">Suscríbete a nuestro boletín:   </label>
+              <input type="email" id="email" placeholder="Tu correo electrónico" required />
+              <button type="submit" class="subscribe-button">Suscribirse</button>
+          </form>
+      </div>
   </div>
 </footer>
