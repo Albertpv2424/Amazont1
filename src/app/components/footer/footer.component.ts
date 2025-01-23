@@ -11,6 +11,6 @@ export class FooterComponent {
     currentYear: number;
 
     constructor() {
-        this.currentYear = new Date().getFullYear(); // Obtener el año actual
+        this.currentYear = new Date().getFullYear();
     }
 }

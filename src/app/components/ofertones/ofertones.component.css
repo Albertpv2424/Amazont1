@@ -11,30 +11,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem; /* Usa rem para el gap */
+  gap: 1rem; 
   position: relative;
-  margin: 0 5%;
+  margin: 0;
 }
 
 .ofertas {
   display: flex;
-  gap: 1.25rem; /* Usa rem para el gap */
-  flex-wrap: wrap; /* Permite que las ofertas se envuelvan */
+  gap: 1.25rem; 
+  flex-wrap: wrap; 
 }
 
 .oferta {
   cursor: pointer;
   text-align: center;
   flex: 0 0 auto;
-  height: 30vh;
+  height: 25vh;
   width: 10vw;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  background-color: #FFFACD;
-  padding: 1rem; /* Usa rem para el padding */
+  background-color: #ffffff;
+  padding: 1rem; 
   color: #333;
   font-family: 'Poppins', sans-serif;
-  font-size: 1rem; /* Usa rem para tamaños de fuente */
+  font-size: 1rem; 
   font-weight: 400;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -45,7 +45,7 @@
   border: 1px solid #ccc;
   border-radius: 50%;
   background-color: white;
-  font-size: 1.125rem; /* Usa rem para tamaños de fuente */
+  font-size: 1.125rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -61,12 +61,12 @@
 .descuento {
   background-color: red;
   color: white;
-  padding: 0.3125rem 0.625rem; /* Usa rem para el padding */
+  padding: 0.3125rem 0.625rem; 
   border-radius: 5px;
   font-weight: bold;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.875rem; /* Usa rem para tamaños de fuente */
-  margin-top: 0.625rem; /* Usa rem para el margen */
+  font-size: 0.875rem; 
+  margin-top: 100px;
 }
 
 .oferta:hover {

@@ -8,16 +8,16 @@ import { FooterComponent } from "./components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
-  standalone: true, // Indica que este es un componente independiente
+  standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [CommonModule, HeaderComponent, OfertonesComponent, RecomendadosComponent, CategoriasComponent, FooterComponent] // Asegúrate de incluir HeaderComponent aquí
+  imports: [CommonModule, HeaderComponent, OfertonesComponent, RecomendadosComponent, CategoriasComponent, FooterComponent] 
 
 })
 export class AppComponent {
-  isDarkMode = false; // Estado del modo oscuro
+  isDarkMode = false;
   component: any = null;
   toggleBackground() {
-    this.isDarkMode = !this.isDarkMode; // Alternar el estado
+    this.isDarkMode = !this.isDarkMode;
   }
 }
