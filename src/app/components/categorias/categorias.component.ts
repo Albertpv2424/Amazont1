@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Categoria } from '../../interfaces/categoria.interface';
-import { CategoriaComponent } from '../categoria/categoria.component'; // Ajusta la ruta aquí
+import { CategoriaComponent } from '../categoria/categoria.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,9 +11,9 @@ import { CommonModule } from '@angular/common';
   imports: [CategoriaComponent, CommonModule]
 })
 export class CategoriasComponent {
-  categorias: Categoria[] = [
-    { nombre: 'Tecnología', imagen: 'assets/tecnologia.jpg' },
-    { nombre: 'Deportes', imagen: 'assets/deportes.jpg' },
-    { nombre: 'Cocina', imagen: 'assets/cocina.jpg' }
+  @Input() categorias: Categoria[] = [
+    { nombre: 'Tecnología', imagen: 'assets/tecnologia.png' },
+    { nombre: 'Deportes', imagen: 'assets/deportes.png' },
+    { nombre: 'Cocina', imagen: 'assets/cocina.png' }
   ];
 }

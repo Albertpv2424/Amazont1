@@ -1,7 +1,7 @@
-<div class="oferta">
-    <img [src]="producto.imagen" [alt]="producto.titulo" />
-    <p>
-      {{ producto.titulo }}
-      <span class="descuento">{{ producto.descuento }}</span>
-    </p>
-  </div>
+<div class="producto" role="article" aria-labelledby="producto-titulo">
+  <img [src]="producto.imagen" [alt]="producto.titulo" />
+  <p id="producto-titulo">
+    {{ producto.titulo }}
+    <span class="descuento">{{ producto.descuento }}</span>
+  </p>
+</div>

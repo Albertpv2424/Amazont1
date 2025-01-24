@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common'; // Asegúrate de importar Common
 })
 export class OfertonesComponent {
   ofertas: Producto[] = [
-    { imagen: 'src/assets/fifa25.png', titulo: 'Oferta Flash', descuento: '-46%' },
+    { imagen: 'assets/fifa25.png', titulo: 'Oferta Flash', descuento: '-46%' },
     { imagen: 'assets/panales.png', titulo: 'Oferta Flash', descuento: '-29%' },
     { imagen: 'assets/scalextric.png', titulo: 'Oferta Flash', descuento: '-20%' },
     { imagen: 'assets/nba2k25.png', titulo: 'Oferta Flash', descuento: '-40%' },

@@ -2,8 +2,8 @@
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  font-size: 2rem; 
-  height: 400px;
+  font-size: 2rem;
+  height: auto;
 }
 
 .carrusel {
@@ -11,38 +11,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem; 
+  gap: 1rem;
   position: relative;
   margin: 0;
 }
 
 .ofertas {
   display: flex;
-  gap: 1.25rem; 
-  flex-wrap: wrap; 
-}
-
-.oferta {
-  cursor: pointer;
-  text-align: center;
-  flex: 0 0 auto;
-  height: 25vh;
-  width: 10vw;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  background-color: #ffffff;
-  padding: 1rem; 
-  color: #333;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem; 
-  font-weight: 400;
-  transition: transform 0.3s, box-shadow 0.3s;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .flecha {
   width: 50px;
   height: 50px;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
   border-radius: 50%;
   background-color: white;
   font-size: 1.125rem;
@@ -58,35 +41,14 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.descuento {
-  background-color: red;
-  color: white;
-  padding: 0.3125rem 0.625rem; 
-  border-radius: 5px;
-  font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.875rem; 
-  margin-top: 100px;
-}
-
-.oferta:hover {
-  transform: scale(1.1);
-  transition: transform 0.3s;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
 h2 {
-  margin-top: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2%;
 }
 
-.hola {
-  height: 1em;
-}
-
-img {
-  width: 8vw;
-}
-
-html{
-  width: 2000px;
-}
+.hola
+ {
+  height: 2rem;
+ }

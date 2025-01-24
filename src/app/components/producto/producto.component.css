@@ -1,8 +1,37 @@
-.oferta {
+.producto {
   cursor: pointer;
   text-align: center;
-  transition: transform 0.3s;
+  flex: 0 0 auto;
+  height: 95%;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 10px;
 }
-.oferta:hover {
+
+.producto:hover {
   transform: scale(1.1);
-} 
+  transition: transform 0.3s;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.producto img {
+  width: 10vw;
+  margin-bottom: 10%;
+}
+
+.producto .descuento {
+  background-color: red;
+  color: white;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+}
