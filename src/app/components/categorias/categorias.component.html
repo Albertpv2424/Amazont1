@@ -1,20 +1,6 @@
 <div class="categorias">
   <h1>Categorías</h1>
   <div class="categorias-list">
-    <div class="categoria">
-      <h2>Tecnologia</h2>
-      <img src="assets/tecnologia.png" alt="Tecnologia">
-      <a href="#" class="ver-mas">Ver Más</a>
-    </div>
-    <div class="categoria">
-      <h2>Deportes</h2>
-      <img src="assets/deportes.png" alt="Deportes">
-      <a href="#" class="ver-mas">Ver Más</a>
-    </div>
-    <div class="categoria">
-      <h2>Cocina</h2>
-      <img src="assets/cocina.png" alt="Cocina">
-      <a href="#" class="ver-mas">Ver Más</a>
-    </div>
+    <app-categoria *ngFor="let categoria of categorias" [categoria]="categoria"></app-categoria>
   </div>
 </div>

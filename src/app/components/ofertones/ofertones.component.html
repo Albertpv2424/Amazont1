@@ -1,37 +1,9 @@
 <section class="ofertones">
-  <div class = "hola"></div>
   <h2>Ofertones del día</h2>
   <div class="carrusel">
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
-      <div class="oferta">
-        <img [src]="oferta1.imagen" [alt]="oferta1.titulo" />
-        <p>
-          {{ oferta1.titulo }}
-          <span class="descuento">{{ oferta1.descuento }}</span>
-        </p>
-      </div>
-      <div class="oferta">
-        <img [src]="oferta2.imagen" [alt]="oferta2.titulo" />
-        <p>
-          {{ oferta2.titulo }}
-          <span class="descuento">{{ oferta2.descuento }}</span>
-        </p>
-      </div>
-      <div class="oferta">
-        <img [src]="oferta3.imagen" [alt]="oferta3.titulo" />
-        <p>
-          {{ oferta3.titulo }}
-          <span class="descuento">{{ oferta3.descuento }}</span>
-        </p>
-      </div>
-      <div class="oferta">
-        <img [src]="oferta4.imagen" [alt]="oferta4.titulo" />
-        <p>
-          {{ oferta4.titulo }}
-          <span class="descuento">{{ oferta4.descuento }}</span>
-        </p>
-      </div>
+      <app-producto *ngFor="let oferta of visibleOffers" [producto]="oferta"></app-producto>
     </div>
     <button class="flecha derecha" (click)="next()">→</button>
   </div>

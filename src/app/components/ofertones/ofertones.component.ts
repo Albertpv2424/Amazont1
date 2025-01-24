@@ -1,45 +1,42 @@
 import { Component } from '@angular/core';
-import { Input } from '@angular/core';
+import { Producto } from '../../interfaces/producto.interface';
+import { ProductoComponent } from '../producto/producto.component';
+import { CommonModule } from '@angular/common'; // Asegúrate de importar CommonModule
+
 
 @Component({
   selector: 'app-ofertones',
   standalone: true,
   templateUrl: './ofertones.component.html',
-  styleUrls: ['./ofertones.component.css']
+  styleUrls: ['./ofertones.component.css'],
+  imports: [ProductoComponent]
 })
 export class OfertonesComponent {
-  @Input() isDarkMode: boolean = false;
-
-  ofertas = [
-    { imagen: 'assets/fifa25.png', titulo: 'Oferta Flash', descuento: '-46%' },
+  ofertas: Producto[] = [
+    { imagen: 'src/assets/fifa25.png', titulo: 'Oferta Flash', descuento: '-46%' },
     { imagen: 'assets/panales.png', titulo: 'Oferta Flash', descuento: '-29%' },
     { imagen: 'assets/scalextric.png', titulo: 'Oferta Flash', descuento: '-20%' },
     { imagen: 'assets/nba2k25.png', titulo: 'Oferta Flash', descuento: '-40%' },
     { imagen: 'assets/barcakit.png', titulo: 'Oferta Flash', descuento: '-33%' }
   ];
 
-  oferta1 = this.ofertas[0];
-  oferta2 = this.ofertas[1];
-  oferta3 = this.ofertas[2];
-  oferta4 = this.ofertas[3];
-
-  currentIndex = 0;
+  currentIndex: number = 0; // Índice actual de la oferta visible
 
   next() {
-    this.currentIndex = (this.currentIndex + 1) % this.ofertas.length;
-    this.updateVisibleOffers();
+    this.currentIndex = (this.currentIndex + 1) % this.ofertas.length; // Avanza al siguiente índice
   }
 
   previous() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.ofertas.length) % this.ofertas.length;
-    this.updateVisibleOffers();
+    this.currentIndex = (this.currentIndex - 1 + this.ofertas.length) % this.ofertas.length; // Retrocede al índice anterior
   }
 
-  updateVisibleOffers() {
-    this.oferta1 = this.ofertas[this.currentIndex];
-    this.oferta2 = this.ofertas[(this.currentIndex + 1) % this.ofertas.length];
-    this.oferta3 = this.ofertas[(this.currentIndex + 2) % this.ofertas.length];
-    this.oferta4 = this.ofertas[(this.currentIndex + 3) % this.ofertas.length];
+  get visibleOffers() {
+    // Devuelve las ofertas visibles basadas en el índice actual
+    return [
+      this.ofertas[this.currentIndex],
+      this.ofertas[(this.currentIndex + 1) % this.ofertas.length],
+      this.ofertas[(this.currentIndex + 2) % this.ofertas.length],
+      this.ofertas[(this.currentIndex + 3) % this.ofertas.length]
+    ];
   }
 }
