@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common'; // Asegúrate de importar Common
   standalone: true,
   templateUrl: './ofertones.component.html',
   styleUrls: ['./ofertones.component.css'],
-  imports: [ProductoComponent]
+  imports: [CommonModule, ProductoComponent] // Asegúrate de que CommonModule esté aquí
 })
 export class OfertonesComponent {
   ofertas: Producto[] = [
