@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Categoria } from '../../interfaces/categoria.interface';
 import { CategoriaComponent } from '../categoria/categoria.component';
 import { CommonModule } from '@angular/common';
@@ -11,9 +11,15 @@ import { CommonModule } from '@angular/common';
   imports: [CategoriaComponent, CommonModule]
 })
 export class CategoriasComponent {
-  @Input() categorias: Categoria[] = [
+  categorias = input<Categoria[]>([
     { nombre: 'Tecnología', imagen: 'assets/tecnologia.png' },
     { nombre: 'Deportes', imagen: 'assets/deportes.png' },
     { nombre: 'Cocina', imagen: 'assets/cocina.png' }
-  ];
+  ]);
+
+  categoriaSeleccionada = output<Categoria>();
+
+  onCategoriaSeleccionada(categoria: Categoria) {
+    this.categoriaSeleccionada.emit(categoria);
+  }
 }

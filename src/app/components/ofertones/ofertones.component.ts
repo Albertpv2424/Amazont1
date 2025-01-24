@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
 import { ProductoComponent } from '../producto/producto.component';
-import { CommonModule } from '@angular/common'; // Asegúrate de importar CommonModule
+import { CommonModule } from '@angular/common'; 
 
 
 @Component({
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common'; // Asegúrate de importar Common
   standalone: true,
   templateUrl: './ofertones.component.html',
   styleUrls: ['./ofertones.component.css'],
-  imports: [CommonModule, ProductoComponent] // Asegúrate de que CommonModule esté aquí
+  imports: [CommonModule, ProductoComponent] 
 })
 export class OfertonesComponent {
   ofertas: Producto[] = [
@@ -20,18 +20,18 @@ export class OfertonesComponent {
     { imagen: 'assets/barcakit.png', titulo: 'Oferta Flash', descuento: '-33%' }
   ];
 
-  currentIndex: number = 0; // Índice actual de la oferta visible
+  currentIndex: number = 0;
 
   next() {
-    this.currentIndex = (this.currentIndex + 1) % this.ofertas.length; // Avanza al siguiente índice
+    this.currentIndex = (this.currentIndex + 1) % this.ofertas.length; 
   }
 
   previous() {
-    this.currentIndex = (this.currentIndex - 1 + this.ofertas.length) % this.ofertas.length; // Retrocede al índice anterior
+    this.currentIndex = (this.currentIndex - 1 + this.ofertas.length) % this.ofertas.length; 
   }
 
   get visibleOffers() {
-    // Devuelve las ofertas visibles basadas en el índice actual
+
     return [
       this.ofertas[this.currentIndex],
       this.ofertas[(this.currentIndex + 1) % this.ofertas.length],

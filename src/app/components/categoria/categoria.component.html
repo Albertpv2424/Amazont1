@@ -1,5 +1,4 @@
-<div class="categoria" role="region" aria-labelledby="categoria-nombre">
-  <h2 id="categoria-nombre">{{ categoria.nombre }}</h2>
-  <img [src]="categoria.imagen" [alt]="'Imagen de ' + categoria.nombre" />
-  <a href="#" class="ver-mas">Ver Más</a>
+<div class="categoria">
+  <img [src]="categoria().imagen" [alt]="categoria().nombre">
+  <p>{{ categoria().nombre }}</p>
 </div>

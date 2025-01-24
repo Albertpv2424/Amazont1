@@ -4,7 +4,9 @@
   <div class="carrusel">
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
-      <app-producto *ngFor="let oferta of visibleOffers" [producto]="oferta"></app-producto>
+      @for (oferta of visibleOffers; track oferta.titulo) {
+        <app-producto [producto]="oferta"></app-producto>
+      }
     </div>
     <button class="flecha derecha" (click)="next()">→</button>
   </div>

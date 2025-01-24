@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
 
 @Component({
@@ -8,5 +8,13 @@ import { Producto } from '../../interfaces/producto.interface';
   styleUrls: ['./producto.component.css']
 })
 export class ProductoComponent {
-  @Input() producto!: Producto; // Recibe el producto como input
+  producto = input<Producto>({
+    imagen: 'assets/default.png',
+    titulo: 'Producto sin título',
+    descuento: '0%'
+  });
+
+  get productoValue(): Producto {
+    return this.producto();
+  }
 }

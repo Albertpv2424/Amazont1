@@ -19,7 +19,7 @@
 }
 
 .categoria img {
-  width: 100%;
+  width: 20%;
   height: auto;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -53,4 +53,5 @@
 
 h1 {
   margin-bottom: 20px;
+  text-align: center;
 }

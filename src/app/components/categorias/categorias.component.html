@@ -1,6 +1,9 @@
-<div class="categorias">
+<div class="categorias-container">
   <h1>Categorías</h1>
-  <div class="categorias-list">
-    <app-categoria *ngFor="let categoria of categorias" [categoria]="categoria"></app-categoria>
-  </div>
+  @for (categoria of categorias(); track categoria.nombre) {
+    <app-categoria
+      [categoria]="categoria"
+      (click)="onCategoriaSeleccionada(categoria)">
+    </app-categoria>
+  }
 </div>

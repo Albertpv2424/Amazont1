@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { Categoria } from '../../interfaces/categoria.interface';
 import { CommonModule } from '@angular/common';
 @Component({
@@ -8,5 +8,11 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./categoria.component.css'],
 })
 export class CategoriaComponent {
-  @Input() categoria!: Categoria; // Recibe la categoría como input
+  categoria = input<Categoria>({
+    nombre: 'Sin nombre',
+    imagen: 'assets/default.png'
+  });
+  get categoriaValue(): Categoria {
+    return this.categoria();
+  }
 }
