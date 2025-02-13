@@ -1,1 +1,8 @@
-<app-home></app-home>
+<app-header
+  [isDarkMode]="isDarkMode"
+  (backgroundToggled)="toggleBackground()">
+</app-header>
+<div [ngClass]="{'dark-mode': isDarkMode}">
+  <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,32 @@
+<div class="categoria-detalle" [ngClass]="{'dark-mode': isDarkMode}">
+  <h1>{{ nombreCategoria }}</h1>
+
+  <div class="filtros">
+    <div class="filtro-precio">
+      <label>Precio mínimo:</label>
+      <input type="number" [(ngModel)]="precioMinimo">
+
+      <label>Precio máximo:</label>
+      <input type="number" [(ngModel)]="precioMaximo">
+    </div>
+
+    <div class="ordenar">
+      <label>Ordenar por:</label>
+      <select [(ngModel)]="ordenar">
+        <option value="precio-asc">Precio: Menor a Mayor</option>
+        <option value="precio-desc">Precio: Mayor a Menor</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="productos-grid">
+    @for (producto of productosFiltrados; track producto.id) {
+      <div class="producto-card">
+        <img [src]="producto.imagen" [alt]="producto.nombre">
+        <h3>{{ producto.nombre }}</h3>
+        <p>{{ producto.descripcion }}</p>
+        <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
+      </div>
+    }
+  </div>
+</div>
