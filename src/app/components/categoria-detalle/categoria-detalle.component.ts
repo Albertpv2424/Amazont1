@@ -16,7 +16,7 @@ import { ThemeService } from '../../services/theme.service';
 export class CategoriaDetalleComponent implements OnInit {
   nombreCategoria: string = '';
   precioMinimo: number = 0;
-  precioMaximo: number = 2000;
+  precioMaximo: number = 100000;
   ordenar: string = 'precio-asc';
   filtroPopularidad: string = 'todos';
   filtroNovedad: boolean = false;
