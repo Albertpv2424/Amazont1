@@ -1,8 +1,23 @@
 .categoria {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-
+  text-align: center;
+  margin-top: 20px;
 }
+
+.categoria img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.categoria p {
+  margin-top: 1em;
+  font-size: 1.5vw;
+  width: 100%;
+}
+
 div{
     display: flex;
     align-items: center;

@@ -1,4 +1,4 @@
-<div class="producto" role="article" aria-labelledby="producto-titulo">
+<div class="producto" [ngClass]="{'dark-mode': isDarkMode}" role="article" aria-labelledby="producto-titulo">
   <img [src]="productoValue.imagen" [alt]="productoValue.titulo" />
   <p id="producto-titulo">
     {{ productoValue.titulo }}

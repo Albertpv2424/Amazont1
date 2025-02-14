@@ -13,6 +13,9 @@
   font-weight: 400;
   transition: transform 0.3s, box-shadow 0.3s;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .producto:hover {
@@ -22,7 +25,9 @@
 }
 
 .producto img {
-  width: 10vw;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
   margin-bottom: 10%;
 }
 
@@ -34,4 +39,15 @@
   font-weight: bold;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.875rem;
+}
+
+.dark-mode .producto {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .producto .descuento {
+  background-color: #ff5722;
+  color: #ffffff;
 }
