@@ -42,11 +42,11 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-h2 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 2%;
+h1{
+  text-align: center;
+  margin-top: 1em;
+  font-size: 3vw;
+  width: 100%;
 }
 
 .hola

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
 import { ProductoComponent } from '../producto/producto.component';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { HomeComponent } from '../home/home.component';
 
 
 @Component({
