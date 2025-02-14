@@ -60,3 +60,14 @@
 .subscribe-button:hover {
   background-color: darkorange;
 }
+*{
+  margin-left: -8px;
+  margin-right: -8px;
+  margin-bottom: -8px;
+}
+.boletin{
+  margin-right: 20px;
+}
+.hola{
+  height: 3vh;
+}

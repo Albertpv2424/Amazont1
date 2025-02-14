@@ -6,6 +6,7 @@
   width: 100%;
   box-sizing: border-box;
   flex-wrap: wrap;
+  margin-top: -8px;
 }
 
 .logo {
@@ -125,4 +126,8 @@ body {
   .icons {
     justify-content: center;
   }
+}
+*{
+  margin-left: -8px;
+  margin-right: -16px;
 }
