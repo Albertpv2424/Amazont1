@@ -75,6 +75,11 @@ h1 {
   transition: all 0.3s ease;
 }
 
+.dark-mode .checkmark {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+}
+
 .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
   background-color: #4a90e2;
   border-color: #4a90e2;
@@ -90,17 +95,6 @@ h1 {
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-}
-
-/* Estilos para modo oscuro */
-.dark-mode .checkmark {
-  background-color: #3d3d3d;
-  border-color: #4d4d4d;
-}
-
-.dark-mode .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-  background-color: #4a90e2;
-  border-color: #4a90e2;
 }
 
 .filtro-precio, .filtro-popularidad, .ordenar {
@@ -166,6 +160,12 @@ select, input[type="number"] {
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 30px;
 }
 
 select option {
@@ -380,4 +380,16 @@ label {
 
 .dark-mode .btn-carrito:hover {
   background-color: #e47911;
+}
+
+.dark-mode select {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+  color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+}
+
+.dark-mode select option {
+  background-color: #3d3d3d;
+  color: #ffffff;
 }

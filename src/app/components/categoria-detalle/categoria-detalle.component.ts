@@ -48,16 +48,15 @@ export class CategoriaDetalleComponent implements OnInit {
         const cumplePrecio = p.precio >= this.precioMinimo && p.precio <= this.precioMaximo;
 
         // Filtro por popularidad
-        const cumplePopularidad = this.filtroPopularidad === 'todos' ? true :
-          this.filtroPopularidad === 'populares' ? p.popularidad > 4 :
+        const cumplePopularidad =
+          this.filtroPopularidad === 'todos' ? true :
+          this.filtroPopularidad === 'populares' ? p.popularidad >= 4.5 :
           this.filtroPopularidad === 'nuevos' ? p.esNuevo : true;
 
         // Filtro por envío gratis
         const cumpleEnvioGratis = this.filtroEnvioGratis ? p.envioGratis : true;
 
-        return cumplePrecio && cumplePopularidad &&
-               (!this.filtroNovedad || p.esNuevo) &&
-               cumpleEnvioGratis;
+        return cumplePrecio && cumplePopularidad && (!this.filtroNovedad || p.esNuevo) && cumpleEnvioGratis;
       })
       .sort((a, b) => {
         if (this.ordenar === 'precio-asc') return a.precio - b.precio;
