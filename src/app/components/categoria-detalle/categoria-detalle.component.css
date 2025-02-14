@@ -16,11 +16,91 @@ h1 {
   display: flex;
   align-items: center;
   gap: 2rem;
-  background-color: #2d2d2d;
+  background-color: #ffffff;
   padding: 1.5rem 2rem;
   border-radius: 15px;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.filtro-precio-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filtro-precio-inputs input {
+  width: 100px;
+}
+
+.filtro-grupo label {
+  color: #333333;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1;
+  position: relative;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark:after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Estilos para modo oscuro */
+.dark-mode .checkmark {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+}
+
+.dark-mode .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
 }
 
 .filtro-precio, .filtro-popularidad, .ordenar {
@@ -79,9 +159,9 @@ input[type="number"] {
 select, input[type="number"] {
   width: 100%;
   padding: 0.75rem;
-  background-color: #3d3d3d;
-  border: 1px solid #4d4d4d;
-  color: #ffffff;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  color: #333333;
   border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
@@ -89,21 +169,21 @@ select, input[type="number"] {
 }
 
 select option {
-  background-color: #3d3d3d;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   padding: 0.75rem;
 }
 
 select:hover, input[type="number"]:hover {
-  background-color: #454545;
-  border-color: #5d5d5d;
+  background-color: #f5f5f5;
+  border-color: #d0d0d0;
 }
 
 select:focus, input[type="number"]:focus {
   outline: none;
-  background-color: #454545;
+  background-color: #ffffff;
   border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74,144,226,0.3);
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
 }
 
 .checkbox-container {
@@ -201,6 +281,7 @@ select:focus, input[type="number"]:focus {
 .dark-mode .filtros {
   background-color: #2d2d2d;
   box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  border: none;
 }
 
 .dark-mode input,
@@ -263,4 +344,40 @@ select:focus, input[type="number"]:focus {
 label {
   color: #e0e0e0;
   white-space: nowrap;
+}
+
+.btn-carrito {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #f19d38;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-carrito:hover {
+  background-color: #e47911;
+  transform: translateY(-2px);
+}
+
+.btn-carrito img {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.dark-mode .btn-carrito {
+  background-color: #e47911;
+}
+
+.dark-mode .btn-carrito:hover {
+  background-color: #e47911;
 }

@@ -2,14 +2,16 @@
   <h1>{{ nombreCategoria }}</h1>
 
   <div class="filtros">
-    <div class="filtro-precio">
+    <div class="filtro-grupo">
       <label>Precio:</label>
-      <input type="number" [(ngModel)]="precioMinimo" placeholder="Mín">
-      <span>-</span>
-      <input type="number" [(ngModel)]="precioMaximo" placeholder="Máx">
+      <div class="filtro-precio-inputs">
+        <input type="number" [(ngModel)]="precioMinimo" placeholder="Mín">
+        <span>-</span>
+        <input type="number" [(ngModel)]="precioMaximo" placeholder="Máx">
+      </div>
     </div>
 
-    <div class="filtro-popularidad">
+    <div class="filtro-grupo">
       <label>Popularidad:</label>
       <select [(ngModel)]="filtroPopularidad">
         <option value="todos">Todos los productos</option>
@@ -18,15 +20,15 @@
       </select>
     </div>
 
-    <div class="filtros-adicionales">
-      <label class="checkbox-container">
+    <div class="filtro-grupo">
+      <label>Novedades:</label>
+      <div class="checkbox-wrapper">
         <input type="checkbox" [(ngModel)]="filtroNovedad">
         <span class="checkmark"></span>
-        Novedades
-      </label>
+      </div>
     </div>
 
-    <div class="ordenar">
+    <div class="filtro-grupo">
       <label>Ordenar por:</label>
       <select [(ngModel)]="ordenar">
         <option value="precio-asc">Precio: Menor a Mayor</option>
@@ -42,6 +44,10 @@
         <h3>{{ producto.nombre }}</h3>
         <p>{{ producto.descripcion }}</p>
         <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
+        <button class="btn-carrito">
+          <img src="assets/cart.png" alt="Añadir al carrito">
+          Añadir al carrito
+        </button>
       </div>
     }
   </div>
