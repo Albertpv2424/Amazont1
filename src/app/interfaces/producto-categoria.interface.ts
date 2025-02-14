@@ -5,4 +5,8 @@ export interface ProductoCategoria {
   precio: number;
   imagen: string;
   categoria: string;
+  popularidad: number;
+  esNuevo: boolean;
+  envioGratis: boolean;
+  fechaLanzamiento: Date;
 }

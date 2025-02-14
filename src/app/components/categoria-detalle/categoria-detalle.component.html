@@ -3,11 +3,27 @@
 
   <div class="filtros">
     <div class="filtro-precio">
-      <label>Precio mínimo:</label>
-      <input type="number" [(ngModel)]="precioMinimo">
+      <label>Precio:</label>
+      <input type="number" [(ngModel)]="precioMinimo" placeholder="Mín">
+      <span>-</span>
+      <input type="number" [(ngModel)]="precioMaximo" placeholder="Máx">
+    </div>
 
-      <label>Precio máximo:</label>
-      <input type="number" [(ngModel)]="precioMaximo">
+    <div class="filtro-popularidad">
+      <label>Popularidad:</label>
+      <select [(ngModel)]="filtroPopularidad">
+        <option value="todos">Todos los productos</option>
+        <option value="populares">Más populares</option>
+        <option value="nuevos">Recién llegados</option>
+      </select>
+    </div>
+
+    <div class="filtros-adicionales">
+      <label class="checkbox-container">
+        <input type="checkbox" [(ngModel)]="filtroNovedad">
+        <span class="checkmark"></span>
+        Novedades
+      </label>
     </div>
 
     <div class="ordenar">

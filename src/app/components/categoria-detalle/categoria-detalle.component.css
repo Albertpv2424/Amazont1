@@ -13,25 +13,136 @@ h1 {
 }
 
 .filtros {
-  background-color: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background-color: #2d2d2d;
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-.filtro-precio, .ordenar {
+.filtro-precio, .filtro-popularidad, .ordenar {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 1rem 0;
+  flex: 1;
 }
 
-input[type="number"], select {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
+.filtro-precio {
+  min-width: 300px;
+}
+
+/* Eliminar las flechas de los inputs numéricos para todos los navegadores */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Estilo general para inputs numéricos */
+.filtro-precio input[type="number"] {
+  width: 100px;
+  padding: 0.75rem;
+  background-color: #3d3d3d;
+  border: 1px solid #4d4d4d;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.filtro-precio input[type="number"]:hover {
+  background-color: #454545;
+  border-color: #5d5d5d;
+}
+
+.filtro-precio input[type="number"]:focus {
+  outline: none;
+  background-color: #454545;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.3);
+}
+
+.filtro-popularidad, .ordenar {
+  min-width: 250px;
+}
+
+select, input[type="number"] {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3d3d3d;
+  border: 1px solid #4d4d4d;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select option {
+  background-color: #3d3d3d;
+  color: #ffffff;
+  padding: 0.75rem;
+}
+
+select:hover, input[type="number"]:hover {
+  background-color: #454545;
+  border-color: #5d5d5d;
+}
+
+select:focus, input[type="number"]:focus {
+  outline: none;
+  background-color: #454545;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.3);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.checkbox-container:hover {
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4a90e2;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.ordenar select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.ordenar select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
 }
 
 .productos-grid {
@@ -89,14 +200,35 @@ input[type="number"], select {
 
 .dark-mode .filtros {
   background-color: #2d2d2d;
-  box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-.dark-mode input[type="number"],
+.dark-mode input,
 .dark-mode select {
-  background-color: #333;
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
   color: #ffffff;
-  border-color: #444;
+}
+
+.dark-mode input:hover,
+.dark-mode select:hover {
+  background-color: #454545;
+  border-color: #5d5d5d;
+}
+
+.dark-mode input:focus,
+.dark-mode select:focus {
+  background-color: #454545;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.3);
+}
+
+.dark-mode .checkbox-container:hover {
+  background-color: rgba(74, 144, 226, 0.15);
+}
+
+.dark-mode label {
+  color: #e0e0e0;
 }
 
 .dark-mode .producto-card {
@@ -114,4 +246,21 @@ input[type="number"], select {
 
 .dark-mode .producto-card .precio {
   color: #ff9f43;
+}
+
+.dark-mode .filtros-adicionales {
+  color: #ffffff;
+}
+
+.filtros-adicionales {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: auto;
+  flex: 0 0 auto;
+}
+
+label {
+  color: #e0e0e0;
+  white-space: nowrap;
 }
