@@ -39,12 +39,12 @@
 
   <div class="productos-grid">
     <div *ngFor="let producto of productosFiltrados" class="producto-card">
-      <a [routerLink]="['/producto', producto.id]">
+      <b [routerLink]="['/producto', producto.id]">
         <img [src]="producto.imagen" [alt]="producto.nombre">
         <h3>{{ producto.nombre }}</h3>
         <p>{{ producto.descripcion }}</p>
         <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
-      </a>
+      </b>
       <button class="btn-carrito" (click)="anadirAlCarrito(producto)">
         <img src="assets/cart.png" alt="Añadir al carrito">
         Añadir al carrito
