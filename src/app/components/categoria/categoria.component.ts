@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Categoria } from '../../interfaces/categoria.interface';
 import { CommonModule } from '@angular/common';
@@ -11,18 +11,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./categoria.component.css']
 })
 export class CategoriaComponent {
-  categoria = input<Categoria>({
-    nombre: 'Sin nombre',
-    imagen: 'assets/default.png'
-  });
+  @Input() categoria!: Categoria;
 
   constructor(private router: Router) {}
 
-  get categoriaValue(): Categoria {
-    return this.categoria();
-  }
-
   navegarACategoria() {
-    this.router.navigate(['/categoria', this.categoria().nombre]);
+    console.log('Navegando a categoría:', this.categoria.nombre);
+    this.router.navigate(['/categoria', this.categoria.nombre]);
   }
 }

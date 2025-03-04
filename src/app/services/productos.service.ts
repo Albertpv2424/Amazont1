@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { ProductoCategoria } from '../interfaces/producto-categoria.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductosService {
+  constructor() {}
+
   private productos: ProductoCategoria[] = [
     // Deportes
     {
@@ -201,5 +204,12 @@ export class ProductosService {
 
   getAllProductos(): ProductoCategoria[] {
     return this.productos;
+  }
+
+  getProductoById(id: string | null): Observable<any> {
+    if (!id) return of(null);
+    
+    const producto = this.productos.find(p => p.id === parseInt(id));
+    return of(producto || null);
   }
 }

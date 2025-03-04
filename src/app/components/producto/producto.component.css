@@ -21,10 +21,6 @@
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
-.producto img {
-  width: 10vw;
-  margin-bottom: 10%;
-}
 
 .producto .descuento {
   background-color: red;
@@ -44,4 +40,10 @@
 .dark-mode .producto .descuento {
   background-color: #ff5722;
   color: #ffffff;
+}
+
+.imagggg{
+  height: 10vw;
+  width: 10vw;
+  margin-bottom: 1vw;
 }

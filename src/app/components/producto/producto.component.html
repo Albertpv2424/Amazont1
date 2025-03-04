@@ -1,8 +1,7 @@
-<div class="producto" [ngClass]="{'dark-mode': isDarkMode}" role="article" aria-labelledby="producto-titulo">
-  <img [src]="productoValue.imagen" [alt]="productoValue.titulo" />
+<div class="producto" (click)="navegarAProducto()" role="article" aria-labelledby="producto-titulo">
+  <img class="imagggg" [src]="producto.imagen" [alt]="producto.nombre" />
   <p id="producto-titulo">
-    {{ productoValue.titulo }}
-    <span class="descuento">{{ productoValue.descuento }}</span>
+    {{ producto.nombre }}
+    <span class="descuento">{{ producto.descuento }}</span>
   </p>
 </div>
-  

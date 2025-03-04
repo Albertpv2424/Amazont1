@@ -3,6 +3,8 @@ import { OfertonesComponent } from './components/ofertones/ofertones.component';
 import { CategoriasComponent } from './components/categorias/categorias.component';
 import { CategoriaDetalleComponent } from './components/categoria-detalle/categoria-detalle.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProductoDetalleComponent } from './components/producto-detalle/producto-detalle.component';
+
 
 export const routes: Routes = [
     {
@@ -17,7 +19,18 @@ export const routes: Routes = [
     },
     {
         path: 'categoria/:nombre',
-        component: CategoriaDetalleComponent
+        component: CategoriaDetalleComponent,
+        children: [
+            {
+                path: 'producto/:id',
+                component: ProductoDetalleComponent
+            }
+        ]
     },
+    {
+        path: 'producto/:id',
+        component: ProductoDetalleComponent
+    },
+    { path: '', component: HomeComponent },
     { path: '', component: HomeComponent }
 ];

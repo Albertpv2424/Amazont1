@@ -1,9 +1,9 @@
 <div class="categorias-container">
   <h1>Categorías</h1>
-  @for (categoria of categorias(); track categoria.nombre) {
+  <div class="categorias-grid">
     <app-categoria
-      [categoria]="categoria"
-      (click)="onCategoriaSeleccionada(categoria)">
+      *ngFor="let categoria of categorias"
+      [categoria]="categoria">
     </app-categoria>
-  }
+  </div>
 </div>
