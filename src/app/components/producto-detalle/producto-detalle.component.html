@@ -1,24 +1,20 @@
-<div *ngIf="producto" class="producto-detalle">
-    <div class="imagen-principal">
-      <img [src]="producto.imagen" alt="{{ producto.nombre }}">
-    </div>
-    <div class="galeria-imagenes">
-      <img *ngFor="let imagen of producto.galeriaImagenes" [src]="imagen" alt="{{ producto.nombre }}">
-    </div>
-    <h1>{{ producto.nombre }}</h1>
-    <p>{{ producto.descripcion }}</p>
-    <p>Precio: {{ producto.precio }}</p>
-    <p>Disponibilidad: {{ producto.disponibilidad }}</p>
-    <button (click)="anadirAlCarrito()">Añadir al carrito</button>
-    <div class="opiniones">
-      <h2>Opiniones</h2>
-      <div *ngFor="let opinion of producto.opiniones">
-        <p>{{ opinion.usuario }}: {{ opinion.comentario }}</p>
-        <p>Valoración: {{ opinion.valoracion }}</p>
-      </div>
-    </div>
-    <div class="informacion-adicional">
-      <h2>Información adicional</h2>
-      <p>{{ producto.informacionAdicional }}</p>
+<div [ngClass]="{'dark-mode': isDarkMode}" *ngIf="producto" class="producto-detalle">
+  <div class="imagen-principal">
+    <img [src]="producto.imagen" alt="{{ producto.nombre }}">
+  </div>
+  <div class="galeria-imagenes">
+    <img *ngFor="let imagen of producto.galeriaImagenes" [src]="imagen" alt="{{ producto.nombre }}">
+  </div>
+  <h1>{{ producto.nombre }}</h1>
+  <p>{{ producto.descripcion }}</p>
+  <p>Precio: {{ producto.precio }}</p>
+  <p>Disponibilidad: {{ producto.disponibilidad }}</p>
+  <button (click)="anadirAlCarrito()">Añadir al carrito</button>
+  <div class="opiniones">
+    <h2>Opiniones</h2>
+    <div *ngFor="let opinion of producto.opiniones">
+      <p>{{ opinion.usuario }}: {{ opinion.comentario }}</p>
+      <p>Valoración: {{ opinion.valoracion }}</p>
     </div>
   </div>
+</div>

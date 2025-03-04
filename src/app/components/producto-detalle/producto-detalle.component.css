@@ -37,3 +37,7 @@
     max-width: 800px;
     text-align: left;
   }
+  .dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
