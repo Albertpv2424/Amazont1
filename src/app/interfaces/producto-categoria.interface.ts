@@ -9,4 +9,5 @@ export interface ProductoCategoria {
   esNuevo: boolean;
   envioGratis: boolean;
   fechaLanzamiento: Date;
+  descuento?: string;
 }

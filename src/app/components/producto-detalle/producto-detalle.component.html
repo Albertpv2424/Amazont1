@@ -3,7 +3,9 @@
     <img [src]="producto.imagen" alt="{{ producto.nombre }}">
   </div>
   <div class="galeria-imagenes">
-    <img *ngFor="let imagen of producto.galeriaImagenes" [src]="imagen" alt="{{ producto.nombre }}">
+    @for (imagen of producto.galeriaImagenes; track imagen) {
+      <img [src]="imagen" alt="{{ producto.nombre }}">
+    }
   </div>
   <h1>{{ producto.nombre }}</h1>
   <p>{{ producto.descripcion }}</p>
@@ -12,9 +14,11 @@
   <button (click)="anadirAlCarrito()">Añadir al carrito</button>
   <div class="opiniones">
     <h2>Opiniones</h2>
-    <div *ngFor="let opinion of producto.opiniones">
-      <p>{{ opinion.usuario }}: {{ opinion.comentario }}</p>
-      <p>Valoración: {{ opinion.valoracion }}</p>
-    </div>
+    @for (opinion of producto.opiniones; track opinion.usuario) {
+      <div>
+        <p>{{ opinion.usuario }}: {{ opinion.comentario }}</p>
+        <p>Valoración: {{ opinion.valoracion }}</p>
+      </div>
+    }
   </div>
 </div>

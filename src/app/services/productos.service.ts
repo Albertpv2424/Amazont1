@@ -20,7 +20,8 @@ export class ProductosService {
       popularidad: 4.5,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-01-15')
+      fechaLanzamiento: new Date('2024-01-15'),
+      descuento: '10%'
     },
     {
       id: 2,
@@ -68,7 +69,8 @@ export class ProductosService {
       popularidad: 4.6,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-01-30')
+      fechaLanzamiento: new Date('2024-01-30'),
+      descuento: '15%'
     },
 
     // Tecnología
@@ -82,7 +84,8 @@ export class ProductosService {
       popularidad: 4.9,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-02-10')
+      fechaLanzamiento: new Date('2024-02-10'),
+      descuento: '20%'
     },
     {
       id: 7,
@@ -130,7 +133,8 @@ export class ProductosService {
       popularidad: 4.6,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-02-05')
+      fechaLanzamiento: new Date('2024-02-05'),
+      descuento: '5%'
     },
 
     // Cocina
@@ -168,7 +172,8 @@ export class ProductosService {
       popularidad: 4.5,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-11-30')
+      fechaLanzamiento: new Date('2023-11-30'),
+      descuento: '8%'
     },
     {
       id: 14,
@@ -211,5 +216,9 @@ export class ProductosService {
     
     const producto = this.productos.find(p => p.id === parseInt(id));
     return of(producto || null);
+  }
+
+  getOfertones(): ProductoCategoria[] {
+    return this.productos.filter(producto => producto.descuento);
   }
 }

@@ -38,17 +38,19 @@
   </div>
 
   <div class="productos-grid">
-    <div *ngFor="let producto of productosFiltrados" class="producto-card">
-      <b [routerLink]="['/producto', producto.id]">
-        <img [src]="producto.imagen" [alt]="producto.nombre">
-        <h3>{{ producto.nombre }}</h3>
-        <p>{{ producto.descripcion }}</p>
-        <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
-      </b>
-      <button class="btn-carrito" (click)="anadirAlCarrito(producto)">
-        <img src="assets/cart.png" alt="Añadir al carrito">
-        Añadir al carrito
-      </button>
-    </div>
+    @for (producto of productosFiltrados; track producto.id) {
+      <div class="producto-card">
+        <b [routerLink]="['/producto', producto.id]">
+          <img [src]="producto.imagen" [alt]="producto.nombre">
+          <h3>{{ producto.nombre }}</h3>
+          <p>{{ producto.descripcion }}</p>
+          <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
+        </b>
+        <button class="btn-carrito" (click)="anadirAlCarrito(producto)">
+          <img src="assets/cart.png" alt="Añadir al carrito">
+          Añadir al carrito
+        </button>
+      </div>
+    }
   </div>
 </div>

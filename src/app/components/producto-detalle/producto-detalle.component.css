@@ -1,4 +1,4 @@
-v.producto-detalle {
+.producto-detalle {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -47,18 +47,39 @@ v.producto-detalle {
     background-color: #e47911;
   }
   
-  .dark-mode {
-    background-color: #1a1a1a;
-    color: #ffffff;
-  }
-  
   .opiniones, .informacion-adicional {
     margin-top: 2rem;
     width: 100%;
     max-width: 800px;
     text-align: left;
   }
+  
   .dark-mode {
     background-color: #1a1a1a;
     color: #ffffff;
+    min-height: 100vh;
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .dark-mode button {
+    background-color: #f19d38;
+    color: #ffffff;
+  }
+  
+  .dark-mode button:hover {
+    background-color: #e47911;
+  }
+  
+  .dark-mode .imagen-principal img,
+  .dark-mode .galeria-imagenes img {
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark-mode .opiniones,
+  .dark-mode .informacion-adicional {
+    color: #ffffff;
+    background-color: #2d2d2d;
+    padding: 1rem;
+    border-radius: 8px;
   }
