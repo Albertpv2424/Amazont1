@@ -21,7 +21,12 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-15'),
-      descuento: '10%'
+      descuento: '10%',
+      opiniones: [
+        { usuario: 'Juan', comentario: 'Muy buen balón, perfecto para partidos y entrenamientos.', valoracion: 5 },
+        { usuario: 'Ana', comentario: 'Excelente calidad y gran durabilidad.', valoracion: 4 },
+        { usuario: 'Pedro', comentario: 'La calidad no es la esperada, se desgasta rápido.', valoracion: 2 }
+      ]
     },
     {
       id: 2,
@@ -33,7 +38,12 @@ export class ProductosService {
       popularidad: 4.2,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-11-20')
+      fechaLanzamiento: new Date('2023-11-20'),
+      opiniones: [
+        { usuario: 'Carlos', comentario: 'Gran raqueta, ofrece buen control en cada golpe.', valoracion: 5 },
+        { usuario: 'Lucia', comentario: 'Muy cómoda y ligera, ideal para jugar a nivel profesional.', valoracion: 4 },
+        { usuario: 'Miguel', comentario: 'El balance no es adecuado, me ha decepcionado un poco.', valoracion: 2 }
+      ]
     },
     {
       id: 3,
@@ -45,7 +55,12 @@ export class ProductosService {
       popularidad: 4.8,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-02-01')
+      fechaLanzamiento: new Date('2024-02-01'),
+      opiniones: [
+        { usuario: 'Sergio', comentario: 'Excelente bicicleta para terrenos difíciles.', valoracion: 5 },
+        { usuario: 'Marta', comentario: 'Muy buena estabilidad y comodidad durante el trayecto.', valoracion: 4 },
+        { usuario: 'Jorge', comentario: 'La cadena se oxida rápido y necesita mantenimiento frecuente.', valoracion: 2 }
+      ]
     },
     {
       id: 4,
@@ -57,7 +72,12 @@ export class ProductosService {
       popularidad: 4.3,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-09-15')
+      fechaLanzamiento: new Date('2023-09-15'),
+      opiniones: [
+        { usuario: 'Alba', comentario: 'Perfecto set para entrenamientos en casa, de muy buena calidad.', valoracion: 5 },
+        { usuario: 'Diego', comentario: 'Buen set, con peso ajustable y fácil de manejar.', valoracion: 4 },
+        { usuario: 'Raquel', comentario: 'El material se siente un poco barato, no cumple del todo.', valoracion: 2 }
+      ]
     },
     {
       id: 5,
@@ -70,7 +90,12 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-30'),
-      descuento: '15%'
+      descuento: '15%',
+      opiniones: [
+        { usuario: 'Esther', comentario: 'Cómodas y ligeras, ideales para correr largas distancias.', valoracion: 5 },
+        { usuario: 'Pablo', comentario: 'Excelente agarre y soporte durante el ejercicio.', valoracion: 4 },
+        { usuario: 'Daniela', comentario: 'Se desgastan rápido y no son tan duraderas como esperaba.', valoracion: 2 }
+      ]
     },
 
     // Tecnología
@@ -85,7 +110,12 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-10'),
-      descuento: '20%'
+      descuento: '20%',
+      opiniones: [
+        { usuario: 'Roberto', comentario: 'Potente y rápida, ideal para juegos exigentes.', valoracion: 5 },
+        { usuario: 'Silvia', comentario: 'Excelente rendimiento gráfico y buena duración de batería.', valoracion: 4 },
+        { usuario: 'Fernando', comentario: 'Calentamiento excesivo tras largas sesiones de juego.', valoracion: 2 }
+      ]
     },
     {
       id: 7,
@@ -97,7 +127,12 @@ export class ProductosService {
       popularidad: 4.7,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-01-20')
+      fechaLanzamiento: new Date('2024-01-20'),
+      opiniones: [
+        { usuario: 'Ana', comentario: 'Pantalla impresionante y cámara de alta resolución.', valoracion: 5 },
+        { usuario: 'Miguel', comentario: 'Rendimiento muy fluido y buen diseño.', valoracion: 4 },
+        { usuario: 'Laura', comentario: 'La batería dura poco y se queda sin carga rápidamente.', valoracion: 2 }
+      ]
     },
     {
       id: 8,
@@ -109,7 +144,12 @@ export class ProductosService {
       popularidad: 4.4,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-12-01')
+      fechaLanzamiento: new Date('2023-12-01'),
+      opiniones: [
+        { usuario: 'Javier', comentario: 'Sonido claro y cancelación de ruido efectiva.', valoracion: 5 },
+        { usuario: 'Claudia', comentario: 'Cómodos y con excelente calidad de audio.', valoracion: 4 },
+        { usuario: 'Sergio', comentario: 'La conectividad falla a veces y la batería se agota rápido.', valoracion: 2 }
+      ]
     },
     {
       id: 9,
@@ -121,7 +161,12 @@ export class ProductosService {
       popularidad: 4.3,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-11-15')
+      fechaLanzamiento: new Date('2023-11-15'),
+      opiniones: [
+        { usuario: 'Isabel', comentario: 'Muy práctico y con funciones útiles para la salud.', valoracion: 5 },
+        { usuario: 'Andrés', comentario: 'Buena duración de batería y diseño moderno.', valoracion: 4 },
+        { usuario: 'Carmen', comentario: 'La sincronización con el móvil presenta retrasos.', valoracion: 2 }
+      ]
     },
     {
       id: 10,
@@ -134,7 +179,12 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-05'),
-      descuento: '5%'
+      descuento: '5%',
+      opiniones: [
+        { usuario: 'Vicente', comentario: 'Resolución de pantalla impresionante y diseño elegante.', valoracion: 5 },
+        { usuario: 'Marina', comentario: 'Rendimiento excelente para multimedia y juegos.', valoracion: 4 },
+        { usuario: 'Raul', comentario: 'Se queda corto en capacidad de almacenamiento para mis necesidades.', valoracion: 2 }
+      ]
     },
 
     // Cocina
@@ -148,7 +198,12 @@ export class ProductosService {
       popularidad: 4.8,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-01-25')
+      fechaLanzamiento: new Date('2024-01-25'),
+      opiniones: [
+        { usuario: 'Teresa', comentario: 'Facilita mucho la preparación de comidas, muy versátil.', valoracion: 5 },
+        { usuario: 'Gustavo', comentario: 'Muy eficiente y ahorra tiempo en la cocina.', valoracion: 4 },
+        { usuario: 'Elena', comentario: 'Algunas funciones no son tan intuitivas como esperaba.', valoracion: 2 }
+      ]
     },
     {
       id: 12,
@@ -160,7 +215,12 @@ export class ProductosService {
       popularidad: 4.2,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-10-20')
+      fechaLanzamiento: new Date('2023-10-20'),
+      opiniones: [
+        { usuario: 'Marcos', comentario: 'Potente y con múltiples velocidades, ideal para batidos.', valoracion: 5 },
+        { usuario: 'Sonia', comentario: 'Fácil de limpiar y con un diseño ergonómico.', valoracion: 4 },
+        { usuario: 'Pablo', comentario: 'El motor se calienta demasiado rápido.', valoracion: 2 }
+      ]
     },
     {
       id: 13,
@@ -173,7 +233,12 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-11-30'),
-      descuento: '8%'
+      descuento: '8%',
+      opiniones: [
+        { usuario: 'Marta', comentario: 'Cuchillos muy afilados y duraderos, excelentes para cocinar.', valoracion: 5 },
+        { usuario: 'Luis', comentario: 'Buena calidad en el filo y manejo seguro.', valoracion: 4 },
+        { usuario: 'Alberto', comentario: 'Algunos cuchillos pierden el filo con rapidez.', valoracion: 2 }
+      ]
     },
     {
       id: 14,
@@ -185,7 +250,12 @@ export class ProductosService {
       popularidad: 4.7,
       esNuevo: true,
       envioGratis: true,
-      fechaLanzamiento: new Date('2024-02-15')
+      fechaLanzamiento: new Date('2024-02-15'),
+      opiniones: [
+        { usuario: 'Daniela', comentario: 'El café sale perfecto, muy fácil de usar.', valoracion: 5 },
+        { usuario: 'Jorge', comentario: 'Excelente sabor y rápida en calentar el agua.', valoracion: 4 },
+        { usuario: 'Rosa', comentario: 'El mantenimiento es complicado y se ensucia con facilidad.', valoracion: 2 }
+      ]
     },
     {
       id: 15,
@@ -197,7 +267,12 @@ export class ProductosService {
       popularidad: 4.4,
       esNuevo: false,
       envioGratis: true,
-      fechaLanzamiento: new Date('2023-12-15')
+      fechaLanzamiento: new Date('2023-12-15'),
+      opiniones: [
+        { usuario: 'Claudio', comentario: 'Cocina uniformemente y tiene varias funciones útiles.', valoracion: 5 },
+        { usuario: 'Marta', comentario: 'Muy práctico y con un diseño moderno.', valoracion: 4 },
+        { usuario: 'Nuria', comentario: 'La puerta se calienta demasiado durante el uso.', valoracion: 2 }
+      ]
     }
   ];
 

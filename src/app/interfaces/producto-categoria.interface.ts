@@ -1,3 +1,9 @@
+export interface Opinion {
+  usuario: string;
+  comentario: string;
+  valoracion: number;
+}
+
 export interface ProductoCategoria {
   id: number;
   nombre: string;
@@ -10,4 +16,5 @@ export interface ProductoCategoria {
   envioGratis: boolean;
   fechaLanzamiento: Date;
   descuento?: string;
+  opiniones: Opinion[]; // Afegir la propietat 'opiniones'
 }
