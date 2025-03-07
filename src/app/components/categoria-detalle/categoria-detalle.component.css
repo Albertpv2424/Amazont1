@@ -2,6 +2,7 @@
   padding: 2rem;
   max-width: 100%;
   margin: 0 auto;
+  font-family: 'Poppins', sans-serif; /* Canvia la font */
 }
 
 h1 {
@@ -228,8 +229,10 @@ select:focus, input[type="number"]:focus {
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: 1fr; /* Afegit */
   gap: 2rem;
   padding: 1rem 0;
+  align-items: stretch; /* Afegit */
 }
 
 .producto-card {
@@ -238,6 +241,22 @@ select:focus, input[type="number"]:focus {
   padding: 1rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.producto-card b {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.producto-card .contenido {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .producto-card:hover {
@@ -246,7 +265,8 @@ select:focus, input[type="number"]:focus {
 
 .producto-card img {
   width: 100%;
-  height: auto;
+  height: 200px; /* Ajusta esta altura según tus necesidades */
+  object-fit: scale-down;
   border-radius: 5px;
   margin-bottom: 1rem;
 }
@@ -261,12 +281,13 @@ select:focus, input[type="number"]:focus {
   font-size: 1.5rem;
   color: #e47911;
   font-weight: bold;
-  margin-top: 1rem;
+  margin-top: auto; /* Asegura que el precio esté alineado al final */
 }
 
 .producto-card p {
   color: #666;
   line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
 .dark-mode {
@@ -392,4 +413,7 @@ label {
 .dark-mode select option {
   background-color: #3d3d3d;
   color: #ffffff;
+}
+.poooo{
+  height: 3vh;
 }
