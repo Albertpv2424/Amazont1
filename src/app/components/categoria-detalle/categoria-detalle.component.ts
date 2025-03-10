@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,7 @@ export class CategoriaDetalleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router, // Add Router
     private productosService: ProductosService,
     private themeService: ThemeService
   ) {}
@@ -72,5 +73,10 @@ export class CategoriaDetalleComponent implements OnInit {
   anadirAlCarrito(producto: ProductoCategoria) {
     // Lógica para añadir el producto al carrito
     console.log('Producto añadido al carrito:', producto);
+  }
+
+  navegarAProducto(producto: ProductoCategoria) {
+    // Navigate to product detail without 'producto' in the URL
+    this.router.navigate(['/categoria', this.nombreCategoria, producto.id]);
   }
 }

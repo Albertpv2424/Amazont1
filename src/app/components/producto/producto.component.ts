@@ -18,8 +18,8 @@ export class ProductoComponent {
 
   navegarAProducto() {
     if (this.producto.id) {
-      // Navegar a la ruta de detalle del producto
-      this.router.navigate(['/producto', this.producto.id]);
+      // Navigate to product detail without 'producto' in the URL
+      this.router.navigate(['/', this.producto.id]);
     } else {
       console.error('El producto no tiene ID definido');
     }

@@ -36,16 +36,16 @@
       </select>
     </div>
   </div>
-
+  <!-- Replace the existing product card with this -->
   <div class="productos-grid">
     @for (producto of productosFiltrados; track producto.id) {
       <div class="producto-card">
-        <b [routerLink]="['/producto', producto.id]">
+        <div (click)="navegarAProducto(producto)" style="cursor: pointer;">
           <img [src]="producto.imagen" [alt]="producto.nombre">
           <h3>{{ producto.nombre }}</h3>
           <p>{{ producto.descripcion }}</p>
           <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
-        </b>
+        </div>
         <button class="btn-carrito" (click)="anadirAlCarrito(producto)">
           <img src="assets/cart.png" alt="Añadir al carrito">
           Añadir al carrito

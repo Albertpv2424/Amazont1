@@ -20,17 +20,15 @@ export const routes: Routes = [
     {
         path: 'categoria/:nombre',
         component: CategoriaDetalleComponent,
-        children: [
-            {
-                path: 'producto/:id',
-                component: ProductoDetalleComponent
-            }
-        ]
     },
     {
-        path: 'producto/:id',
+        path: 'categoria/:nombre/:id',
+        component: ProductoDetalleComponent
+    },
+    {
+        path: ':id',
         component: ProductoDetalleComponent
     },
     { path: '', component: HomeComponent },
-    { path: '', component: HomeComponent }
+    { path: '**', component: HomeComponent }
 ];
