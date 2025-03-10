@@ -7,14 +7,10 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
   font-family: 'Roboto', sans-serif; /* Afegir la font */
 }
 
-.producto-detalle:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-}
+
 
 .producto-detalle .imagen-principal img {
   width: 100%;
@@ -60,7 +56,7 @@
 
 .producto-detalle .precio {
   font-size: 1.5rem;
-  color: #e91e63;
+  color: #ff9800;
   margin-bottom: 20px;
 }
 
@@ -74,7 +70,7 @@
   padding: 10px 20px;
   font-size: 1rem;
   color: #ffffff;
-  background-color: #e91e63;
+  background-color: #ff9800;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -116,24 +112,28 @@
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
-.dark-mode .producto-detalle h1,
+
 .dark-mode .producto-detalle p,
 .dark-mode .producto-detalle .precio,
-.dark-mode .producto-detalle .popularidad,
-.dark-mode .producto-detalle .opiniones h2,
-.dark-mode .producto-detalle .opiniones .opinion p {
-  color: #ffffff;
+.dark-mode .producto-detalle .popularidad
+ {
+  color: #ff9800;
 }
 
 .dark-mode .producto-detalle button {
-  background-color: #d81b60;
+  background-color: #ff9800;
 }
 
-.dark-mode .producto-detalle button:hover {
-  background-color: #c2185b;
-}
+
 
 * {
   margin-right: -8px;
   margin-left: -8px;
+}
+.dark-mode h1,
+.dark-mode .producto-detalle p,
+.dark-mode .producto-detalle .opiniones h2,
+.dark-mode .producto-detalle .opiniones .opinion p {
+  background-color: #2d2d2d;
+  color: #ffffff;
 }
