@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Poppins', sans-serif;
+  background-color: #f3f3f3;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}

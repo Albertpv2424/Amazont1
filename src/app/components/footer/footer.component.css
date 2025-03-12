@@ -1,36 +1,45 @@
 .footer {
-  background: linear-gradient(to left, #D9D9D9, #9c9c9c);
+  background: linear-gradient(to bottom, #232f3e, #131921);
   color: white;
   text-align: center;
-  padding: 20px;
-  margin-top: -20px;
+  padding: 40px 20px;
+  margin-top: 30px;
 }
 
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .footer-links,
 .footer-social {
   margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .footer-links a,
 .footer-social a {
-  color: rgb(0, 0, 0);
-  margin: 0 15px;
+  color: #ffffff;
   text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
 }
 
 .footer-links a:hover,
 .footer-social a:hover {
-  text-decoration: underline;
+  color: #febd69;
+  text-decoration: none;
 }
 
 .footer-logo img {
-  max-width: 100px;
+  max-width: 120px;
+  margin-bottom: 15px;
 }
 
 .footer-newsletter {
@@ -38,36 +47,71 @@
 }
 
 .footer-newsletter form {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .footer-newsletter input {
-  padding: 10px;
-  margin-right: 5px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 4px 0 0 4px;
+  border: none;
+  flex: 1;
+  min-width: 200px;
+  outline: none;
 }
 
 .subscribe-button {
   padding: 10px 15px;
-  background-color: orange;
-  color: white;
+  background-color: #febd69;
+  color: #131921;
   border: none;
-  border-radius: 20px;
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .subscribe-button:hover {
-  background-color: darkorange;
+  background-color: #f3a847;
 }
-*{
-  margin-left: -8px;
-  margin-right: -8px;
-  margin-bottom: -8px;
+
+.boletin {
+  margin-right: 0;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: block;
 }
-.boletin{
-  margin-right: 20px;
-}
-.hola{
+
+.hola {
   height: 3vh;
+}
+
+.copyright {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 30px 15px;
+  }
+  
+  .footer-newsletter form {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .footer-newsletter input {
+    width: 100%;
+    border-radius: 4px;
+  }
+  
+  .subscribe-button {
+    width: 100%;
+    border-radius: 4px;
+  }
 }

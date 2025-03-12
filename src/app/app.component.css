@@ -1,10 +1,20 @@
-  :host {
-    margin: -8px;
-  }
-  * {
-    margin: -8px;
-  }
-  .container {
-    margin: -8px;
-  }
+:host {
+  display: block;
+}
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Dark mode transition */
+.dark-mode-transition {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
   
