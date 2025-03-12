@@ -2,6 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  font-family: 'Arial', sans-serif;
 }
 
 h1 {
@@ -9,7 +10,21 @@ h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 2rem;
-  color: #333;
+  color: #232f3e;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #e47911;
+  border-radius: 2px;
 }
 
 .carrusel {
@@ -77,9 +92,23 @@ h1 {
   height: 2rem;
 }
 
+/* Estilos para los productos */
+app-producto {
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-producto:hover {
+  transform: translateY(-5px);
+}
+
 /* Dark mode styles */
 .dark-mode h1 {
   color: #ffffff;
+}
+
+.dark-mode h1:after {
+  background-color: #f0ad4e;
 }
 
 .dark-mode .ofertas::-webkit-scrollbar-track {
