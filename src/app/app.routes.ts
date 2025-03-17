@@ -1,34 +1,20 @@
 import { Routes } from '@angular/router';
-import { OfertonesComponent } from './components/ofertones/ofertones.component';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegistroComponent } from './components/registro/registro.component';
+import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
+import { ProductoDetalleComponent } from './components/producto-detalle/producto-detalle.component';
 import { CategoriasComponent } from './components/categorias/categorias.component';
 import { CategoriaDetalleComponent } from './components/categoria-detalle/categoria-detalle.component';
-import { HomeComponent } from './components/home/home.component';
-import { ProductoDetalleComponent } from './components/producto-detalle/producto-detalle.component';
-
 
 export const routes: Routes = [
-    {
-        path: 'ofertones',
-        title: 'Ofertones Page',
-        component: OfertonesComponent,
-    },
-    {
-        path: 'categorias',
-        title: 'Categorias Page',
-        component: CategoriasComponent,
-    },
-    {
-        path: 'categoria/:nombre',
-        component: CategoriaDetalleComponent,
-    },
-    {
-        path: 'categoria/:nombre/:id',
-        component: ProductoDetalleComponent
-    },
-    {
-        path: ':id',
-        component: ProductoDetalleComponent
-    },
-    { path: '', component: HomeComponent },
-    { path: '**', component: HomeComponent }
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'registro', component: RegistroComponent },
+  { path: 'recuperar-password', component: RecuperarPasswordComponent },
+  { path: 'producto/:id', component: ProductoDetalleComponent },
+  { path: 'categorias', component: CategoriasComponent },
+  { path: 'categoria/:nombre', component: CategoriaDetalleComponent },
+  { path: 'categoria/:nombre/:id', component: ProductoDetalleComponent },
+  { path: '**', redirectTo: '' }
 ];

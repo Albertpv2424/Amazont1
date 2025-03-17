@@ -1,13 +1,14 @@
 <header class="header">
   <div class="logo">
-    <a [routerLink]="['/']"><img src="assets/amazont.png" alt="Logo" /></a>
+    <a [routerLink]="['/']"><img src="assets/amazont en blanc.png" alt="Logo" /></a>
   </div>
 
   <div class="search-container">
-    <select class="dropdown">
-      <option>All</option>
-      <option>Option 1</option>
-      <option>Option 2</option>
+    <select class="dropdown" (change)="onCategoryChange($event)">
+      <option value="">Todas las categorías</option>
+      @for (categoria of categorias; track categoria.nombre) {
+        <option [value]="categoria.nombre">{{ categoria.nombre }}</option>
+      }
     </select>
     <input type="text" class="search-input" placeholder="Buscar en Amazon't" />
     <div class="search-button-container">
@@ -17,6 +18,18 @@
     </div>
   </div>
   <div class="icons">
+    <!-- User authentication buttons -->
+    <div class="auth-buttons">
+      <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
+        <a routerLink="/login" class="auth-link">Iniciar sesión</a>
+        <a routerLink="/registro" class="auth-link">Registrarse</a>
+      </ng-container>
+      <ng-template #loggedInTemplate>
+        <span class="user-greeting">Hola, {{ userName }}</span>
+        <a (click)="logout()" class="auth-link">Cerrar sesión</a>
+      </ng-template>
+    </div>
+    
     <img src="assets/cart.png" alt="Carrito" />
     <img src="assets/settings.png" alt="Ajustes" />
     <a (click)="toggleBackground()" class="toggle-button">
