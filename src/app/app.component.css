@@ -1,12 +1,13 @@
 :host {
-  display: block;
-}
-
-.container {
-  width: 100%;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet + * {
+  position: relative;
+  z-index: 1; /* Ensure router content has proper z-index */
+  flex: 1;
 }
 
 main {

@@ -122,3 +122,411 @@ app-producto:hover {
 .dark-mode .flecha:hover {
   background-color: #e47911;
 }
+
+.ofertones {
+  position: relative;
+  z-index: 1; /* Set a base z-index */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #232f3e;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #e47911;
+  border-radius: 2px;
+}
+
+.carrusel {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  margin: 0;
+}
+
+.ofertas {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #e47911 #f0f0f0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ofertas::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ofertas::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.ofertas::-webkit-scrollbar-thumb {
+  background-color: #e47911;
+  border-radius: 10px;
+}
+
+.flecha {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background-color: #232f3e;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.flecha:hover {
+  background-color: #e47911;
+  transform: scale(1.1);
+}
+
+.flecha:focus {
+  outline: none;
+}
+
+.hola {
+  height: 2rem;
+}
+
+/* Estilos para los productos */
+app-producto {
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-producto:hover {
+  transform: translateY(-5px);
+}
+
+/* Dark mode styles */
+.dark-mode h1 {
+  color: #ffffff;
+}
+
+.dark-mode h1:after {
+  background-color: #f0ad4e;
+}
+
+.dark-mode .ofertas::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark-mode .flecha {
+  background-color: #3d3d3d;
+}
+
+.dark-mode .flecha:hover {
+  background-color: #e47911;
+}
+
+.carousel-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #232f3e;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #e47911;
+  border-radius: 2px;
+}
+
+.carrusel {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  margin: 0;
+}
+
+.ofertas {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #e47911 #f0f0f0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ofertas::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ofertas::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.ofertas::-webkit-scrollbar-thumb {
+  background-color: #e47911;
+  border-radius: 10px;
+}
+
+.flecha {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background-color: #232f3e;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.flecha:hover {
+  background-color: #e47911;
+  transform: scale(1.1);
+}
+
+.flecha:focus {
+  outline: none;
+}
+
+.hola {
+  height: 2rem;
+}
+
+/* Estilos para los productos */
+app-producto {
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-producto:hover {
+  transform: translateY(-5px);
+}
+
+/* Dark mode styles */
+.dark-mode h1 {
+  color: #ffffff;
+}
+
+.dark-mode h1:after {
+  background-color: #f0ad4e;
+}
+
+.dark-mode .ofertas::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark-mode .flecha {
+  background-color: #3d3d3d;
+}
+
+.dark-mode .flecha:hover {
+  background-color: #e47911;
+}
+
+.carousel-controls {
+  position: relative;
+  z-index: 2; /* Higher than container to ensure buttons are clickable */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #232f3e;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #e47911;
+  border-radius: 2px;
+}
+
+.carrusel {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  margin: 0;
+}
+
+.ofertas {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #e47911 #f0f0f0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ofertas::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ofertas::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.ofertas::-webkit-scrollbar-thumb {
+  background-color: #e47911;
+  border-radius: 10px;
+}
+
+.flecha {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background-color: #232f3e;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.flecha:hover {
+  background-color: #e47911;
+  transform: scale(1.1);
+}
+
+.flecha:focus {
+  outline: none;
+}
+
+.hola {
+  height: 2rem;
+}
+
+/* Estilos para los productos */
+app-producto {
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-producto:hover {
+  transform: translateY(-5px);
+}
+
+/* Dark mode styles */
+.dark-mode h1 {
+  color: #ffffff;
+}
+
+.dark-mode h1:after {
+  background-color: #f0ad4e;
+}
+
+.dark-mode .ofertas::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark-mode .flecha {
+  background-color: #3d3d3d;
+}
+
+.dark-mode .flecha:hover {
+  background-color: #e47911;
+}
+
+.carousel-button {
+  z-index: 3; /* Ensure buttons are above all content in the carousel */
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background-color: #232f3e;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.flecha:hover {
+  background-color: #e47911;
+  transform: scale(1.1);
+}
+
+.flecha:focus {
+  outline: none;
+}

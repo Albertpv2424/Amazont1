@@ -6,6 +6,8 @@ import { RecuperarPasswordComponent } from './components/recuperar-password/recu
 import { ProductoDetalleComponent } from './components/producto-detalle/producto-detalle.component';
 import { CategoriasComponent } from './components/categorias/categorias.component';
 import { CategoriaDetalleComponent } from './components/categoria-detalle/categoria-detalle.component';
+// TODO: Create and import BusquedaComponent once implemented
+// import { BusquedaComponent } from './components/busqueda/busqueda.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

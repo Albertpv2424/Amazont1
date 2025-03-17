@@ -282,7 +282,8 @@ export class ProductosService {
     );
   }
 
-  getAllProductos(): ProductoCategoria[] {
+  // Add this method if it doesn't already exist
+  getAllProductos() {
     return this.productos;
   }
 

@@ -7,7 +7,7 @@
   box-sizing: border-box;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1000; /* High z-index for the header */
   justify-content: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   color: white;
@@ -285,4 +285,93 @@
 
 .dark-mode .auth-link:hover {
   color: #febd69;
+}
+
+/* Add these styles to your existing CSS */
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+  z-index: 10000; /* Add z-index to the wrapper */
+}
+
+.search-suggestions {
+  position: fixed; /* Change from absolute to fixed */
+  top: auto; /* Let it position itself based on the input */
+  left: auto;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10000; /* Even higher z-index */
+  max-height: 400px;
+  overflow-y: auto;
+  
+  /* Hide scrollbar but allow scrolling */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.search-suggestions::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f5f5f5;
+}
+
+.suggestion-icon {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.suggestion-text {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Dark mode styles */
+.dark-mode .search-suggestions {
+  background-color: #232f3e;
+  border-color: #444;
+}
+
+.dark-mode .suggestion-item {
+  border-color: #333;
+}
+
+.dark-mode .suggestion-item:hover {
+  background-color: #2a3a4a;
+}
+
+.dark-mode .suggestion-text {
+  color: #fff;
 }

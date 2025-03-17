@@ -1,0 +1,16 @@
+<div class="busqueda-container" [ngClass]="{'dark-mode': isDarkMode}">
+  <h2>Resultados de búsqueda para: "{{ searchTerm }}"</h2>
+  
+  @if (resultados.length > 0) {
+    <div class="resultados-grid">
+      @for (producto of resultados; track producto.id) {
+        <app-producto [producto]="producto"></app-producto>
+      }
+    </div>
+  } @else {
+    <div class="no-resultados">
+      <p>No se encontraron productos que coincidan con tu búsqueda.</p>
+      <p>Intenta con otros términos o navega por nuestras categorías.</p>
+    </div>
+  }
+</div>
