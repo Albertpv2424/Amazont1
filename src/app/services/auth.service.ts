@@ -14,7 +14,6 @@ export class AuthService {
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private router: Router) {
-    // Check if user is stored in localStorage on service initialization
     this.checkUserInStorage();
   }
 
@@ -28,34 +27,28 @@ export class AuthService {
   }
 
   login(email: string, password: string): boolean {
-    // Get all users from localStorage
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     
-    // Find user with matching email and password
     const user = users.find((u: Usuario) => 
       u.email === email && u.password === password
     );
     
     if (user) {
-      // Create a safe user object (optional: remove password for security)
       const safeUser = { ...user };
       
-      // Store user in localStorage
       localStorage.setItem('currentUser', JSON.stringify(safeUser));
       
-      // Update subjects
       this.currentUserSubject.next(safeUser);
       this.isLoggedInSubject.next(true);
       
       return true;
     }
     
-    // For demo purposes, also allow the test user
     if (email === 'test@example.com' && password === 'password') {
       const user: Usuario = {
         nombre: 'Usuario de Prueba',
         email: email,
-        password: '', // Don't store actual password in memory
+        password: '', 
         tipoUsuario: 'Cliente',
         aceptaTerminos: true
       };
@@ -71,23 +64,22 @@ export class AuthService {
   }
 
   register(user: Usuario): boolean {
-    // Get existing users or initialize empty array
+
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     
-    // Check if email already exists
+
     const emailExists = users.some((u: Usuario) => u.email === user.email);
     if (emailExists) {
       console.error('Email already registered');
       return false;
     }
     
-    // Add new user to users array
+
     users.push(user);
     
-    // Save updated users array
+
     localStorage.setItem('users', JSON.stringify(users));
     
-    // Set as current user
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
     this.isLoggedInSubject.next(true);
@@ -97,14 +89,11 @@ export class AuthService {
   }
 
   logout(): void {
-    // Clear user from localStorage
     localStorage.removeItem('currentUser');
     
-    // Update subjects
     this.currentUserSubject.next(null);
     this.isLoggedInSubject.next(false);
     
-    // Navigate to home page
     this.router.navigate(['/']);
   }
 

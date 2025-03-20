@@ -45,7 +45,6 @@ export class RegistroComponent implements OnInit {
     );
   }
 
-  // Custom validator to check if password and confirm password match
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
@@ -54,13 +53,11 @@ export class RegistroComponent implements OnInit {
       control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     } else {
-      // If passwords match, remove the passwordMismatch error
       const confirmPasswordControl = control.get('confirmPassword');
       if (confirmPasswordControl?.errors) {
         const errors = { ...confirmPasswordControl.errors };
         delete errors['passwordMismatch'];
         
-        // If no errors left, set to null, otherwise set remaining errors
         confirmPasswordControl.setErrors(Object.keys(errors).length ? errors : null);
       }
       return null;
@@ -91,7 +88,6 @@ export class RegistroComponent implements OnInit {
       const success = this.authService.register(user);
       
       if (success) {
-        // Navigate to login page after successful registration
         this.router.navigate(['/login']);
       } else {
         this.registrationError = 'El correo electrónico ya está registrado';
@@ -99,6 +95,5 @@ export class RegistroComponent implements OnInit {
     }
   }
 
-  // Helper methods for form validation
   get f() { return this.registroForm.controls; }
 }
