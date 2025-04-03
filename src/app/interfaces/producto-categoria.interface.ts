@@ -16,5 +16,6 @@ export interface ProductoCategoria {
   envioGratis: boolean;
   fechaLanzamiento: Date;
   descuento?: string;
+  stock?: number; // Add stock property
   opiniones: Opinion[]; // Afegir la propietat 'opiniones'
 }

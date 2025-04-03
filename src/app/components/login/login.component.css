@@ -4,22 +4,33 @@
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #f3f3f3;
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
   padding: 30px;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-logo {
+  max-width: 150px;
+  height: auto;
+}
+
 h2 {
   text-align: center;
-  margin-bottom: 30px;
   color: #232f3e;
+  margin-bottom: 25px;
+  font-size: 24px;
 }
 
 .form-group {
@@ -29,17 +40,38 @@ h2 {
 label {
   display: block;
   margin-bottom: 8px;
+  color: #232f3e;
   font-weight: 500;
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"] {
+input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
+}
+
+input.is-invalid {
+  border-color: #d00;
+}
+
+.error-message {
+  color: #d00;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.login-error {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(221, 0, 0, 0.1);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.password-group {
+  position: relative;
 }
 
 .password-input-container {
@@ -55,131 +87,88 @@ input[type="text"] {
   border: none;
   cursor: pointer;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  transition: all 0.2s ease;
-}
-
-.toggle-password:hover {
-  opacity: 0.8;
-  transform: translateY(-50%) scale(1.15);
 }
 
 .toggle-password img {
   width: 20px;
   height: 20px;
   opacity: 0.6;
-  transition: all 0.3s ease;
-}
-
-.toggle-password:hover img {
-  opacity: 1;
-  transform: rotate(10deg);
 }
 
 .btn-login {
   width: 100%;
   padding: 12px;
-  background-color: #ff9900;
+  background-color: #e47911;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 10px;
 }
 
 .btn-login:hover {
-  background-color: #e88a00;
+  background-color: #d16810;
 }
 
-.forgot-password {
-  text-align: right;
+.forgot-password, .register-link {
+  text-align: center;
   margin-top: 15px;
-}
-
-.forgot-password a {
-  color: #0066c0;
-  text-decoration: none;
   font-size: 14px;
 }
 
-.register-link {
-  text-align: center;
-  margin-top: 25px;
-}
-
-.register-link a {
+.forgot-password a, .register-link a {
   color: #0066c0;
   text-decoration: none;
 }
 
-.forgot-password a:hover,
-.register-link a:hover {
+.forgot-password a:hover, .register-link a:hover {
   text-decoration: underline;
-}
-
-.error-message {
-  color: #d9534f;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.login-error {
-  text-align: center;
-  margin-bottom: 15px;
-  padding: 8px;
-  background-color: rgba(217, 83, 79, 0.1);
-  border-radius: 4px;
-}
-
-.is-invalid {
-  border-color: #d9534f !important;
+  color: #c45500;
 }
 
 /* Dark mode styles */
 .dark-mode {
-  background-color: #121212;
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 .dark-mode .login-card {
-  background-color: #1e1e1e;
-  color: #f5f5f5;
+  background-color: #2d2d2d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode h2 {
-  color: #ff9900;
+  color: #ffffff;
 }
 
-.dark-mode input[type="email"],
-.dark-mode input[type="password"],
-.dark-mode input[type="text"] {
-  background-color: #2d2d2d;
-  border-color: #444;
-  color: #f5f5f5;
+.dark-mode label {
+  color: #ffffff;
+}
+
+.dark-mode input {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+  color: #ffffff;
 }
 
 .dark-mode .btn-login {
-  background-color: #ff9900;
+  background-color: #ff9800;
 }
 
-.dark-mode .forgot-password a,
-.dark-mode .register-link a {
+.dark-mode .btn-login:hover {
+  background-color: #e68a00;
+}
+
+.dark-mode .forgot-password a, .dark-mode .register-link a {
   color: #4db8ff;
 }
 
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+.dark-mode .forgot-password a:hover, .dark-mode .register-link a:hover {
+  color: #ff9800;
 }
 
-.auth-logo {
-  max-width: 150px;
-  height: auto;
+.dark-mode .login-error {
+  background-color: rgba(255, 0, 0, 0.2);
 }

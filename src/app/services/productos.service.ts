@@ -6,7 +6,19 @@ import { ProductoCategoria } from '../interfaces/producto-categoria.interface';
   providedIn: 'root'
 })
 export class ProductosService {
-  constructor() {}
+  constructor() {
+    this.initializeStock();
+  }
+
+  private initializeStock(): void {
+    // Initialize stock for all products if not already set
+    this.productos.forEach(producto => {
+      if (producto.stock === undefined) {
+        // Assign random stock between 5-30 units
+        producto.stock = Math.floor(Math.random() * 25) + 5;
+      }
+    });
+  }
 
   private productos: ProductoCategoria[] = [
     // Deportes
@@ -22,6 +34,7 @@ export class ProductosService {
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-15'),
       descuento: '10%',
+      stock: 25,
       opiniones: [
         { usuario: 'Juan', comentario: 'Muy buen balón, perfecto para partidos y entrenamientos.', valoracion: 5 },
         { usuario: 'Ana', comentario: 'Excelente calidad y gran durabilidad.', valoracion: 4 },
@@ -39,6 +52,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-11-20'),
+      stock: 25,
       opiniones: [
         { usuario: 'Carlos', comentario: 'Gran raqueta, ofrece buen control en cada golpe.', valoracion: 5 },
         { usuario: 'Lucia', comentario: 'Muy cómoda y ligera, ideal para jugar a nivel profesional.', valoracion: 4 },
@@ -56,6 +70,7 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-01'),
+      stock: 25,
       opiniones: [
         { usuario: 'Sergio', comentario: 'Excelente bicicleta para terrenos difíciles.', valoracion: 5 },
         { usuario: 'Marta', comentario: 'Muy buena estabilidad y comodidad durante el trayecto.', valoracion: 4 },
@@ -73,6 +88,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-09-15'),
+      stock: 25,
       opiniones: [
         { usuario: 'Alba', comentario: 'Perfecto set para entrenamientos en casa, de muy buena calidad.', valoracion: 5 },
         { usuario: 'Diego', comentario: 'Buen set, con peso ajustable y fácil de manejar.', valoracion: 4 },
@@ -91,6 +107,7 @@ export class ProductosService {
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-30'),
       descuento: '15%',
+      stock: 25,
       opiniones: [
         { usuario: 'Esther', comentario: 'Cómodas y ligeras, ideales para correr largas distancias.', valoracion: 5 },
         { usuario: 'Pablo', comentario: 'Excelente agarre y soporte durante el ejercicio.', valoracion: 4 },
@@ -111,6 +128,7 @@ export class ProductosService {
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-10'),
       descuento: '20%',
+      stock: 25,
       opiniones: [
         { usuario: 'Roberto', comentario: 'Potente y rápida, ideal para juegos exigentes.', valoracion: 5 },
         { usuario: 'Silvia', comentario: 'Excelente rendimiento gráfico y buena duración de batería.', valoracion: 4 },
@@ -128,6 +146,7 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-20'),
+      stock: 25,
       opiniones: [
         { usuario: 'Ana', comentario: 'Pantalla impresionante y cámara de alta resolución.', valoracion: 5 },
         { usuario: 'Miguel', comentario: 'Rendimiento muy fluido y buen diseño.', valoracion: 4 },
@@ -145,6 +164,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-12-01'),
+      stock: 25,
       opiniones: [
         { usuario: 'Javier', comentario: 'Sonido claro y cancelación de ruido efectiva.', valoracion: 5 },
         { usuario: 'Claudia', comentario: 'Cómodos y con excelente calidad de audio.', valoracion: 4 },
@@ -162,6 +182,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-11-15'),
+      stock: 25,
       opiniones: [
         { usuario: 'Isabel', comentario: 'Muy práctico y con funciones útiles para la salud.', valoracion: 5 },
         { usuario: 'Andrés', comentario: 'Buena duración de batería y diseño moderno.', valoracion: 4 },
@@ -180,6 +201,7 @@ export class ProductosService {
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-05'),
       descuento: '5%',
+      stock: 25,
       opiniones: [
         { usuario: 'Vicente', comentario: 'Resolución de pantalla impresionante y diseño elegante.', valoracion: 5 },
         { usuario: 'Marina', comentario: 'Rendimiento excelente para multimedia y juegos.', valoracion: 4 },
@@ -199,6 +221,7 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-01-25'),
+      stock: 25,
       opiniones: [
         { usuario: 'Teresa', comentario: 'Facilita mucho la preparación de comidas, muy versátil.', valoracion: 5 },
         { usuario: 'Gustavo', comentario: 'Muy eficiente y ahorra tiempo en la cocina.', valoracion: 4 },
@@ -216,6 +239,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-10-20'),
+      stock: 25,
       opiniones: [
         { usuario: 'Marcos', comentario: 'Potente y con múltiples velocidades, ideal para batidos.', valoracion: 5 },
         { usuario: 'Sonia', comentario: 'Fácil de limpiar y con un diseño ergonómico.', valoracion: 4 },
@@ -234,6 +258,7 @@ export class ProductosService {
       envioGratis: true,
       fechaLanzamiento: new Date('2023-11-30'),
       descuento: '8%',
+      stock: 25,
       opiniones: [
         { usuario: 'Marta', comentario: 'Cuchillos muy afilados y duraderos, excelentes para cocinar.', valoracion: 5 },
         { usuario: 'Luis', comentario: 'Buena calidad en el filo y manejo seguro.', valoracion: 4 },
@@ -251,6 +276,7 @@ export class ProductosService {
       esNuevo: true,
       envioGratis: true,
       fechaLanzamiento: new Date('2024-02-15'),
+      stock: 25,
       opiniones: [
         { usuario: 'Daniela', comentario: 'El café sale perfecto, muy fácil de usar.', valoracion: 5 },
         { usuario: 'Jorge', comentario: 'Excelente sabor y rápida en calentar el agua.', valoracion: 4 },
@@ -268,6 +294,7 @@ export class ProductosService {
       esNuevo: false,
       envioGratis: true,
       fechaLanzamiento: new Date('2023-12-15'),
+      stock: 25,
       opiniones: [
         { usuario: 'Claudio', comentario: 'Cocina uniformemente y tiene varias funciones útiles.', valoracion: 5 },
         { usuario: 'Marta', comentario: 'Muy práctico y con un diseño moderno.', valoracion: 4 },
@@ -276,13 +303,42 @@ export class ProductosService {
     }
   ];
 
+  // Add methods to manage stock
+  
+  // Check if a product has enough stock
+  checkStock(productoId: number, cantidad: number = 1): boolean {
+    const producto = this.productos.find(p => p.id === productoId);
+    return producto !== undefined && 
+           producto.stock !== undefined && 
+           producto.stock >= cantidad;
+  }
+
+  // Reduce stock when a product is purchased
+  reducirStock(productoId: number, cantidad: number = 1): boolean {
+    const producto = this.productos.find(p => p.id === productoId);
+    
+    if (!producto || producto.stock === undefined || producto.stock < cantidad) {
+      return false; // Not enough stock or product not found
+    }
+    
+    producto.stock -= cantidad;
+    console.log(`Stock reducido para ${producto.nombre}. Nuevo stock: ${producto.stock}`);
+    return true;
+  }
+
+  // Get current stock for a product
+  getStock(productoId: number): number {
+    const producto = this.productos.find(p => p.id === productoId);
+    return producto?.stock ?? 0;
+  }
+
+  // Existing methods
   getProductosPorCategoria(categoria: string): ProductoCategoria[] {
     return this.productos.filter(producto =>
       producto.categoria.toLowerCase() === categoria.toLowerCase()
     );
   }
 
-  // Add this method if it doesn't already exist
   getAllProductos() {
     return this.productos;
   }

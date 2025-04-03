@@ -375,3 +375,34 @@
 .dark-mode .suggestion-text {
   color: #fff;
 }
+
+.carrito-icon {
+  position: relative;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.carrito-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.carrito-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #e47911;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.dark-mode .carrito-badge {
+  background-color: #ff9800;
+}

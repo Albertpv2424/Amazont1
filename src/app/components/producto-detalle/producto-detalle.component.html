@@ -13,7 +13,18 @@
       <p>{{ producto.descripcion }}</p>
       <p class="precio">Precio: {{ producto.precio | currency:'EUR' }}</p>
       <p class="popularidad">Popularidad: {{ producto.popularidad }} ⭐</p>
+      
+      <div class="cantidad-control">
+        <label>Cantidad:</label>
+        <div class="cantidad-botones">
+          <button (click)="decrementarCantidad()">-</button>
+          <span>{{ cantidad }}</span>
+          <button (click)="incrementarCantidad()">+</button>
+        </div>
+      </div>
+      
       <button (click)="anadirAlCarrito()">Añadir al carrito</button>
+      
       <div class="opiniones">
         <h2>Opiniones</h2>
         @for (opinion of producto.opiniones; track opinion) {

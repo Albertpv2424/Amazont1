@@ -76,7 +76,9 @@ export class CategoriaDetalleComponent implements OnInit {
   }
 
   navegarAProducto(producto: ProductoCategoria) {
-    // Navigate to product detail without 'producto' in the URL
-    this.router.navigate(['/categoria', this.nombreCategoria, producto.id]);
+    if (producto && producto.id) {
+      // Make sure we're using the correct route
+      this.router.navigate(['/producto', producto.id]);
+    }
   }
 }

@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Categoria } from '../../interfaces/categoria.interface';
 import { ProductosService } from '../../services/productos.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
   selector: 'app-header',
@@ -28,11 +29,14 @@ export class HeaderComponent implements OnInit {
     { nombre: 'Deportes', imagen: 'assets/deportes.png' },
     { nombre: 'Cocina', imagen: 'assets/cocina.png' }
   ];
-
+  
+  cantidadCarrito: number = 0;
+  
   constructor(
     private router: Router,
     private authService: AuthService,
-    private productosService: ProductosService
+    private productosService: ProductosService,
+    private carritoService: CarritoService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +52,11 @@ export class HeaderComponent implements OnInit {
       } else {
         this.userName = '';
       }
+    });
+    
+    // Subscribe to cart changes
+    this.carritoService.getCarrito().subscribe(items => {
+      this.cantidadCarrito = this.carritoService.obtenerCantidadTotal();
     });
   }
 
@@ -127,5 +136,9 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.showSuggestions = false;
     }, 200);
+  }
+
+  navegarAlCarrito(): void {
+    this.router.navigate(['/carrito']);
   }
 }

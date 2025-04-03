@@ -20,6 +20,57 @@
   margin-bottom: 20px;
 }
 
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  gap: 10px;
+}
+
+.cantidad-botones {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.cantidad-botones button {
+  width: 30px;
+  height: 30px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cantidad-botones button:hover {
+  background-color: #e0e0e0;
+}
+
+.cantidad-botones span {
+  padding: 0 15px;
+  font-size: 1rem;
+}
+
+.dark-mode .cantidad-botones button {
+  background-color: #3d3d3d;
+  color: #ffffff;
+}
+
+.dark-mode .cantidad-botones button:hover {
+  background-color: #4d4d4d;
+}
+
+.dark-mode .cantidad-botones {
+  border-color: #4d4d4d;
+}
+
 .producto-detalle .galeria-imagenes {
   display: flex;
   justify-content: center;

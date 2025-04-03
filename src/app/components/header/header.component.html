@@ -53,7 +53,13 @@
       </ng-template>
     </div>
     
-    <img src="assets/cart.png" alt="Carrito" />
+    <!-- Add this somewhere in your header if it's not already there -->
+    <div class="carrito-icon" (click)="navegarAlCarrito()">
+      <img src="assets/cart-icon.png" alt="Carrito de compras">
+      @if (cantidadCarrito > 0) {
+        <span class="carrito-badge">{{ cantidadCarrito }}</span>
+      }
+    </div>
     <img src="assets/settings.png" alt="Ajustes" />
     <a (click)="toggleBackground()" class="toggle-button">
       <img [src]="isDarkMode ? 'assets/sol1.png' : 'assets/luna1.png'" alt="Toggle Background" />

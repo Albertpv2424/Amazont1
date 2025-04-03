@@ -1,7 +1,12 @@
-<div class="producto" (click)="navegarAProducto()" role="article" aria-labelledby="producto-titulo">
-  <img class="imagggg" [src]="producto.imagen" [alt]="producto.nombre" />
-  <p id="producto-titulo">
-    {{ producto.nombre }}
-    <span class="descuento">{{ producto.descuento }}</span>
-  </p>
+<div class="producto" role="article" aria-labelledby="producto-titulo">
+  <div class="producto-content" (click)="navegarAProducto()">
+    <img class="imagggg" [src]="producto.imagen" [alt]="producto.nombre" />
+    <p id="producto-titulo">
+      {{ producto.nombre }}
+      <span class="descuento">{{ producto.descuento }}</span>
+    </p>
+  </div>
+  <button class="btn-agregar-carrito" (click)="agregarAlCarrito($event)">
+    Añadir al carrito
+  </button>
 </div>

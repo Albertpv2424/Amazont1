@@ -1,0 +1,70 @@
+<div class="carrito-container" [ngClass]="{'dark-mode': isDarkMode}">
+  <h1>Mi Carrito de Compras</h1>
+
+  @if (productosCarrito.length === 0) {
+    <div class="carrito-vacio">
+      <img src="assets/empty-cart.png" alt="Carrito vacío">
+      <h2>Tu carrito está vacío</h2>
+      <p>Parece que aún no has añadido productos a tu carrito.</p>
+      <button class="btn-continuar" (click)="continuarComprando()">Continuar comprando</button>
+    </div>
+  } @else {
+    <div class="carrito-contenido">
+      <div class="carrito-items">
+        <div class="carrito-header">
+          <span class="header-producto">Producto</span>
+          <span class="header-precio">Precio</span>
+          <span class="header-cantidad">Cantidad</span>
+          <span class="header-total">Total</span>
+          <span class="header-acciones">Acciones</span>
+        </div>
+
+        @for (producto of productosCarrito; track producto.id) {
+          <div class="carrito-item">
+            <div class="item-producto">
+              <img [src]="producto.imagen" [alt]="producto.nombre">
+              <div class="item-detalles">
+                <h3>{{ producto.nombre }}</h3>
+                @if (producto.envioGratis) {
+                  <span class="envio-gratis">Envío gratis</span>
+                }
+              </div>
+            </div>
+            <div class="item-precio">{{ producto.precio | currency:'EUR' }}</div>
+            <div class="item-cantidad">
+              <button class="btn-cantidad" (click)="decrementarCantidad(producto)">-</button>
+              <input type="number" [value]="producto.cantidad" min="1" 
+                     (change)="actualizarCantidad(producto, $any($event.target).value)">
+              <button class="btn-cantidad" (click)="incrementarCantidad(producto)">+</button>
+            </div>
+            <div class="item-total">{{ (producto.precio || 0) * producto.cantidad | currency:'EUR' }}</div>
+            <div class="item-acciones">
+              <button class="btn-eliminar" (click)="eliminarProducto(producto)">
+                <img src="assets/trash.png" alt="Eliminar">
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="carrito-resumen">
+        <h2>Resumen del pedido</h2>
+        <div class="resumen-item">
+          <span>Subtotal</span>
+          <span>{{ subtotal | currency:'EUR' }}</span>
+        </div>
+        <div class="resumen-item">
+          <span>Envío</span>
+          <span>{{ envio === 0 ? 'Gratis' : (envio | currency:'EUR') }}</span>
+        </div>
+        <div class="resumen-item total">
+          <span>Total</span>
+          <span>{{ total | currency:'EUR' }}</span>
+        </div>
+        <button class="btn-pagar" (click)="procederAlPago()">Proceder al pago</button>
+        <button class="btn-vaciar" (click)="vaciarCarrito()">Vaciar carrito</button>
+        <button class="btn-continuar" (click)="continuarComprando()">Continuar comprando</button>
+      </div>
+    </div>
+  }
+</div>
