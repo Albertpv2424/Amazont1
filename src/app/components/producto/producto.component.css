@@ -10,16 +10,12 @@
   font-family: 'Roboto', sans-serif;
   font-size: 1.1rem;
   font-weight: 400;
-  transition: all 0.3s ease;
   padding: 15px;
   display: flex;
   flex-direction: column;
 }
 
-.producto:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
+
 
 .producto .descuento {
   background-color: #e63946;

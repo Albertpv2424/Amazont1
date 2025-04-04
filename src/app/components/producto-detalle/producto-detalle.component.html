@@ -1,36 +1,59 @@
 <div [ngClass]="{'dark-mode': isDarkMode}">
   @if (producto) {
     <div class="producto-detalle">
-      <div class="imagen-principal">
-        <img [src]="producto.imagen" alt="{{ producto.nombre }}">
-      </div>
-      <div class="galeria-imagenes">
-        @for (imagen of producto.galeriaImagenes; track imagen) {
-          <img [src]="imagen" alt="{{ producto.nombre }}">
-        }
-      </div>
-      <h1>{{ producto.nombre }}</h1>
-      <p>{{ producto.descripcion }}</p>
-      <p class="precio">Precio: {{ producto.precio | currency:'EUR' }}</p>
-      <p class="popularidad">Popularidad: {{ producto.popularidad }} ⭐</p>
-      
-      <div class="cantidad-control">
-        <label>Cantidad:</label>
-        <div class="cantidad-botones">
-          <button (click)="decrementarCantidad()">-</button>
-          <span>{{ cantidad }}</span>
-          <button (click)="incrementarCantidad()">+</button>
+      <div class="producto-imagenes">
+        <div class="imagen-principal">
+          <img [src]="producto.imagen" alt="{{ producto.nombre }}">
+        </div>
+        <div class="galeria-imagenes">
+          @for (imagen of producto.galeriaImagenes; track imagen) {
+            <img [src]="imagen" alt="{{ producto.nombre }}">
+          }
         </div>
       </div>
       
-      <button (click)="anadirAlCarrito()">Añadir al carrito</button>
+      <div class="producto-info">
+        <h1>{{ producto.nombre }}</h1>
+        <p>{{ producto.descripcion }}</p>
+        <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
+        <p class="popularidad">Valoración: {{ producto.popularidad }} ⭐</p>
+        
+        <!-- Nuevo indicador de stock -->
+        <div class="stock-info">
+          @if (producto.stock > 10) {
+            <span class="stock-indicator in-stock"></span>
+            <span class="stock-text in-stock-text">En stock ({{ producto.stock }} disponibles)</span>
+          } @else if (producto.stock > 0) {
+            <span class="stock-indicator low-stock"></span>
+            <span class="stock-text low-stock-text">¡Solo quedan {{ producto.stock }}!</span>
+          } @else {
+            <span class="stock-indicator out-of-stock"></span>
+            <span class="stock-text out-of-stock-text">Agotado</span>
+          }
+        </div>
+        
+        <div class="cantidad-control">
+          <label>Cantidad:</label>
+          <div class="cantidad-botones">
+            <button (click)="decrementarCantidad()" [disabled]="cantidad <= 1">-</button>
+            <span>{{ cantidad }}</span>
+            <button (click)="incrementarCantidad()" [disabled]="cantidad >= producto.stock">+</button>
+          </div>
+        </div>
+
+        <button class="btn-carrito" (click)="anadirAlCarrito()" [disabled]="producto.stock <= 0">
+          <img src="assets/cart.png" alt="Carrito">
+          Añadir al carrito
+        </button>
+      </div>
       
       <div class="opiniones">
-        <h2>Opiniones</h2>
+        <h2>Opiniones de clientes</h2>
         @for (opinion of producto.opiniones; track opinion) {
           <div class="opinion">
-            <p>{{ opinion.usuario }}: {{ opinion.comentario }}</p>
-            <p>Valoración: {{ opinion.valoracion }}</p>
+            <p class="usuario">{{ opinion.usuario }}</p>
+            <p class="valoracion">Valoración: {{ opinion.valoracion }} ⭐</p>
+            <p>{{ opinion.comentario }}</p>
           </div>
         }
       </div>

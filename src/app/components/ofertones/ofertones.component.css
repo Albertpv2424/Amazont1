@@ -1,6 +1,6 @@
 .ofertones {
   max-width: 100%;
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Arial', sans-serif;
@@ -68,7 +68,7 @@ h1:after {
   height: 50px;
   border: none;
   border-radius: 50%;
-  background-color: #232f3e;
+  background-color: #232f3e; /* Color azul oscuro de Amazon */
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
@@ -77,12 +77,16 @@ h1:after {
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 10;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  min-width: 50px;
+  line-height: 1;
 }
 
 .flecha:hover {
-  background-color: #e47911;
-  transform: scale(1.1);
+  background-color: #e47911; /* Naranja característico de Amazon */
+  transform: scale(1.05);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 
 .flecha:focus {
@@ -116,10 +120,27 @@ app-producto:hover {
   background: #2d2d2d;
 }
 
+/* Dark mode styles para los botones circulares */
 .dark-mode .flecha {
-  background-color: #3d3d3d;
+  background-color: #37475a; /* Azul más claro para el modo oscuro */
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode .flecha:hover {
-  background-color: #e47911;
+  background-color: #ff9900; /* Naranja más brillante para modo oscuro */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
+}
+
+/* Estilos para los botones en modo oscuro */
+.dark-flecha {
+  background-color: #37475a; /* Azul más claro para el modo oscuro */
+  color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.dark-flecha:hover {
+  background-color: #ff9900; /* Naranja más brillante para modo oscuro */
+  transform: scale(1.05);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
 }

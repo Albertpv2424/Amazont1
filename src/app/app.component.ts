@@ -20,19 +20,7 @@ export class AppComponent implements OnInit {
   constructor(private themeService: ThemeService, private carritoService: CarritoService, private productosService: ProductosService) {
     // For testing - add a product to cart on app init
     // Remove this in production
-    this.addTestProductToCart();
-  }
 
-  // For testing purposes only - remove in production
-  private addTestProductToCart(): void {
-    // Get the first product from the service
-    const productos = this.productosService.getAllProductos();
-    if (productos.length > 0) {
-      setTimeout(() => {
-        this.carritoService.agregarProducto(productos[0], 1);
-        console.log('Test product added to cart:', productos[0]);
-      }, 1000);
-    }
   }
 
   ngOnInit() {
