@@ -67,3 +67,20 @@
     </div>
   }
 </div>
+
+<!-- Añadir al final del archivo, antes del cierre del componente -->
+
+<!-- Pop-up de stock máximo alcanzado -->
+@if (mostrarPopupStockMaximo) {
+  <div class="popup-overlay" (click)="cerrarPopupStockMaximo()">
+    <div class="popup-container" (click)="$event.stopPropagation()">
+      <div class="popup-icon">⚠️</div>
+      <h2 class="popup-title">Stock máximo alcanzado</h2>
+      <p class="popup-message">
+        Lo sentimos, no puedes añadir más unidades de "{{ productoLimiteStock?.nombre }}". 
+        Has alcanzado el stock máximo disponible ({{ productoLimiteStock?.cantidad }} unidades).
+      </p>
+      <button class="popup-button" (click)="cerrarPopupStockMaximo()">Entendido</button>
+    </div>
+  </div>
+}

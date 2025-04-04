@@ -36,7 +36,7 @@
       </select>
     </div>
   </div>
-  <!-- Replace the existing product card with this -->
+
   <div class="productos-grid">
     @for (producto of productosFiltrados; track producto.id) {
       <div class="producto-card">
@@ -47,11 +47,9 @@
           <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
         </div>
         <button class="btn-carrito" (click)="anadirAlCarrito(producto)">
-          <img src="assets/cart.png" alt="Añadir al carrito">
           Añadir al carrito
         </button>
       </div>
     }
-   </div>
-   <div class="poooo"></div>
   </div>
+</div>

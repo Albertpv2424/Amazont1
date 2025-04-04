@@ -1,13 +1,18 @@
 .confirmacion-container {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 2rem;
-  text-align: center;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #f5f5f5;
+}
+
+.dark-mode.confirmacion-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
 }
 
 .confirmacion-exito, .confirmacion-error {
@@ -16,61 +21,99 @@
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 600px;
+  border: 1px solid #e0e0e0;
+  position: relative;
 }
 
 .dark-mode .confirmacion-exito, .dark-mode .confirmacion-error {
-  background-color: #2a2a2a;
+  background-color: #242c34  ; /* Azul más oscuro similar al de la imagen */
   color: #f0f0f0;
+  border: 1px solid #3a6fa5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-img {
+/* Centrar la imagen */
+.confirmacion-exito img, .confirmacion-error img {
   width: 100px;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem auto;
+  display: block;
 }
 
 h1 {
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: #232f3e;
+  text-align: center;
 }
 
 .dark-mode h1 {
-  color: #f0f0f0;
+  color: #ffffff;
+  font-weight: bold;
 }
 
 p {
   margin-bottom: 1rem;
-  font-size: 1rem;
+  line-height: 1.5;
   color: #555;
+  text-align: center;
 }
 
 .dark-mode p {
-  color: #ccc;
+  color: #e0e0e0;
 }
 
 .total {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #232f3e;
   margin: 1.5rem 0;
+  color: #e47911;
+  text-align: center;
 }
 
 .dark-mode .total {
-  color: #f0f0f0;
+  color: #ff9f43;
 }
 
+/* Alinear el botón a la derecha */
 .btn-volver {
-  background-color: #ff9900;
-  color: #fff;
-  border: none;
   padding: 0.8rem 1.5rem;
-  font-size: 1rem;
+  background-color: #232f3e;
+  color: white;
+  border: none;
   border-radius: 4px;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 1rem;
+  float: right;
 }
 
 .btn-volver:hover {
-  background-color: #e88a00;
+  background-color: #1a2530;
+}
+
+.dark-mode .btn-volver {
+  background-color: #ff9f43;
+  color: #232f3e;
+}
+
+.dark-mode .btn-volver:hover {
+  background-color: #f39c38;
+}
+
+/* Animation for the tick icon */
+.confirmacion-exito img {
+  animation: fadeIn 0.5s ease-in-out, bounce 1s ease-in-out 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
 }

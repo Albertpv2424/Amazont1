@@ -17,6 +17,7 @@ export class ProductoDetalleComponent implements OnInit {
   isDarkMode = false;
   categoriaActual: string | null = null;
   cantidad: number = 1;
+  mostrarPopup: boolean = false; // Add this property
   
   constructor(
     private route: ActivatedRoute,
@@ -48,12 +49,21 @@ export class ProductoDetalleComponent implements OnInit {
   }
 
   incrementarCantidad() {
-    this.cantidad++;
+    // Verificar si ya alcanzó el stock máximo
+    if (this.cantidad < this.producto.stock) {
+      this.cantidad++;
+    } else {
+      this.mostrarPopup = true; // Now this property is defined
+    }
   }
 
   decrementarCantidad() {
     if (this.cantidad > 1) {
       this.cantidad--;
     }
+  }
+  
+  cerrarPopup() {
+    this.mostrarPopup = false;
   }
 }

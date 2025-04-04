@@ -45,19 +45,30 @@
 }
 
 .btn-agregar-carrito {
-  margin-top: 10px;
-  padding: 8px 15px;
-  background-color: #e47911;
-  color: white;
+  background-color: #f0ad4e;
+  color: #333;
   border: none;
-  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
   transition: background-color 0.3s;
-  font-weight: 500;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
 }
 
 .btn-agregar-carrito:hover {
-  background-color: #d16810;
+  background-color: #ec971f;
+}
+
+.dark-mode .btn-agregar-carrito {
+  background-color: #ff9f43;
+  color: #232f3e;
+}
+
+.dark-mode .btn-agregar-carrito:hover {
+  background-color: #f39c38;
 }
 
 .producto-info {

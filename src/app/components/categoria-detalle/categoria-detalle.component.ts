@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ProductosService } from '../../services/productos.service';
 import { ProductoCategoria } from '../../interfaces/producto-categoria.interface';
 import { ThemeService } from '../../services/theme.service';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
   selector: 'app-categoria-detalle',
@@ -29,8 +30,9 @@ export class CategoriaDetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router, // Add Router
     private productosService: ProductosService,
-    private themeService: ThemeService
-  ) {}
+    private themeService: ThemeService,
+    private carritoService: CarritoService // Añadir el servicio de carrito
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -70,9 +72,17 @@ export class CategoriaDetalleComponent implements OnInit {
         return 0;
       });
   }
-  anadirAlCarrito(producto: ProductoCategoria) {
-    // Lógica para añadir el producto al carrito
-    console.log('Producto añadido al carrito:', producto);
+  anadirAlCarrito(producto: ProductoCategoria): void {
+    // Añadir el producto al carrito con cantidad 1
+    const resultado = this.carritoService.agregarProducto(producto, 1);
+    
+    if (resultado) {
+      console.log('Producto añadido al carrito:', producto.nombre);
+      // Opcionalmente, puedes mostrar alguna notificación al usuario
+    } else {
+      console.error('No se pudo añadir el producto al carrito');
+      // Opcionalmente, puedes mostrar un mensaje de error
+    }
   }
 
   navegarAProducto(producto: ProductoCategoria) {

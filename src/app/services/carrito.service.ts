@@ -33,11 +33,34 @@ export class CarritoService {
     return this.carritoSubject.asObservable();
   }
 
+  actualizarCantidad(id: number, cantidad: number): void {
+    const item = this.carritoItems.find(item => item.id === id);
+    if (item) {
+      // Verificar que la cantidad no exceda el stock disponible
+      const stockDisponible = this.productosService.getStock(id);
+      if (cantidad > stockDisponible) {
+        console.error(`No se puede añadir más de ${stockDisponible} unidades de este producto`);
+        // Limitar la cantidad al stock disponible
+        item.cantidad = stockDisponible;
+      } else {
+        item.cantidad = cantidad;
+        if (item.cantidad <= 0) {
+          this.eliminarProducto(id);
+          return;
+        }
+      }
+      this.actualizarCarrito();
+    }
+  }
+
   agregarProducto(producto: Producto, cantidad: number = 1): boolean {
     if (!producto) {
       console.error('Intentando añadir un producto nulo al carrito');
       return false;
     }
+    
+    // Obtener el stock disponible
+    const stockDisponible = this.productosService.getStock(producto.id ?? 0);
     
     // Check if product has enough stock
     if (!this.productosService.checkStock(producto.id ?? 0, cantidad)) {
@@ -50,13 +73,22 @@ export class CarritoService {
     const itemExistente = this.carritoItems.find(item => item.id === producto.id);
     
     if (itemExistente) {
+      // Calcular la nueva cantidad total
+      const nuevaCantidad = itemExistente.cantidad + cantidad;
+      
+      // Verificar si la nueva cantidad excede el stock disponible
+      if (nuevaCantidad > stockDisponible) {
+        console.error(`No se puede añadir más de ${stockDisponible} unidades de este producto`);
+        return false;
+      }
+      
       // Check if we can add more of this product
-      if (!this.productosService.checkStock(producto.id ?? 0, itemExistente.cantidad + cantidad)) {
+      if (!this.productosService.checkStock(producto.id ?? 0, nuevaCantidad)) {
         console.error('No hay suficiente stock disponible para la cantidad total');
         return false;
       }
       
-      itemExistente.cantidad += cantidad;
+      itemExistente.cantidad = nuevaCantidad;
       console.log('Producto ya existente, actualizando cantidad a:', itemExistente.cantidad);
     } else {
       this.carritoItems.push({ ...producto, cantidad });
@@ -121,18 +153,6 @@ this.actualizarCarrito();
   eliminarProducto(id: number): void {
     this.carritoItems = this.carritoItems.filter(item => item.id !== id);
     this.actualizarCarrito();
-  }
-
-  actualizarCantidad(id: number, cantidad: number): void {
-    const item = this.carritoItems.find(item => item.id === id);
-    if (item) {
-      item.cantidad = cantidad;
-      if (item.cantidad <= 0) {
-        this.eliminarProducto(id);
-      } else {
-        this.actualizarCarrito();
-      }
-    }
   }
 
   vaciarCarrito(): void {
