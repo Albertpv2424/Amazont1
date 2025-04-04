@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CarritoService, ProductoCarrito } from '../../services/carrito.service';
 import { ThemeService } from '../../services/theme.service';
 import { ProductosService } from '../../services/productos.service';
+import { AuthService } from '../../services/auth.service'; // Añadir esta importación
 
 @Component({
   selector: 'app-carrito',
@@ -24,13 +25,16 @@ export class CarritoComponent implements OnInit {
   // Propiedades para el popup de stock máximo
   mostrarPopupStockMaximo = false;
   productoLimiteStock: ProductoCarrito | null = null;
+  
+  // Añadir nueva propiedad para el popup de login
+  mostrarPopupLogin = false;
 
-  // Constructor que inyecta los servicios necesarios
   constructor(
     private carritoService: CarritoService,
     private router: Router,
     private themeService: ThemeService,
-    private productosService: ProductosService
+    private productosService: ProductosService,
+    private authService: AuthService // Añadir el servicio de autenticación
   ) {}
 
   // Método que se ejecuta al inicializar el componente
@@ -60,16 +64,21 @@ export class CarritoComponent implements OnInit {
     this.total = this.subtotal + this.envio;
   }
 
-  // Método para actualizar la cantidad de un producto
-  actualizarCantidad(producto: ProductoCarrito, event: any): void {
-    if (producto.id) {
-      const cantidad = typeof event === 'object' ? 
-        parseInt(event.target?.value || '1', 10) : 
-        parseInt(event || '1', 10);
-      
-      this.carritoService.actualizarCantidad(producto.id, cantidad);
-    }
+// Mètode per actualitzar la quantitat d'un producte al carret
+actualizarCantidad(producto: ProductoCarrito, event: any): void {
+  
+  // Comprovem que el producte tingui un id vàlid
+  if (producto.id) {
+    
+    // Obtenim la quantitat depenent del tipus 
+    const cantidad = typeof event === 'object' ? 
+      parseInt(event.target?.value || '1', 10) : 
+      parseInt(event || '1', 10);
+
+    // Truquem al servei del carret per actualitzar la quantitat del producte amb l'id i la nova quantitat
+    this.carritoService.actualizarCantidad(producto.id, cantidad);
   }
+}
 
   // Método para eliminar un producto del carrito
   eliminarProducto(producto: ProductoCarrito): void {
@@ -123,6 +132,13 @@ export class CarritoComponent implements OnInit {
 
   // Método para proceder al pago
   procederAlPago(): void {
+    // Verificar si el usuario está logueado
+    if (!this.authService.isLoggedIn()) {
+      // Mostrar popup de login
+      this.mostrarPopupLogin = true;
+      return;
+    }
+    
     console.log('Iniciando proceso de pago...');
     
     // Guardar el total antes de vaciar el carrito
@@ -148,6 +164,16 @@ export class CarritoComponent implements OnInit {
         } 
       });
     }, 100);
+  }
+
+  // Método para cerrar el popup de login
+  cerrarPopupLogin(): void {
+    this.mostrarPopupLogin = false;
+  }
+  
+  // Método para ir a la página de login
+  irALogin(): void {
+    this.router.navigate(['/login']);
   }
 
   // Método para continuar comprando (volver a la página principal)

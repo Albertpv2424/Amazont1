@@ -163,7 +163,22 @@ h1:after {
   width: 20px;
   height: 20px;
   display: block;
-  margin: 0 auto; /* Centrar horizontalmente */
+  margin: 0 auto;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.btn-eliminar:hover img {
+  opacity: 1;
+}
+
+.dark-mode .btn-eliminar img {
+  opacity: 0.5;
+  filter: invert(1);
+}
+
+.dark-mode .btn-eliminar:hover img {
+  opacity: 0.8;
 }
 
 .dark-mode .btn-eliminar:hover {
@@ -250,7 +265,6 @@ h1:after {
   background-color: #1a2530;
 }
 
-/* Estilos para modo oscuro - Mejorados */
 .dark-mode {
   background-color: #1a1a1a;
   color: #ffffff;
@@ -364,7 +378,6 @@ h1:after {
   background-color: #e68a00;
 }
 
-/* Responsive en dark mode */
 @media (max-width: 768px) {
   .dark-mode .item-precio::before,
   .dark-mode .item-cantidad::before,
@@ -374,7 +387,6 @@ h1:after {
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .carrito-contenido {
     grid-template-columns: 1fr;
@@ -420,7 +432,6 @@ h1:after {
   }
 }
 
-/* Estilos para el popup de stock máximo */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -499,3 +510,35 @@ h1:after {
 .dark-mode .popup-button:hover {
   background-color: #2c6fc1;
 }
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.popup-button.secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.popup-button.secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.dark-mode .popup-button.secondary {
+  background-color: #3d3d3d;
+  color: #ffffff;
+}
+
+.dark-mode .popup-button.secondary:hover {
+  background-color: #4d4d4d;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
