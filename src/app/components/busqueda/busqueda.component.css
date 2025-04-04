@@ -1,29 +1,87 @@
 .busqueda-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 2rem;
+  font-family: 'Arial', sans-serif;
+  min-height: 70vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-h2 {
-  font-size: 1.8rem;
+.busqueda-header {
+  width: 60%;  /* Match the search container width from header */
   margin-bottom: 2rem;
-  color: #232f3e;
-  border-bottom: 2px solid #febd69;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background-color: inherit;
+  z-index: 10;
 }
 
 .resultados-grid {
+  width: 60%;  /* Match the search container width from header */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
+  margin-top: 1.5rem;
+  padding-right: 10px;
+  /* Eliminamos max-height y overflow-y para evitar el scroll */
+}
+
+/* Ajustamos la altura del producto */
+.resultados-grid app-producto {
+  width: 100%;
+  display: block;
+  height: 320px; /* Reducimos la altura de 380px a 320px */
+}
+
+/* Estilo para la barra de desplazamiento */
+.resultados-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.resultados-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.resultados-grid::-webkit-scrollbar-thumb {
+  background: #e47911;
+  border-radius: 10px;
+}
+
+.resultados-grid::-webkit-scrollbar-thumb:hover {
+  background: #d16810;
 }
 
 .no-resultados {
   text-align: center;
-  padding: 3rem;
+  padding: 3rem 1rem;
   background-color: #f8f8f8;
   border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   margin-top: 2rem;
+  width: 100%;
+}
+
+.no-resultados-icon {
+  margin-bottom: 1.5rem;
+}
+
+.no-resultados-icon img {
+  width: 80px;
+  height: 80px;
+  opacity: 0.7;
+}
+
+.no-resultados h3 {
+  font-size: 1.5rem;
+  color: #232f3e;
+  margin-bottom: 1rem;
 }
 
 .no-resultados p {
@@ -32,26 +90,127 @@ h2 {
   color: #555;
 }
 
-.no-resultados p:first-child {
-  font-weight: bold;
-  font-size: 1.3rem;
-  color: #232f3e;
+.volver-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #e47911;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.volver-btn:hover {
+  background-color: #d16810;
 }
 
 /* Dark mode styles */
-.dark-mode h2 {
-  color: #ffffff;
-  border-bottom-color: #febd69;
+.dark-mode.busqueda-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+.dark-mode .busqueda-header {
+  border-bottom-color: #333;
+  background-color: #1a1a1a;
+}
+
+.dark-mode .busqueda-header h2 {
+  color: #f0f0f0;
+}
+
+.dark-mode .search-term {
+  color: #ff9900;
+}
+
+.dark-mode .filtro-select {
+  background-color: #232f3e;
+  color: #fff;
+  border-color: #444;
+}
+
+.dark-mode .filtro-select:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+}
+
+.dark-mode .resultados-grid::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark-mode .resultados-grid::-webkit-scrollbar-thumb {
+  background: #ff9900;
+}
+
+.dark-mode .resultados-grid::-webkit-scrollbar-thumb:hover {
+  background: #e47911;
 }
 
 .dark-mode .no-resultados {
   background-color: #232f3e;
 }
 
+.dark-mode .no-resultados h3 {
+  color: #ffffff;
+}
+
 .dark-mode .no-resultados p {
   color: #ddd;
 }
 
-.dark-mode .no-resultados p:first-child {
-  color: #ffffff;
+.dark-mode .volver-btn {
+  background-color: #ff9900;
+}
+
+.dark-mode .volver-btn:hover {
+  background-color: #e47911;
+}
+
+@media (max-width: 768px) {
+  .resultados-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .busqueda-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .filtro-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .resultados-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .busqueda-container {
+    padding: 1rem;
+  }
+}
+
+/* Add responsive adjustments */
+@media (max-width: 1200px) {
+  .busqueda-header,
+  .resultados-grid {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .busqueda-header,
+  .resultados-grid {
+    width: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .busqueda-header,
+  .resultados-grid {
+    width: 95%;
+  }
 }

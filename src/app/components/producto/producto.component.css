@@ -34,8 +34,8 @@
 }
 
 .imagggg {
-  height: 180px;
-  width: auto;
+  height: 18vh;
+  width: 18vw;
   max-width: 100%;
   object-fit: contain;
   margin-bottom: 15px;
@@ -76,9 +76,6 @@
   margin-bottom: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
 .producto-price {

@@ -291,10 +291,20 @@
 
 .search-input-wrapper {
   position: relative;
+  width: 100%;
   flex-grow: 1;
   z-index: 10000; /* Add z-index to the wrapper */
 }
 
+.search-input[_ngcontent-ng-c2441507760] {
+  flex: 1;
+  border: none;
+  width: 100%;
+  padding: 0 10px;
+  font-size: 1rem;
+  height: 100%;
+  outline: none;
+}
 .search-suggestions {
   position: fixed; /* Change from absolute to fixed */
   top: auto; /* Let it position itself based on the input */

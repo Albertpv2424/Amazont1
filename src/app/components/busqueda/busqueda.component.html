@@ -1,16 +1,32 @@
 <div class="busqueda-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <h2>Resultados de búsqueda para: "{{ searchTerm }}"</h2>
+  <div class="busqueda-header">
+    <h2>Resultados de búsqueda para: <span class="search-term">"{{ searchTerm }}"</span></h2>
+    
+    <div class="filtros-container">
+      <select class="filtro-select" (change)="ordenarResultados($event)">
+        <option value="relevancia">Ordenar por relevancia</option>
+        <option value="precio-asc">Precio: de menor a mayor</option>
+        <option value="precio-desc">Precio: de mayor a menor</option>
+        <option value="nombre">Nombre</option>
+      </select>
+    </div>
+  </div>
   
   @if (resultados.length > 0) {
     <div class="resultados-grid">
       @for (producto of resultados; track producto.id) {
-        <app-producto [producto]="producto"></app-producto>
+        <app-producto [producto]="producto" [isDarkMode]="isDarkMode"></app-producto>
       }
     </div>
   } @else {
     <div class="no-resultados">
+      <div class="no-resultados-icon">
+        <img src="assets/search-empty.png" alt="No hay resultados">
+      </div>
+      <h3>No se encontraron resultados</h3>
       <p>No se encontraron productos que coincidan con tu búsqueda.</p>
       <p>Intenta con otros términos o navega por nuestras categorías.</p>
+      <button class="volver-btn" routerLink="/">Volver a la página principal</button>
     </div>
   }
 </div>
