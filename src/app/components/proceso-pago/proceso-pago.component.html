@@ -1,0 +1,213 @@
+<div class="proceso-pago-container" [ngClass]="{'dark-mode': isDarkMode}">
+  <div class="proceso-pago-card">
+    <div class="header">
+      <h1>Proceso de pago</h1>
+      <div class="pasos">
+        <div class="paso" [ngClass]="{'activo': pasoActual === 1, 'completado': pasoActual > 1}">
+          <div class="numero">1</div>
+          <div class="texto">Dirección</div>
+        </div>
+        <div class="linea" [ngClass]="{'completado': pasoActual > 1}"></div>
+        <div class="paso" [ngClass]="{'activo': pasoActual === 2, 'completado': pasoActual > 2}">
+          <div class="numero">2</div>
+          <div class="texto">Pago</div>
+        </div>
+        <div class="linea" [ngClass]="{'completado': pasoActual > 2}"></div>
+        <div class="paso" [ngClass]="{'activo': pasoActual === 3}">
+          <div class="numero">3</div>
+          <div class="texto">Resumen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 1: Dirección de envío -->
+    <div class="paso-contenido" *ngIf="pasoActual === 1">
+      <h2>Dirección de envío</h2>
+      <form [formGroup]="direccionForm">
+        <div class="form-group">
+          <label for="calle">Dirección</label>
+          <input 
+            type="text" 
+            id="calle" 
+            formControlName="calle" 
+            [ngClass]="{'is-invalid': submitted && f['calle'].errors}"
+          >
+          <div *ngIf="submitted && f['calle'].errors" class="error-message">
+            <div *ngIf="f['calle'].errors['required']">La dirección es obligatoria</div>
+            <div *ngIf="f['calle'].errors['minlength']">La dirección debe tener al menos 5 caracteres</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <input 
+            type="text" 
+            id="ciudad" 
+            formControlName="ciudad" 
+            [ngClass]="{'is-invalid': submitted && f['ciudad'].errors}"
+          >
+          <div *ngIf="submitted && f['ciudad'].errors" class="error-message">
+            <div *ngIf="f['ciudad'].errors['required']">La ciudad es obligatoria</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="codigoPostal">Código Postal</label>
+          <input 
+            type="text" 
+            id="codigoPostal" 
+            formControlName="codigoPostal" 
+            [ngClass]="{'is-invalid': submitted && f['codigoPostal'].errors}"
+          >
+          <div *ngIf="submitted && f['codigoPostal'].errors" class="error-message">
+            <div *ngIf="f['codigoPostal'].errors['required']">El código postal es obligatorio</div>
+            <div *ngIf="f['codigoPostal'].errors['pattern']">El código postal debe tener 5 dígitos</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="pais">País</label>
+          <input 
+            type="text" 
+            id="pais" 
+            formControlName="pais" 
+            [ngClass]="{'is-invalid': submitted && f['pais'].errors}"
+          >
+          <div *ngIf="submitted && f['pais'].errors" class="error-message">
+            <div *ngIf="f['pais'].errors['required']">El país es obligatorio</div>
+          </div>
+        </div>
+      </form>
+      
+      <div class="botones">
+        <button class="btn-cancelar" (click)="cancelarCompra()">Cancelar</button>
+        <button class="btn-siguiente" (click)="siguientePaso()">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- Paso 2: Método de pago -->
+    <div class="paso-contenido" *ngIf="pasoActual === 2">
+      <h2>Método de pago</h2>
+      
+      <div class="metodos-pago-container">
+        <!-- Cargando métodos de pago -->
+        <div class="cargando" *ngIf="cargandoMetodosPago">
+          <p>Cargando métodos de pago...</p>
+        </div>
+        
+        <!-- Error al cargar -->
+        <div class="error-carga" *ngIf="errorCarga">
+          <p>{{ errorCarga }}</p>
+        </div>
+        
+        <!-- Métodos de pago guardados -->
+        <form [formGroup]="pagoForm" *ngIf="!cargandoMetodosPago && !errorCarga">
+          <div class="metodos-guardados" *ngIf="metodosPago.length > 0 && !nuevoMetodoPago">
+            <h3>Selecciona un método de pago</h3>
+            
+            <div class="metodo-lista">
+              <div 
+                *ngFor="let metodo of metodosPago" 
+                class="metodo-item"
+                [ngClass]="{'seleccionado': p['metodoPagoId'].value === metodo.id}"
+                (click)="p['metodoPagoId'].setValue(metodo.id)"
+              >
+                <!-- Payment method details here -->
+              </div>
+            </div>
+            
+            <button type="button" class="btn-nuevo-metodo" (click)="mostrarNuevoMetodoPago()">
+              Usar otro método de pago
+            </button>
+          </div>
+          
+          <!-- Formulario para nuevo método de pago -->
+          <div class="nuevo-metodo" *ngIf="nuevoMetodoPago || metodosPago.length === 0">
+            <!-- New payment method form here -->
+          </div>
+        </form>
+      </div>
+      
+      <div class="botones">
+        <button class="btn-anterior" (click)="pasoAnterior()">Anterior</button>
+        <button class="btn-siguiente" (click)="siguientePaso()">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- Paso 3: Resumen del pedido -->
+    <div class="paso-contenido" *ngIf="pasoActual === 3">
+      <h2>Resumen del pedido</h2>
+      
+      <div class="resumen-secciones">
+        <div class="resumen-seccion">
+          <h3>Dirección de envío</h3>
+          <div class="resumen-direccion">
+            <p>{{ f['calle'].value }}</p>
+            <p>{{ f['codigoPostal'].value }} {{ f['ciudad'].value }}</p>
+            <p>{{ f['pais'].value }}</p>
+          </div>
+        </div>
+        
+        <div class="resumen-seccion">
+          <h3>Método de pago</h3>
+          <div class="resumen-pago">
+            <div *ngIf="!nuevoMetodoPago && p['metodoPagoId'].value !== 0">
+              <p>Método guardado seleccionado</p>
+              <p *ngFor="let metodo of metodosPago">
+                <span *ngIf="metodo.id === p['metodoPagoId'].value">
+                  {{ metodo.tipo === 'credit_card' ? 'Tarjeta de crédito' : 
+                     metodo.tipo === 'paypal' ? 'PayPal' : 'Transferencia bancaria' }}
+                  <span *ngIf="metodo.tipo === 'credit_card'">
+                    **** {{ metodo.numero ? metodo.numero.substring(metodo.numero.length - 4) : '****' }}
+                  </span>
+                </span>
+              </p>
+            </div>
+            <div *ngIf="nuevoMetodoPago || p['metodoPagoId'].value === 0">
+              <p>
+                {{ p['tipo'].value === 'credit_card' ? 'Tarjeta de crédito' : 
+                   p['tipo'].value === 'paypal' ? 'PayPal' : 'Transferencia bancaria' }}
+              </p>
+              <p *ngIf="p['tipo'].value === 'credit_card'">
+                **** {{ p['numeroTarjeta'].value?.substring(p['numeroTarjeta'].value.length - 4) }}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="resumen-seccion">
+          <h3>Productos</h3>
+          <div class="resumen-productos">
+            <div class="producto-item" *ngFor="let producto of productosCarrito">
+              <div class="producto-info">
+                <span class="producto-nombre">{{ producto.nombre }}</span>
+                <span class="producto-cantidad">x{{ producto.cantidad }}</span>
+              </div>
+              <span class="producto-precio">{{ (producto.precio || 0) * producto.cantidad | currency:'EUR' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="resumen-totales">
+        <div class="total-item">
+          <span>Subtotal</span>
+          <span>{{ subtotal | currency:'EUR' }}</span>
+        </div>
+        <div class="total-item">
+          <span>Envío</span>
+          <span>{{ envio === 0 ? 'Gratis' : (envio | currency:'EUR') }}</span>
+        </div>
+        <div class="total-item total-final">
+          <span>Total</span>
+          <span>{{ total | currency:'EUR' }}</span>
+        </div>
+      </div>
+      
+      <div class="botones">
+        <button class="btn-anterior" (click)="pasoAnterior()">Anterior</button>
+        <button class="btn-confirmar" (click)="confirmarCompra()">Confirmar compra</button>
+      </div>
+    </div>
+  </div>
+</div>

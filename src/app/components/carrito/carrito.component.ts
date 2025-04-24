@@ -141,14 +141,20 @@ actualizarCantidad(producto: ProductoCarrito, event: any): void {
     
     console.log('Iniciando proceso de pago...');
     
-    // Guardar el total antes de vaciar el carrito
+    // Navegar al proceso de pago en lugar de vaciar el carrito
+    this.router.navigate(['/proceso-pago']);
+    
+    // Nota: El carrito se vaciará después de completar el pago
+  
+
+  // Guardar el total antes de vaciar el carrito
     const totalCompra = this.total;
     
     // Hacer una copia de los productos para reducir stock
     const productosParaReducirStock = [...this.productosCarrito];
     
     // Vaciar el carrito en localStorage y en el servicio
-    localStorage.removeItem('carrito');
+// Remove cart data from local storage
     this.carritoService.vaciarCarrito();
     
     // Actualizar la vista
