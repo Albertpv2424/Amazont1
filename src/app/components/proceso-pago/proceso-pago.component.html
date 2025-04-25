@@ -151,16 +151,13 @@
                       placeholder="1234 5678 9012 3456"
                       autocomplete="cc-number"
                     >
-                    @if (pagoSubmitted && p['numeroTarjeta'].errors) {
-                      <div class="error-message">
-                        @if (p['numeroTarjeta'].errors['required']) {
-                          <div>El número de tarjeta es obligatorio</div>
-                        }
-                        @if (p['numeroTarjeta'].errors['pattern']) {
-                          <div>El número debe tener 16 dígitos</div>
-                        }
-                      </div>
-                    }
+                    <!-- Per al número de targeta -->
+                    <div *ngIf="pagoSubmitted && p['numeroTarjeta'].errors" class="error-message">
+                      <div *ngIf="p['numeroTarjeta'].errors['required']">El número de tarjeta es obligatorio</div>
+                      <div *ngIf="p['numeroTarjeta'].errors['pattern']">El número debe tener 16 dígitos</div>
+                    </div>
+                    
+                   
                   </div>
                   
                   <div class="form-group">
@@ -177,19 +174,38 @@
                     </div>
                   </div>
                   
+                  <div class="form-group" *ngIf="p['tipo'].value === 'credit_card'">
+                    <label for="cvv">CVV</label>
+                    <input 
+                      type="text" 
+                      id="cvv" 
+                      formControlName="cvv" 
+                      placeholder="123"
+                      maxlength="4"
+                      [ngClass]="{'is-invalid': pagoSubmitted && p['cvv'].errors}"
+                    >
+                    <div *ngIf="pagoSubmitted && p['cvv'].errors" class="error-message">
+                      <div *ngIf="p['cvv'].errors['required']">El código CVV es obligatorio</div>
+                      <div *ngIf="p['cvv'].errors['pattern']">El CVV debe tener entre 3 y 4 dígitos</div>
+                    </div>
+                  </div>
+                  
                   <div class="form-group">
-                    <label for="fechaExpiracion">Fecha de expiración</label>
+                    <label for="fechaExpiracion">Fecha de expiración (MM/AA)</label>
                     <input 
                       type="text" 
                       id="fechaExpiracion" 
                       formControlName="fechaExpiracion" 
                       placeholder="MM/AA"
-                      autocomplete="cc-exp"
+                      [ngClass]="{'is-invalid': pagoSubmitted && p['fechaExpiracion'].errors}"
                     >
-                    <div *ngIf="pagoSubmitted && !p['fechaExpiracion'].value" class="error-message">
-                      La fecha de expiración es obligatoria
+                    <div *ngIf="pagoSubmitted && p['fechaExpiracion'].errors" class="error-message">
+                      <div *ngIf="p['fechaExpiracion'].errors['required']">La fecha de expiración es obligatoria</div>
+                      <div *ngIf="p['fechaExpiracion'].errors['formatoInvalido']">El formato debe ser MM/AA</div>
+                      <div *ngIf="p['fechaExpiracion'].errors['mesInvalido']">El mes debe estar entre 01 y 12</div>
+                      <div *ngIf="p['fechaExpiracion'].errors['tarjetaCaducada']">La tarjeta ha caducado</div>
                     </div>
-                  </div>
+                  </div>                
                 </div>
               }
               
@@ -201,11 +217,12 @@
                     type="email" 
                     id="correoPaypal" 
                     formControlName="correoPaypal" 
-                    placeholder="ejemplo@correo.com"
+                    placeholder="ejemplo&#64;correo.com"
                   >
                   <div *ngIf="pagoSubmitted && (p['correoPaypal'].errors || !p['correoPaypal'].value)" class="error-message">
                     <div *ngIf="!p['correoPaypal'].value">El correo electrónico es obligatorio</div>
                     <div *ngIf="p['correoPaypal'].errors?.['email']">Introduce un correo electrónico válido</div>
+                    <div *ngIf="p['correoPaypal'].errors?.['pattern']">El correo debe contener al menos un &#64; y un punto</div>
                   </div>
                 </div>
               </div>
@@ -222,6 +239,9 @@
                   >
                   <div *ngIf="pagoSubmitted && !p['numeroCuenta'].value" class="error-message">
                     El número de cuenta es obligatorio
+                  </div>
+                  <div *ngIf="pagoSubmitted && p['numeroCuenta'].value && p['numeroCuenta'].errors?.['minlength']" class="error-message">
+                    El número de cuenta IBAN debe tener al menos 15 caracteres
                   </div>
                 </div>
                 

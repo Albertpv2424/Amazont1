@@ -24,6 +24,7 @@ class AuthController extends Controller
             'ciudad' => 'nullable|string',
             'codigo_postal' => 'nullable|string',
             'pais' => 'nullable|string',
+            'rol' => 'nullable|string|in:admin,customer', // Add validation for role
         ]);
 
         if ($validator->fails()) {
@@ -42,6 +43,7 @@ class AuthController extends Controller
             'ciudad' => $request->ciudad,
             'codigo_postal' => $request->codigo_postal,
             'pais' => $request->pais,
+            'rol' => $request->rol ?? 'customer', // Set default role to customer if not provided
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

@@ -9,9 +9,6 @@ class Order extends Model
 {
     use HasFactory;
 
-    /**
-     * La taula associada amb el model.
-     */
     protected $table = 'pedidos';
 
     /**
@@ -21,7 +18,7 @@ class Order extends Model
         'user_id',
         'estado',
         'total',
-        'payment_method_id'
+        'metodo_pago_id'  // Changed from payment_method_id to match controller and relationship
     ];
 
     /**
@@ -37,7 +34,7 @@ class Order extends Model
      */
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'pedido_id', 'id');
     }
 
     /**
@@ -45,6 +42,6 @@ class Order extends Model
      */
     public function paymentMethod()
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->belongsTo(PaymentMethod::class, 'metodo_pago_id', 'id');
     }
 }

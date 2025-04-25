@@ -25,6 +25,7 @@ class Category extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'imagen',  // Añadido el campo imagen
     ];
     
     /**
@@ -32,6 +33,6 @@ class Category extends Model
      */
     public function products()
     {
-        return $this->hasMany(Product::class, 'category_id', 'id_cat');
+        return $this->hasMany(Product::class, 'categoria_id', 'id_cat');
     }
 }

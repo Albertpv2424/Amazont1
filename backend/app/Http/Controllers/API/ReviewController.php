@@ -15,21 +15,38 @@ class ReviewController extends Controller
     /**
      * Mostrar opinions i valoracions d'un producte.
      */
+    /**
+     * Obtener las opiniones de un producto.
+     */
     public function getProductReviews($productId)
     {
-        $product = Product::findOrFail($productId);
-        
-        $reviews = $product->reviews()->with('user')->get();
-        $ratings = $product->ratings()->with('user')->get();
-        $averageRating = $product->getAverageRatingAttribute();
+        $reviews = Review::with('user')
+            ->where('producto_id', $productId)
+            ->orderBy('created_at', 'desc')
+            ->get();
         
         return response()->json([
             'status' => 'success',
-            'data' => [
-                'reviews' => $reviews,
-                'ratings' => $ratings,
-                'average_rating' => $averageRating
-            ]
+            'reviews' => $reviews
+        ]);
+    }
+
+    /**
+     * Obtener las valoraciones de un producto.
+     */
+    public function getProductRatings($productId)
+    {
+        $ratings = Rating::with('user')
+            ->where('producto_id', $productId)
+            ->get();
+        
+        $averageRating = $ratings->avg('puntuacion') ?? 0;
+        
+        return response()->json([
+            'status' => 'success',
+            'ratings' => $ratings,
+            'average_rating' => $averageRating,
+            'ratings_count' => $ratings->count()
         ]);
     }
 

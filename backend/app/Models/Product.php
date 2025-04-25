@@ -15,10 +15,10 @@ class Product extends Model
     
     protected $fillable = [
         'nombre',
-        'descripcion',
+        'descricion',  // Corregido de 'descripcion' a 'descricion' para coincidir con la BD
         'precio',
         'stock',
-        'category_id',
+        'categoria_id',  // Corregido de 'category_id' a 'categoria_id'
         'imagen',
         'rebajas',
         'precio_rebajado'
@@ -26,7 +26,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id_cat');
+        return $this->belongsTo(Category::class, 'categoria_id', 'id_cat');  // Corregido de 'category_id' a 'categoria_id'
     }
 
     public function orderItems()

@@ -69,12 +69,22 @@ class UserController extends Controller
         if ($request->has('contraseña') || $request->has('contrasena')) {
             $password = $request->contraseña ?? $request->contrasena;
             
-            // Verificar la contrasenya actual
-            if (!Hash::check($request->current_password, $user->contraseña)) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'La contrasenya actual és incorrecta'
-                ], 422);
+            try {
+                // Intenta verificar amb Bcrypt
+                if (!Hash::check($request->current_password, $user->contraseña)) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'La contrasenya actual és incorrecta'
+                    ], 422);
+                }
+            } catch (\RuntimeException $e) {
+                // Si no és Bcrypt, compara directament
+                if ($request->current_password !== $user->contraseña) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'La contrasenya actual és incorrecta'
+                    ], 422);
+                }
             }
             
             // Encriptar la nova contrasenya

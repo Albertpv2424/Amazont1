@@ -26,6 +26,7 @@ class User extends Authenticatable
         'ciudad',
         'codigo_postal',
         'pais',
+        'rol', // Add this line
     ];
 
     /**
@@ -72,5 +73,26 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->contraseña;
+    }
+
+    /**
+     * Check if user has a specific role
+     *
+     * @param string $rol
+     * @return bool
+     */
+    public function hasRol($rol)
+    {
+        return $this->rol === $rol;
+    }
+
+    /**
+     * Check if user is an admin
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRol('admin');
     }
 }

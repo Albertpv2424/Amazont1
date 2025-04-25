@@ -58,7 +58,11 @@ class ProductController extends Controller
     
     public function show($id)
     {
-        $product = Product::with('category')->findOrFail($id);
+        $product = Product::with(['category', 'reviews.user', 'ratings'])
+            ->findOrFail($id);
+        
+        // Añadir valoración media al producto
+        $product->average_rating = $product->getAverageRatingAttribute();
         
         return response()->json([
             'status' => 'success',

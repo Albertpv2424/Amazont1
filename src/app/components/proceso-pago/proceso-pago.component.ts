@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { CarritoService, ProductoCarrito } from '../../services/carrito.service';
@@ -89,7 +89,8 @@ export class ProcesoPagoComponent implements OnInit {
       tipo: ['credit_card'],
       numeroTarjeta: ['', [Validators.pattern(/^\d{16}$/)]],
       titular: [''],
-      fechaExpiracion: [''],
+      fechaExpiracion: ['', [Validators.required, this.validarFechaExpiracion.bind(this)]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
       correoPaypal: ['', [Validators.email]],
       numeroCuenta: [''],
       entidadBancaria: [''],
@@ -101,7 +102,7 @@ export class ProcesoPagoComponent implements OnInit {
     this.cargandoMetodosPago = true;
     this.errorCarga = '';
     
-    // For now, since we're ignoring the Laravel backend, let's simulate an empty payment methods list
+    // For now, since we're ignoring the Laravel backend, leta's simulate an empty payment methods list
     setTimeout(() => {
       this.metodosPago = [];
       this.cargandoMetodosPago = false;
@@ -140,18 +141,35 @@ export class ProcesoPagoComponent implements OnInit {
     } else if (this.pasoActual === 2) {
       this.pagoSubmitted = true;
       
-      // Si está añadiendo un nuevo método de pago, validar el formulario
+      // Eliminar espais de la targeta de crèdit
+      if (this.p['numeroTarjeta'].value) {
+        const numeroSinEspacios = this.p['numeroTarjeta'].value.replace(/\s/g, '');
+        this.pagoForm.get('numeroTarjeta')?.setValue(numeroSinEspacios);
+      }
+      
+      // Si està afegint un nou mètode de pagament, validar el formulari
       if (this.nuevoMetodoPago) {
-        if (this.p['tipo'].value === 'credit_card' && 
-            (!this.p['numeroTarjeta'].value || !this.p['titular'].value || !this.p['fechaExpiracion'].value)) {
-          return;
+        if (this.p['tipo'].value === 'credit_card') {
+          if (!this.p['numeroTarjeta'].value || 
+              !this.p['titular'].value || 
+              !this.p['fechaExpiracion'].value || 
+              !this.p['cvv'].value ||
+              this.pagoForm.get('numeroTarjeta')?.invalid ||
+              this.pagoForm.get('fechaExpiracion')?.invalid ||
+              this.pagoForm.get('cvv')?.invalid) {
+            return;
+          }
         }
-        if (this.p['tipo'].value === 'paypal' && !this.p['correoPaypal'].value) {
-          return;
+        if (this.p['tipo'].value === 'paypal') {
+          if (!this.p['correoPaypal'].value || this.pagoForm.get('correoPaypal')?.invalid) {
+            return;
+          }
         }
-        if (this.p['tipo'].value === 'bank_transfer' && 
-            (!this.p['numeroCuenta'].value || !this.p['entidadBancaria'].value)) {
-          return;
+        if (this.p['tipo'].value === 'bank_transfer') {
+          if (!this.p['numeroCuenta'].value || 
+              !this.p['entidadBancaria'].value) {
+            return;
+          }
         }
       } else if (!this.p['metodoPagoId'].value && this.metodosPago.length > 0) {
         return;
@@ -201,7 +219,7 @@ export class ProcesoPagoComponent implements OnInit {
     const token = localStorage.getItem('token');
     const metodoPago = {
       tipo: this.p['tipo'].value,
-      card_number: this.p['numeroTarjeta'].value,
+      card_number: this.p['numeroTarjeta'].value.toString().trim().replace(/\s+/g, ''), // Eliminar espais
       card_holder_name: this.p['titular'].value,
       expiration_date: this.p['fechaExpiracion'].value,
       is_default: true
@@ -224,5 +242,41 @@ export class ProcesoPagoComponent implements OnInit {
 
   cancelarCompra(): void {
     this.router.navigate(['/carrito']);
+  }
+
+
+  // Añadir este método para validar la fecha de expiración
+  validarFechaExpiracion(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+    
+    const fechaIngresada = control.value;
+    
+    // Verificar formato MM/YY
+    if (!/^\d{2}\/\d{2}$/.test(fechaIngresada)) {
+      return { formatoInvalido: true };
+    }
+    
+    const [mes, año] = fechaIngresada.split('/');
+    const mesNum = parseInt(mes, 10);
+    const añoNum = parseInt(año, 10) + 2000; // Convertir a año de 4 dígitos (20XX)
+    
+    // Validar que el mes esté entre 1 y 12
+    if (mesNum < 1 || mesNum > 12) {
+      return { mesInvalido: true };
+    }
+    
+    // Obtener fecha actual
+    const fechaActual = new Date();
+    const mesActual = fechaActual.getMonth() + 1; // getMonth() devuelve 0-11
+    const añoActual = fechaActual.getFullYear();
+    
+    // Comprobar si la tarjeta ha caducado
+    if (añoNum < añoActual || (añoNum === añoActual && mesNum < mesActual)) {
+      return { tarjetaCaducada: true };
+    }
+    
+    return null;
   }
 }

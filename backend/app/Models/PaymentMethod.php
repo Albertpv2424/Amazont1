@@ -12,7 +12,7 @@ class PaymentMethod extends Model
     /**
      * La taula associada amb el model.
      */
-    protected $table = 'metodos_pago';
+    protected $table = 'metodo_pago';  // Changed from metodos_pago to metodo_pago
 
     /**
      * Els atributs que es poden assignar massivament.

@@ -32,8 +32,14 @@ class PaymentMethodController extends Controller
 
         $user = Auth::user();
         
+        // Check if this is the first payment method for the user
+        $isFirstPaymentMethod = $user->paymentMethods()->count() === 0;
+        
+        // If this is the first payment method or is_default is true
+        $shouldBeDefault = $isFirstPaymentMethod || $request->is_default;
+        
         // Si això està establert com a predeterminat, desactiva tots els altres predeterminats
-        if ($request->is_default) {
+        if ($shouldBeDefault) {
             $user->paymentMethods()->update(['is_default' => false]);
         }
 
@@ -42,7 +48,7 @@ class PaymentMethodController extends Controller
             'card_number' => $request->card_number,
             'card_holder_name' => $request->card_holder_name,
             'expiration_date' => $request->expiration_date,
-            'is_default' => $request->is_default ?? false,
+            'is_default' => $shouldBeDefault,
         ]);
 
         return response()->json([
