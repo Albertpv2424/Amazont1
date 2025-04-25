@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('metodo_pago', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('tipo'); // credit_card, paypal, bank_transfer
+            $table->string('type'); // credit_card, paypal, bank_transfer
             $table->string('card_number')->nullable();
             $table->string('card_holder_name')->nullable();
             $table->string('expiration_date')->nullable();

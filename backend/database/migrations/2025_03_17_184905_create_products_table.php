@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('productos', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id('id_prod');
             $table->string('nombre');
-            $table->text('descricion')->nullable();
-            $table->decimal('precio', 10, 2);
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
-            $table->boolean('rebajas')->default(false);
-            $table->decimal('precio_rebajado', 10, 2)->nullable();
-            $table->unsignedBigInteger('categoria_id');
-            $table->foreign('categoria_id')->references('id_cat')->on('categorias')->onDelete('cascade');
+            $table->boolean('on_sale')->default(false);
+            $table->decimal('sale_price', 10, 2)->nullable();
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id_cat')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
