@@ -141,11 +141,16 @@ actualizarCantidad(producto: ProductoCarrito, event: any): void {
     
     console.log('Iniciando proceso de pago...');
     
-    // Navegar al proceso de pago en lugar de vaciar el carrito
+    // Navegar al proceso de pago
     this.router.navigate(['/proceso-pago']);
     
-    // Nota: El carrito se vaciará después de completar el pago
+    // Importante: Detener la ejecución aquí para que no se vacíe el carrito
+    return;
+    
+    // El código siguiente se ejecutará en el componente de proceso de pago
+    // después de completar la compra, no aquí
   
+
 
   // Guardar el total antes de vaciar el carrito
     const totalCompra = this.total;

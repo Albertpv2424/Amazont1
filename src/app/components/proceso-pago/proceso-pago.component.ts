@@ -90,7 +90,10 @@ export class ProcesoPagoComponent implements OnInit {
       numeroTarjeta: ['', [Validators.pattern(/^\d{16}$/)]],
       titular: [''],
       fechaExpiracion: [''],
-      guardarMetodo: [false]
+      correoPaypal: ['', [Validators.email]],
+      numeroCuenta: [''],
+      entidadBancaria: [''],
+      guardarMetodo: [true]
     });
   }
 
@@ -98,32 +101,16 @@ export class ProcesoPagoComponent implements OnInit {
     this.cargandoMetodosPago = true;
     this.errorCarga = '';
     
-    if (!this.authService.isLoggedIn()) {
+    // For now, since we're ignoring the Laravel backend, let's simulate an empty payment methods list
+    setTimeout(() => {
+      this.metodosPago = [];
       this.cargandoMetodosPago = false;
-      this.errorCarga = 'Debes iniciar sesión para ver tus métodos de pago';
-      return;
-    }
-    
-    // Get token from localStorage instead of using a non-existent method
-    const token = localStorage.getItem('token');
-    
-    this.http.get<any>(`${environment.apiUrl}/user/payment-methods`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+      
+      // If no payment methods, show the form to add a new one
+      if (this.metodosPago.length === 0) {
+        this.nuevoMetodoPago = true;
       }
-    }).subscribe({
-      next: (response) => {
-        if (response.status === 'success') {
-          this.metodosPago = response.payment_methods || [];
-        }
-        this.cargandoMetodosPago = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar métodos de pago:', error);
-        this.errorCarga = 'No se pudieron cargar los métodos de pago';
-        this.cargandoMetodosPago = false;
-      }
-    });
+    }, 500);
   }
 
   get f() { return this.direccionForm.controls; }
@@ -159,11 +146,15 @@ export class ProcesoPagoComponent implements OnInit {
             (!this.p['numeroTarjeta'].value || !this.p['titular'].value || !this.p['fechaExpiracion'].value)) {
           return;
         }
-      } else {
-        // Si está seleccionando un método existente, verificar que haya seleccionado uno
-        if (this.p['metodoPagoId'].value === 0 && this.metodosPago.length > 0) {
+        if (this.p['tipo'].value === 'paypal' && !this.p['correoPaypal'].value) {
           return;
         }
+        if (this.p['tipo'].value === 'bank_transfer' && 
+            (!this.p['numeroCuenta'].value || !this.p['entidadBancaria'].value)) {
+          return;
+        }
+      } else if (!this.p['metodoPagoId'].value && this.metodosPago.length > 0) {
+        return;
       }
       
       this.pasoActual = 3;
