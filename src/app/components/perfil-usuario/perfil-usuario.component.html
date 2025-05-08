@@ -1,0 +1,294 @@
+<div class="perfil-usuario-container" [ngClass]="{'dark-mode': isDarkMode}">
+  <div class="perfil-card">
+    <h2 class="perfil-title">Mi Perfil</h2>
+    
+    <!-- Pestañas de navegación -->
+    <div class="perfil-tabs">
+      <button class="tab-btn active" (click)="cambiarTab(0)">Información Personal</button>
+      <button class="tab-btn" (click)="cambiarTab(1)">Pedidos</button>
+      <button class="tab-btn" (click)="cambiarTab(2)">Métodos de Pago</button>
+      <button class="tab-btn" (click)="cambiarTab(3)">Seguridad</button>
+    </div>
+    
+    <!-- Sección de información personal -->
+    <div class="tab-content">
+      <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" formControlName="nombre" [ngClass]="{'is-invalid': submitted && f['nombre'].errors}">
+          <div *ngIf="submitted && f['nombre'].errors" class="error-message">
+            <div *ngIf="f['nombre'].errors['required']">El nombre es obligatorio</div>
+            <div *ngIf="f['nombre'].errors['minlength']">Mínimo 3 caracteres</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input id="email" formControlName="email" [ngClass]="{'is-invalid': submitted && f['email'].errors}">
+          <div *ngIf="submitted && f['email'].errors" class="error-message">
+            <div *ngIf="f['email'].errors['required']">El correo es obligatorio</div>
+            <div *ngIf="f['email'].errors['email']">Correo no válido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" formControlName="telefono" [ngClass]="{'is-invalid': submitted && f['telefono'].errors}">
+          <div *ngIf="submitted && f['telefono'].errors" class="error-message">
+            <div *ngIf="f['telefono'].errors['pattern']">Debe tener 9 dígitos</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <input id="ciudad" formControlName="ciudad">
+        </div>
+        <div class="form-group">
+          <label for="pais">País</label>
+          <input id="pais" formControlName="pais">
+        </div>
+        <button type="submit" class="btn-guardar">Guardar cambios</button>
+      </form>
+    </div>
+    
+    <!-- Sección de historial de pedidos -->
+    <div class="tab-content" style="display: none;">
+      <h3 class="section-title">Historial de pedidos</h3>
+      <div class="pedidos-container">
+        <table class="pedidos-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pedido of pedidos">
+              <td>{{ pedido.id }}</td>
+              <td>{{ pedido.fecha }}</td>
+              <td>{{ pedido.total | currency:'EUR' }}</td>
+              <td>
+                <span class="estado-badge" [ngClass]="{'entregado': pedido.estado === 'Entregado', 'en-camino': pedido.estado === 'En camino'}">
+                  {{ pedido.estado }}
+                </span>
+              </td>
+              <td><button class="btn-detalle" (click)="verDetallesPedido(pedido.id)">Ver detalles</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Sección de métodos de pago -->
+    <!-- Sección Métodos de Pago -->
+<div *ngIf="tabSeleccionado === 2">
+  <h2 class="perfil-subtitle">Métodos de Pago</h2>
+
+  <div class="metodos-pago-container">
+    <!-- Cargando métodos de pago -->
+    <div class="cargando" *ngIf="cargandoMetodosPago">
+      <p>Cargando métodos de pago...</p>
+    </div>
+    
+    <!-- Error al cargar -->
+    <div class="error-carga" *ngIf="errorCarga">
+      <p>{{ errorCarga }}</p>
+    </div>
+    
+    <!-- Métodos de pago guardados -->
+    <form [formGroup]="pagoForm" *ngIf="!cargandoMetodosPago && !errorCarga" autocomplete="off">
+      
+      @if (metodosPago.length > 0 && !nuevoMetodoPago) {
+        <div class="metodos-guardados">
+          <h3>Selecciona un método de pago</h3>
+          
+          <div class="metodo-lista">
+            @for (metodo of metodosPago; track metodo.id) {
+              <div 
+                class="metodo-item"
+                [ngClass]="{'seleccionado': p['metodoPagoId'].value === metodo.id}"
+                (click)="p['metodoPagoId'].setValue(metodo.id)"
+              >
+                <!-- Payment method details here -->
+              </div>
+            }
+          </div>
+          
+          <button type="button" class="btn-nuevo-metodo" (click)="mostrarNuevoMetodoPago()">
+            Usar otro método de pago
+          </button>
+        </div>
+      }
+      
+      <!-- Formulario para nuevo método de pago -->
+      @if (nuevoMetodoPago || metodosPago.length === 0) {
+        <div class="nuevo-metodo">
+          <h3>{{ metodosPago.length > 0 ? 'Nuevo método de pago' : 'Añadir método de pago' }}</h3>
+          
+          <div class="form-group">
+            <label for="tipo">Tipo de pago</label>
+            <select id="tipo" formControlName="tipo">
+              <option value="credit_card">Tarjeta de crédito</option>
+              <option value="paypal">PayPal</option>
+              <option value="bank_transfer">Transferencia bancaria</option>
+            </select>
+          </div>
+          
+          <!-- Campos para tarjeta de crédito -->
+          @if (p['tipo'].value === 'credit_card') {
+            <div>
+              <div class="form-group">
+                <label for="numeroTarjeta">Número de tarjeta</label>
+                <input 
+                  type="text" 
+                  id="numeroTarjeta" 
+                  formControlName="numeroTarjeta" 
+                  placeholder="1234 5678 9012 3456"
+                  autocomplete="cc-number"
+                >
+                <div *ngIf="pagoSubmitted && p['numeroTarjeta'].errors" class="error-message">
+                  <div *ngIf="p['numeroTarjeta'].errors['required']">El número de tarjeta es obligatorio</div>
+                  <div *ngIf="p['numeroTarjeta'].errors['pattern']">El número debe tener 16 dígitos</div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="titular">Titular de la tarjeta</label>
+                <input 
+                  type="text" 
+                  id="titular" 
+                  formControlName="titular" 
+                  placeholder="Nombre del titular"
+                  autocomplete="cc-name"
+                >
+                <div *ngIf="pagoSubmitted && !p['titular'].value" class="error-message">
+                  El titular es obligatorio
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input 
+                  type="text" 
+                  id="cvv" 
+                  formControlName="cvv" 
+                  placeholder="123"
+                  maxlength="4"
+                  [ngClass]="{'is-invalid': pagoSubmitted && p['cvv'].errors}"
+                >
+                <div *ngIf="pagoSubmitted && p['cvv'].errors" class="error-message">
+                  <div *ngIf="p['cvv'].errors['required']">El código CVV es obligatorio</div>
+                  <div *ngIf="p['cvv'].errors['pattern']">El CVV debe tener entre 3 y 4 dígitos</div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="fechaExpiracion">Fecha de expiración (MM/AA)</label>
+                <input 
+                  type="text" 
+                  id="fechaExpiracion" 
+                  formControlName="fechaExpiracion" 
+                  placeholder="MM/AA"
+                  [ngClass]="{'is-invalid': pagoSubmitted && p['fechaExpiracion'].errors}"
+                >
+                <div *ngIf="pagoSubmitted && p['fechaExpiracion'].errors" class="error-message">
+                  <div *ngIf="p['fechaExpiracion'].errors['required']">La fecha de expiración es obligatoria</div>
+                  <div *ngIf="p['fechaExpiracion'].errors['formatoInvalido']">El formato debe ser MM/AA</div>
+                  <div *ngIf="p['fechaExpiracion'].errors['mesInvalido']">El mes debe estar entre 01 y 12</div>
+                  <div *ngIf="p['fechaExpiracion'].errors['tarjetaCaducada']">La tarjeta ha caducado</div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- PayPal -->
+          <div *ngIf="p['tipo'].value === 'paypal'">
+            <div class="form-group">
+              <label for="correoPaypal">Correo electrónico de PayPal</label>
+              <input 
+                type="email" 
+                id="correoPaypal" 
+                formControlName="correoPaypal" 
+                placeholder="ejemplo@correo.com"
+              >
+              <div *ngIf="pagoSubmitted && (p['correoPaypal'].errors || !p['correoPaypal'].value)" class="error-message">
+                <div *ngIf="!p['correoPaypal'].value">El correo electrónico es obligatorio</div>
+                <div *ngIf="p['correoPaypal'].errors?.['email']">Introduce un correo electrónico válido</div>
+                <div *ngIf="p['correoPaypal'].errors?.['pattern']">El correo debe contener al menos un @ y un punto</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transferencia -->
+          <div *ngIf="p['tipo'].value === 'bank_transfer'">
+            <div class="form-group">
+              <label for="numeroCuenta">Número de cuenta (IBAN)</label>
+              <input 
+                type="text" 
+                id="numeroCuenta" 
+                formControlName="numeroCuenta" 
+                placeholder="ES91 2100 0418 4502 0005 1332"
+              >
+              <div *ngIf="pagoSubmitted && !p['numeroCuenta'].value" class="error-message">
+                El número de cuenta es obligatorio
+              </div>
+              <div *ngIf="pagoSubmitted && p['numeroCuenta'].value && p['numeroCuenta'].errors?.['minlength']" class="error-message">
+                El número de cuenta IBAN debe tener al menos 15 caracteres
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="entidadBancaria">Entidad bancaria</label>
+              <input 
+                type="text" 
+                id="entidadBancaria" 
+                formControlName="entidadBancaria" 
+                placeholder="Nombre del banco"
+              >
+              <div *ngIf="pagoSubmitted && !p['entidadBancaria'].value" class="error-message">
+                La entidad bancaria es obligatoria
+              </div>
+            </div>
+          </div>
+
+          <!-- Guardar -->
+          <div class="form-group checkbox-wrapper">
+            <input type="checkbox" id="guardarMetodo" formControlName="guardarMetodo">
+            <label for="guardarMetodo">Guardar este método de pago para futuras compras</label>
+          </div>
+        </div>
+      }
+    </form>
+  </div>
+</div>
+
+    
+    <!-- Sección de seguridad -->
+    <div class="tab-content" style="display: none;">
+      <h3 class="section-title">Configuración de cuenta y seguridad</h3>
+      <div class="seguridad-container">
+        <div class="seguridad-opcion">
+          <div class="seguridad-info">
+            <h4>Cambiar contraseña</h4>
+            <p>Actualiza tu contraseña para mantener tu cuenta segura</p>
+          </div>
+          <button class="btn-cambiar" (click)="cambiarPassword()">Modificar contraseña</button>
+        </div>
+        <div class="seguridad-opcion">
+          <div class="seguridad-info">
+            <h4>Verificación en dos pasos</h4>
+            <p>Añade una capa extra de seguridad a tu cuenta</p>
+          </div>
+          <button class="btn-activar">Activar</button>
+        </div>
+        <div class="seguridad-opcion">
+          <div class="seguridad-info">
+            <h4>Sesiones activas</h4>
+            <p>Gestiona los dispositivos conectados a tu cuenta</p>
+          </div>
+          <button class="btn-ver">Ver sesiones</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

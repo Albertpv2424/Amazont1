@@ -9,6 +9,7 @@ import { CategoriaDetalleComponent } from './components/categoria-detalle/catego
 import { CarritoComponent } from './components/carrito/carrito.component';
 import { ConfirmacionCompraComponent } from './components/confirmacion-compra/confirmacion-compra.component';
 import { ProcesoPagoComponent } from './components/proceso-pago/proceso-pago.component';
+import { PerfilUsuarioComponent } from './components/perfil-usuario/perfil-usuario.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'carrito', component: CarritoComponent },
   { path: 'proceso-pago', component: ProcesoPagoComponent },
   { path: 'confirmacion-compra', component: ConfirmacionCompraComponent },
+  {path: 'perfil-usuario', component: PerfilUsuarioComponent},
   { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,392 @@
+/* Estils generals per al perfil d'usuari */
+.perfil-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+}
+
+.perfil-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+  background: #fff6f6;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.pedidos-section, .metodos-section {
+  margin-top: 2rem;
+}
+
+.pedidos-section h3, .metodos-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.7rem;
+  color: #007bff;
+}
+
+.pedidos-list, .metodos-list {
+  list-style: none;
+  padding: 0;
+}
+
+.pedidos-list li, .metodos-list li {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilos generales para el perfil de usuario */
+.perfil-usuario-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.perfil-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #232f3e;
+  text-align: center;
+}
+
+/* Estilos para las pestañas */
+.perfil-tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 0.8rem 1.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: #ff9900;
+}
+
+.tab-btn.active {
+  color: #ff9900;
+  border-bottom: 3px solid #ff9900;
+}
+
+/* Estilos para el contenido de las pestañas */
+.tab-content {
+  padding: 1rem 0;
+}
+
+/* Estilos para el formulario */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #ff9900;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+}
+
+input.is-invalid {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+button {
+  background: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #e88a00;
+}
+
+.btn-guardar {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Estilos para la tabla de pedidos */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #232f3e;
+}
+
+.pedidos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.pedidos-table th, .pedidos-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.pedidos-table th {
+  font-weight: 600;
+  color: #555;
+  background-color: #f9f9f9;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.entregado {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.en-camino {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.btn-detalle {
+  background-color: transparent;
+  color: #007bff;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.btn-detalle:hover {
+  background-color: #f0f8ff;
+}
+
+/* Estilos para métodos de pago */
+.metodos-pago-container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.metodo-pago-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.metodo-tipo {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.metodo-acciones {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-editar, .btn-eliminar {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.btn-editar {
+  background-color: #6c757d;
+}
+
+.btn-eliminar {
+  background-color: #dc3545;
+}
+
+.btn-agregar {
+  margin-top: 1rem;
+  background-color: #28a745;
+}
+
+/* Estilos para seguridad */
+.seguridad-container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.seguridad-opcion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.seguridad-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.seguridad-info p {
+  margin: 0;
+  color: #666;
+}
+
+.btn-cambiar, .btn-activar, .btn-ver {
+  padding: 0.5rem 1rem;
+}
+
+/* Modo oscuro */
+.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+.dark-mode .perfil-card {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.dark-mode .perfil-title,
+.dark-mode .section-title {
+  color: #f5f5f5;
+}
+
+.dark-mode .tab-btn {
+  color: #ccc;
+}
+
+.dark-mode .tab-btn:hover,
+.dark-mode .tab-btn.active {
+  color: #ff9900;
+}
+
+.dark-mode label {
+  color: #ddd;
+}
+
+.dark-mode input, 
+.dark-mode select {
+  background-color: #333;
+  border-color: #444;
+  color: #f5f5f5;
+}
+
+.dark-mode input:focus, 
+.dark-mode select:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.3);
+}
+
+.dark-mode .pedidos-table th {
+  background-color: #2a2a2a;
+  color: #ddd;
+}
+
+.dark-mode .pedidos-table td {
+  border-bottom-color: #333;
+}
+
+.dark-mode .metodo-pago-card,
+.dark-mode .seguridad-opcion {
+  background-color: #2a2a2a;
+  border-color: #333;
+}
+
+.dark-mode .seguridad-info p {
+  color: #aaa;
+}

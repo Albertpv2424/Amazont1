@@ -25,7 +25,7 @@ export class ConfirmacionCompraComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.exito = params['success'] === 'true';
       this.total = Number(params['total'] || 0);
-    });
+    });   
 
     this.themeService.darkMode$.subscribe(
       isDark => this.isDarkMode = isDark

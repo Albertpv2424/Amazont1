@@ -138,7 +138,14 @@ export class HeaderComponent implements OnInit {
     }, 200);
   }
 
+  navegarAlPerfil(): void {
+    this.router.navigate(['/perfil-usuario']);
+  }
   navegarAlCarrito(): void {
     this.router.navigate(['/carrito']);
+  }
+
+  navegarAjustes(): void {
+    this.router.navigate(['/perfil-usuario']);
   }
 }

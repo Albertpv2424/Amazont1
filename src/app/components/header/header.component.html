@@ -60,7 +60,7 @@
         <span class="carrito-badge">{{ cantidadCarrito }}</span>
       }
     </div>
-    <img src="assets/settings.png" alt="Ajustes" />
+    <img src="assets/settings.png" alt="Ajustes" (click)="navegarAjustes()" style="cursor:pointer;" />
     <a (click)="toggleBackground()" class="toggle-button">
       <img [src]="isDarkMode ? 'assets/sol1.png' : 'assets/luna1.png'" alt="Toggle Background" />
     </a>
