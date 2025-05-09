@@ -129,12 +129,13 @@ button:hover {
 }
 
 .tab-btn:hover {
-  color: #ff9900;
+  color: white;
 }
 
 .tab-btn.active {
   color: #ff9900;
   border-bottom: 3px solid #ff9900;
+  
 }
 
 /* Estilos para el contenido de las pestañas */
@@ -389,4 +390,94 @@ button:hover {
 
 .dark-mode .seguridad-info p {
   color: #aaa;
+}
+
+/* Add these styles to your existing CSS */
+
+.metodos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.metodo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.dark-mode .metodo-item {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+.metodo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.metodo-tipo {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.metodo-numero {
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+
+.btn-nuevo-metodo {
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.btn-eliminar {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-metodo-pago {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.dark-mode .form-metodo-pago {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-cancelar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
 }

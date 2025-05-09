@@ -80,12 +80,30 @@ export class AuthService {
 
     localStorage.setItem('users', JSON.stringify(users));
     
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+    // Set the current user after registration
+    this.updateCurrentUser(user);
     this.isLoggedInSubject.next(true);
     
     console.log('User registered successfully:', user.email);
     return true;
+  }
+
+  // Add this method if it doesn't exist or fix it if it's incorrectly implemented
+  updateCurrentUser(user: Usuario): void {
+    // Update in localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    
+    // Update in the BehaviorSubject
+    this.currentUserSubject.next(user);
+    
+    // Also update in the users array
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const index = users.findIndex((u: Usuario) => u.email === user.email);
+    
+    if (index !== -1) {
+      users[index] = { ...users[index], ...user };
+      localStorage.setItem('users', JSON.stringify(users));
+    }
   }
 
   logout(): void {
