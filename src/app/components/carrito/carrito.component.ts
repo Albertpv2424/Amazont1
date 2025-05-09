@@ -7,6 +7,8 @@ import { CarritoService, ProductoCarrito } from '../../services/carrito.service'
 import { ThemeService } from '../../services/theme.service';
 import { ProductosService } from '../../services/productos.service';
 import { AuthService } from '../../services/auth.service'; // Añadir esta importación
+import { PedidoService } from '../../services/pedido.service';
+import { Pedido } from '../../models/pedido.model';
 
 @Component({
   selector: 'app-carrito',
@@ -34,7 +36,8 @@ export class CarritoComponent implements OnInit {
     private router: Router,
     private themeService: ThemeService,
     private productosService: ProductosService,
-    private authService: AuthService // Añadir el servicio de autenticación
+    private authService: AuthService,
+    private pedidoService: PedidoService
   ) {}
 
   // Método que se ejecuta al inicializar el componente
@@ -190,5 +193,43 @@ actualizarCantidad(producto: ProductoCarrito, event: any): void {
   // Método para continuar comprando (volver a la página principal)
   continuarComprando(): void {
     this.router.navigate(['/']);
+  }
+
+  finalizarCompra(): void {
+    // Verificar si el usuario está logueado
+    if (!this.authService.isLoggedIn()) {
+      this.mostrarPopupLogin = true;
+      return;
+    }
+
+    // Crear el nuevo pedido con los datos del carrito
+    const nuevoPedido: Pedido = {
+      id: 0, // El servicio generará el ID
+      fecha: new Date().toISOString().split('T')[0],
+      total: this.total, // Usar la propiedad total que ya existe
+      estado: 'Pendiente',
+      productos: this.productosCarrito,
+    };
+
+    // Guardar el pedido
+    this.pedidoService.guardarPedido(nuevoPedido);
+    
+    // Hacer una copia de los productos para reducir stock
+    const productosParaReducirStock = [...this.productosCarrito];
+    
+    // Vaciar el carrito
+    this.carritoService.vaciarCarrito();
+    
+    // Actualizar la vista
+    this.productosCarrito = [];
+    this.actualizarTotales();
+    
+    // Navegar a la página de confirmación
+    this.router.navigate(['/confirmacion-compra'], { 
+      queryParams: { 
+        success: true,
+        total: this.total
+      } 
+    });
   }
 }

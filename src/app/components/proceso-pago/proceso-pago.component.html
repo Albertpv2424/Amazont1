@@ -114,7 +114,27 @@
                     [ngClass]="{'seleccionado': p['metodoPagoId'].value === metodo.id}"
                     (click)="p['metodoPagoId'].setValue(metodo.id)"
                   >
-                    <!-- Payment method details here -->
+                    <div class="metodo-info">
+                      <div class="metodo-tipo">
+                        {{ metodo.tipo === 'credit_card' ? 'Tarjeta de crédito' : 
+                           metodo.tipo === 'paypal' ? 'PayPal' : 
+                           metodo.tipo === 'bank_transfer' ? 'Transferencia bancaria' : 
+                           metodo.tipo }}
+                      </div>
+                      <!-- Mostrar información específica según el tipo de pago -->
+                      <ng-container *ngIf="metodo.tipo === 'credit_card'">
+                        <div class="metodo-detalle">{{ metodo.numero }}</div>
+                        <div class="metodo-detalle">{{ metodo.titular }}</div>
+                        <div class="metodo-detalle">Exp: {{ metodo.fechaExpiracion }}</div>
+                      </ng-container>
+                      <ng-container *ngIf="metodo.tipo === 'paypal'">
+                        <div class="metodo-detalle">{{ metodo.correoPaypal }}</div>
+                      </ng-container>
+                      <ng-container *ngIf="metodo.tipo === 'bank_transfer'">
+                        <div class="metodo-detalle">{{ metodo.entidadBancaria }}</div>
+                        <div class="metodo-detalle">{{ metodo.numeroCuenta }}</div>
+                      </ng-container>
+                    </div>
                   </div>
                 }
               </div>

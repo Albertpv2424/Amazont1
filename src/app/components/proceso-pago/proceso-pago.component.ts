@@ -22,6 +22,10 @@ interface MetodoPago {
   titular?: string;
   fechaExpiracion?: string;
   isDefault?: boolean;
+  correoPaypal?: string;
+  numeroCuenta?: string;
+  entidadBancaria?: string;
+  numeroCompleto?: string;
 }
 
 @Component({
@@ -102,16 +106,39 @@ export class ProcesoPagoComponent implements OnInit {
     this.cargandoMetodosPago = true;
     this.errorCarga = '';
     
-    // For now, since we're ignoring the Laravel backend, leta's simulate an empty payment methods list
-    setTimeout(() => {
+    // Obtener el usuario actual
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
       this.metodosPago = [];
       this.cargandoMetodosPago = false;
-      
-      // If no payment methods, show the form to add a new one
-      if (this.metodosPago.length === 0) {
-        this.nuevoMetodoPago = true;
+      this.nuevoMetodoPago = true;
+      return;
+    }
+    
+    // Utilizar la clave específica del usuario
+    const userKey = `metodosPago_${currentUser.email}`;
+    const metodosGuardados = localStorage.getItem(userKey);
+    
+    console.log('Métodos guardados en localStorage:', metodosGuardados);
+    
+    if (metodosGuardados) {
+      try {
+        this.metodosPago = JSON.parse(metodosGuardados);
+        console.log('Métodos de pago cargados:', this.metodosPago);
+      } catch (error) {
+        console.error('Error al parsear métodos de pago:', error);
+        this.metodosPago = [];
       }
-    }, 500);
+    } else {
+      this.metodosPago = [];
+    }
+    
+    this.cargandoMetodosPago = false;
+    
+    // Si no hay métodos de pago, mostrar el formulario para añadir uno nuevo
+    if (this.metodosPago.length === 0) {
+      this.nuevoMetodoPago = true;
+    }
   }
 
   get f() { return this.direccionForm.controls; }
@@ -215,29 +242,45 @@ export class ProcesoPagoComponent implements OnInit {
       return;
     }
     
-    // Get token from localStorage instead of using a non-existent method
-    const token = localStorage.getItem('token');
-    const metodoPago = {
-      tipo: this.p['tipo'].value,
-      card_number: this.p['numeroTarjeta'].value.toString().trim().replace(/\s+/g, ''), // Eliminar espais
-      card_holder_name: this.p['titular'].value,
-      expiration_date: this.p['fechaExpiracion'].value,
-      is_default: true
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+    
+    // Crear nuevo método de pago con ID
+    let nuevoMetodo: any = {
+      id: Date.now(), // ID único simple
+      tipo: this.p['tipo'].value
     };
     
-    this.http.post(`${environment.apiUrl}/payment-methods`, metodoPago, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    }).subscribe({
-      next: (response: any) => {
-        console.log('Método de pago guardado:', response);
-      },
-      error: (error) => {
-        console.error('Error al guardar método de pago:', error);
-      }
-    });
+    // Añadir propiedades específicas según el tipo de pago
+    if (this.p['tipo'].value === 'credit_card') {
+      nuevoMetodo.numero = this.ocultarNumeroTarjeta(this.p['numeroTarjeta'].value);
+      nuevoMetodo.titular = this.p['titular'].value;
+      nuevoMetodo.fechaExpiracion = this.p['fechaExpiracion'].value;
+      nuevoMetodo.numeroCompleto = this.p['numeroTarjeta'].value; // Guardar para uso interno
+    } else if (this.p['tipo'].value === 'paypal') {
+      nuevoMetodo.correoPaypal = this.p['correoPaypal'].value;
+    } else if (this.p['tipo'].value === 'bank_transfer') {
+      nuevoMetodo.numeroCuenta = this.p['numeroCuenta'].value;
+      nuevoMetodo.entidadBancaria = this.p['entidadBancaria'].value;
+    }
+    
+    // Añadir a la lista
+    this.metodosPago.push(nuevoMetodo);
+    
+    // Usar clave específica del usuario para los métodos de pago
+    const userKey = `metodosPago_${currentUser.email}`;
+    localStorage.setItem(userKey, JSON.stringify(this.metodosPago));
+    
+    console.log('Método de pago añadido:', nuevoMetodo);
+    console.log('Métodos de pago actualizados:', this.metodosPago);
+  }
+
+  // Añadir método para ocultar el número de tarjeta
+  ocultarNumeroTarjeta(numero: string): string {
+    if (numero && numero.length >= 4) {
+      return '**** **** **** ' + numero.slice(-4);
+    }
+    return numero;
   }
 
   cancelarCompra(): void {
@@ -278,5 +321,23 @@ export class ProcesoPagoComponent implements OnInit {
     }
     
     return null;
+  }
+
+  seleccionarMetodoPago(metodo: MetodoPago): void {
+    this.pagoForm.get('metodoPagoId')?.setValue(metodo.id);
+    this.pagoForm.get('tipo')?.setValue(metodo.tipo);
+    
+    // Dependiendo del tipo de método, establecer los valores correspondientes
+    if (metodo.tipo === 'credit_card' && metodo.numeroCompleto) {
+      this.pagoForm.get('numeroTarjeta')?.setValue(metodo.numeroCompleto);
+      this.pagoForm.get('titular')?.setValue(metodo.titular);
+      this.pagoForm.get('fechaExpiracion')?.setValue(metodo.fechaExpiracion);
+      // No establecemos el CVV por seguridad, el usuario debe ingresarlo
+    } else if (metodo.tipo === 'paypal') {
+      this.pagoForm.get('correoPaypal')?.setValue(metodo.correoPaypal);
+    } else if (metodo.tipo === 'bank_transfer') {
+      this.pagoForm.get('numeroCuenta')?.setValue(metodo.numeroCuenta);
+      this.pagoForm.get('entidadBancaria')?.setValue(metodo.entidadBancaria);
+    }
   }
 }

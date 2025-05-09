@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
+import { PedidoService } from '../../services/pedido.service';
+import { Pedido } from '../../models/pedido.model';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -37,7 +39,8 @@ export class PerfilUsuarioComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private themeService: ThemeService,
-    private authService: AuthService // Add AuthService
+    private authService: AuthService, // Add AuthService
+    private pedidoService: PedidoService
   ) {}
 
   ngOnInit(): void {
@@ -100,6 +103,22 @@ export class PerfilUsuarioComponent implements OnInit {
     }, {
       validators: this.passwordMatchValidator
     });
+    this.cargarPedidos();
+    this.crearPedidoFals(); // Afegir aquesta línea per crear un pedido fals
+  }
+
+  crearPedidoFals(): void {
+    const pedidoFals = {
+      id: Date.now(),
+      fecha: new Date().toISOString(),
+      total: 100.00,
+      productos: [
+        { nombre: 'Producte Fals 1', cantidad: 1, precio: 50.00 },
+        { nombre: 'Producte Fals 2', cantidad: 2, precio: 25.00 }
+      ]
+    };
+    this.pedidos.push(pedidoFals);
+    console.log('Pedido fals creat:', pedidoFals);
   }
 
   get p() { 
@@ -288,8 +307,6 @@ export class PerfilUsuarioComponent implements OnInit {
     return numero;
   }
 
-
-
   // Validador para comprobar que las contraseñas coinciden
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const newPassword = control.get('newPassword')?.value;
@@ -373,8 +390,14 @@ export class PerfilUsuarioComponent implements OnInit {
     }
   }
 
+  cargarPedidos(): void {
+    this.pedidos = this.pedidoService.getPedidos();
+  }
+
   verDetallesPedido(id: number): void {
-    alert(`Viendo detalles del pedido ${id}`);
+    const pedido = this.pedidoService.getPedidoPorId(id);
+    // Aquí puedes implementar la lógica para mostrar los detalles del pedido
+    console.log('Detalles del pedido:', pedido);
   }
 
   guardarMetodoPago() {
