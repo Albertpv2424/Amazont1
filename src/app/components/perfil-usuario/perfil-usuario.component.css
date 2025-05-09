@@ -129,13 +129,19 @@ button:hover {
 }
 
 .tab-btn:hover {
-  color: white;
+  color: #ff9900;
+  background-color: rgba(255, 153, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .tab-btn.active {
   color: #ff9900;
   border-bottom: 3px solid #ff9900;
-  
+  background-color: rgba(255, 153, 0, 0.05);
+}
+
+.tab-btn:active {
+  transform: translateY(1px);
 }
 
 /* Estilos para el contenido de las pestañas */
@@ -347,13 +353,23 @@ button:hover {
   color: #f5f5f5;
 }
 
-.dark-mode .tab-btn {
-  color: #ccc;
+.dark-mode .perfil-title {
+  color: #ffffff;
 }
 
-.dark-mode .tab-btn:hover,
+.dark-mode .tab-btn {
+  color: #cccccc;
+}
+
+.dark-mode .tab-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 153, 0, 0.1);
+}
+
 .dark-mode .tab-btn.active {
   color: #ff9900;
+  border-bottom: 3px solid #ff9900;
+  background-color: rgba(255, 153, 0, 0.1);
 }
 
 .dark-mode label {
@@ -388,7 +404,7 @@ button:hover {
   border-color: #333;
 }
 
-.dark-mode .seguridad-info p {
+.dark-mode .seguridad-info p, h4 {
   color: #aaa;
 }
 
@@ -480,4 +496,225 @@ button:hover {
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* Mejoras para el formulario de cambio de contraseña */
+.form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.form-container form {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-container .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-container input:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
+  outline: none;
+}
+
+.form-container .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.form-container .btn-guardar {
+  background-color: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex: 1;
+}
+
+.form-container .btn-guardar:hover {
+  background-color: #e88a00;
+}
+
+.form-container .btn-cancelar {
+  background-color: #f2f2f2;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.form-container .btn-cancelar:hover {
+  background-color: #e6e6e6;
+}
+
+.form-container .error-message {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: 4px;
+  display: block;
+}
+
+.form-container .success-message {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(40, 167, 69, 0.1);
+  border-radius: 4px;
+  display: block;
+}
+
+/* Mejoras para la sección de seguridad */
+.seguridad-container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.seguridad-opcion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease;
+}
+
+.seguridad-opcion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.seguridad-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.seguridad-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.btn-modificar, .btn-activar, .btn-ver {
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-modificar {
+  background-color: #ff9900;
+  color: white;
+}
+
+.btn-modificar:hover {
+  background-color: #e88a00;
+}
+
+.btn-activar {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-activar:hover {
+  background-color: #218838;
+}
+
+.btn-ver {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-ver:hover {
+  background-color: #0069d9;
+}
+
+/* Modo oscuro para la sección de seguridad */
+.dark-mode .form-container {
+  background-color: #2a2a2a;
+  border-color: #333;
+}
+
+.dark-mode .form-container .error-message {
+  color: #ff6b6b;
+}
+
+.dark-mode .form-container .success-message {
+  color: #51cf66;
+}
+
+.dark-mode .form-container .btn-guardar {
+  background-color: #ff9900;
+  color: #fff;
+}
+
+.dark-mode .form-container .btn-guardar:hover {
+  background-color: #e88a00;
+}
+
+.dark-mode .form-container .btn-cancelar {
+  background-color: #4a4a4a;
+  color: #fff;
+}
+
+.dark-mode .form-container .btn-cancelar:hover {
+  background-color: #5a5a5a;
 }

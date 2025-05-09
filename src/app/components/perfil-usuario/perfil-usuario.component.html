@@ -81,17 +81,27 @@
     
     <!-- Sección de métodos de pago -->
     <div class="tab-content" *ngIf="tabSeleccionado === 2">
-      <h2>Mètodes de Pagament</h2>
-      <p>Selecciona un mètode de pagament</p>
+      <h2>Métodos de Pago</h2>
+      <p>Selecciona un método de pago</p>
       
       <!-- Display existing payment methods -->
       <div class="metodos-lista" *ngIf="metodosPago && metodosPago.length > 0">
         <div class="metodo-item" *ngFor="let metodo of metodosPago; let i = index">
           <div class="metodo-info">
             <div class="metodo-tipo">{{ metodo.tipo }}</div>
-            <div class="metodo-numero">{{ metodo.numero }}</div>
-            <div class="metodo-titular">{{ metodo.titular }}</div>
-            <div class="metodo-fecha" *ngIf="metodo.fechaExpiracion">Exp: {{ metodo.fechaExpiracion }}</div>
+            <!-- Mostrar informació específica segons el tipus de pagament -->
+            <ng-container *ngIf="metodo.tipo === 'Tarjeta'">
+              <div class="metodo-numero">{{ metodo.numero }}</div>
+              <div class="metodo-titular">{{ metodo.titular }}</div>
+              <div class="metodo-fecha" *ngIf="metodo.fechaExpiracion">Exp: {{ metodo.fechaExpiracion }}</div>
+            </ng-container>
+            <ng-container *ngIf="metodo.tipo === 'PayPal'">
+              <div class="metodo-correo">{{ metodo.correoPaypal }}</div>
+            </ng-container>
+            <ng-container *ngIf="metodo.tipo === 'Transferencia'">
+              <div class="metodo-cuenta">{{ metodo.numeroCuenta }}</div>
+              <div class="metodo-entidad">{{ metodo.entidadBancaria }}</div>
+            </ng-container>
           </div>
           <button class="btn-eliminar" (click)="eliminarMetodoPago(i)">Eliminar</button>
         </div>
@@ -104,7 +114,7 @@
       
       <!-- Button to add new payment method -->
       <button class="btn-nuevo-metodo" (click)="mostrarFormularioMetodoPago()">
-        Afegir nou mètode
+        Añadir nuevo método
       </button>
       
       <!-- Form to add payment method -->
@@ -113,36 +123,68 @@
         
         <div class="form-group">
           <label for="tipo">Tipo</label>
-          <select id="tipo" formControlName="tipo">
+          <select id="tipo" formControlName="tipo" class="form-control" (change)="onTipoPagoChange($event)">
             <option value="Tarjeta">Tarjeta de crédito</option>
             <option value="PayPal">PayPal</option>
             <option value="Transferencia">Transferencia bancaria</option>
           </select>
         </div>
         
-        <div class="form-group">
-          <label for="numero">Número</label>
-          <input id="numero" formControlName="numero" placeholder="1234 5678 9012 3456">
-          <div *ngIf="metodoPagoSubmitted && mp['numero'].errors" class="error-message">
-            <div *ngIf="mp['numero'].errors['required']">El número es obligatorio</div>
-            <div *ngIf="mp['numero'].errors['pattern']">Debe tener 16 dígitos</div>
+        <!-- Camps per a targeta de crèdit -->
+        <div *ngIf="metodoPagoForm.get('tipo')?.value === 'Tarjeta'">
+          <div class="form-group">
+            <label for="numero">Número de tarjeta</label>
+            <input type="text" id="numero" formControlName="numero" class="form-control" placeholder="1234 5678 9012 3456">
+            <div *ngIf="metodoPagoSubmitted && mp['numero'].errors" class="text-danger">
+              <div *ngIf="mp['numero'].errors['required']">El número de tarjeta es obligatorio</div>
+              <div *ngIf="mp['numero'].errors['pattern']">El número de tarjeta debe tener 16 dígitos</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="titular">Titular</label>
+            <input type="text" id="titular" formControlName="titular" class="form-control">
+            <div *ngIf="metodoPagoSubmitted && mp['titular'].errors" class="text-danger">
+              <div *ngIf="mp['titular'].errors['required']">El titular és obligatori</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="fechaExpiracion">Data de caducitat (MM/YY)</label>
+            <input type="text" id="fechaExpiracion" formControlName="fechaExpiracion" class="form-control" placeholder="MM/YY">
+            <div *ngIf="metodoPagoSubmitted && mp['fechaExpiracion'].errors" class="text-danger">
+              <div *ngIf="mp['fechaExpiracion'].errors['required']">La data de caducitat és obligatòria</div>
+              <div *ngIf="mp['fechaExpiracion'].errors['pattern']">Format incorrecte. Utilitza MM/YY</div>
+            </div>
           </div>
         </div>
         
-        <div class="form-group">
-          <label for="titular">Titular</label>
-          <input id="titular" formControlName="titular">
-          <div *ngIf="metodoPagoSubmitted && mp['titular'].errors" class="error-message">
-            <div *ngIf="mp['titular'].errors['required']">El titular es obligatorio</div>
+        <!-- Camps per a PayPal -->
+        <div *ngIf="metodoPagoForm.get('tipo')?.value === 'PayPal'">
+          <div class="form-group">
+            <label for="correoPaypal">Correu electrònic de PayPal</label>
+            <input type="email" id="correoPaypal" formControlName="correoPaypal" class="form-control">
+            <div *ngIf="metodoPagoSubmitted && mp['correoPaypal']?.errors" class="text-danger">
+              <div *ngIf="mp['correoPaypal']?.errors?.['required']">El correu electrònic és obligatori</div>
+              <div *ngIf="mp['correoPaypal']?.errors?.['email']">Format de correu electrònic incorrecte</div>
+            </div>
           </div>
         </div>
         
-        <div class="form-group">
-          <label for="fechaExpiracion">Fecha de expiración</label>
-          <input id="fechaExpiracion" formControlName="fechaExpiracion" placeholder="MM/YY">
-          <div *ngIf="metodoPagoSubmitted && mp['fechaExpiracion'].errors" class="error-message">
-            <div *ngIf="mp['fechaExpiracion'].errors['required']">La fecha es obligatoria</div>
-            <div *ngIf="mp['fechaExpiracion'].errors['pattern']">Formato inválido (MM/YY)</div>
+        <!-- Camps per a Transferència bancària -->
+        <div *ngIf="metodoPagoForm.get('tipo')?.value === 'Transferencia'">
+          <div class="form-group">
+            <label for="numeroCuenta">Número de cuenta</label>
+            <input type="text" id="numeroCuenta" formControlName="numeroCuenta" class="form-control">
+            <div *ngIf="metodoPagoSubmitted && mp['numeroCuenta']?.errors" class="text-danger">
+              <div *ngIf="mp['numeroCuenta']?.errors?.['required']">El número de cuenta es obligatorio</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="entidadBancaria">Entidad bancaria</label>
+            <input type="text" id="entidadBancaria" formControlName="entidadBancaria" class="form-control">
+            <div *ngIf="metodoPagoSubmitted && mp['entidadBancaria']?.errors?.['required']">La entidad bancaria es obligatoria</div>
           </div>
         </div>
         
@@ -162,31 +204,54 @@
             <h4>Cambiar contraseña</h4>
             <p>Actualiza tu contraseña para mantener tu cuenta segura</p>
           </div>
-          <button class="btn-cambiar" (click)="cambiarPassword()">Modificar contraseña</button>
-        </div>
-        <div class="seguridad-opcion">
-          <div class="seguridad-info">
-            <h4>Verificación en dos pasos</h4>
-            <p>Añade una capa extra de seguridad a tu cuenta</p>
-          </div>
-          <button class="btn-activar">Activar</button>
-        </div>
-        <div class="seguridad-opcion">
-          <div class="seguridad-info">
-            <h4>Sesiones activas</h4>
-            <p>Gestiona los dispositivos conectados a tu cuenta</p>
-          </div>
-          <button class="btn-ver">Ver sesiones</button>
-        </div>
+          <button class="btn-modificar" (click)="mostrarFormularioPassword()">Modificar contraseña</button>
+        </div>       
       </div>
     </div>
     
-    <!-- Remove or comment out any duplicate security section that might be here -->
-    <!-- 
-    <div class="tab-content" style="display: none;">
-      <h3 class="section-title">Configuración de cuenta y seguridad</h3>
-      ...
-    </div>
-    -->
+
   </div>
+</div>
+
+<div class="form-container" *ngIf="mostrarFormPassword" [ngClass]="{'dark-mode': isDarkMode}">
+  <form [formGroup]="passwordForm" (ngSubmit)="cambiarPassword()">
+    <div class="form-group">
+      <label for="currentPassword">Contraseña actual:</label>
+      <input type="password" id="currentPassword" formControlName="currentPassword">
+      <div *ngIf="passwordSubmitted && p_form['currentPassword'].errors" class="error-message">
+        <span *ngIf="p_form['currentPassword'].errors['required']">La contraseña actual es obligatoria</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="newPassword">Nueva contraseña:</label>
+      <input type="password" id="newPassword" formControlName="newPassword">
+      <div *ngIf="passwordSubmitted && p_form['newPassword'].errors" class="error-message">
+        <span *ngIf="p_form['newPassword'].errors['required']">La nueva contraseña es obligatoria</span>
+        <span *ngIf="p_form['newPassword'].errors['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirmar nueva contraseña:</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword">
+      <div *ngIf="passwordSubmitted && p_form['confirmPassword'].errors" class="error-message">
+        <span *ngIf="p_form['confirmPassword'].errors['required']">La confirmación de la contraseña es obligatoria</span>
+        <span *ngIf="p_form['confirmPassword'].errors['passwordMismatch']">Las contraseñas no coinciden</span>
+      </div>
+    </div>
+
+    <div *ngIf="passwordError" class="error-message">
+      {{ passwordError }}
+    </div>
+
+    <div *ngIf="passwordSuccess" class="success-message">
+      {{ passwordSuccess }}
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn-guardar">Guardar canvis</button>
+      <button type="button" class="btn-cancelar" (click)="ocultarFormularioPassword()">Cancel·lar</button>
+    </div>
+  </form>
 </div>

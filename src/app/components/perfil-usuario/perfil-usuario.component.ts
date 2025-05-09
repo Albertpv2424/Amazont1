@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,16 +15,21 @@ export class PerfilUsuarioComponent implements OnInit {
   perfilForm!: FormGroup;
   metodoPagoForm!: FormGroup;
   pagoForm!: FormGroup;
+  passwordForm!: FormGroup; // Nuevo formulario para cambiar la contraseña
   submitted = false;
   metodoPagoSubmitted = false;
   pagoSubmitted = false;
+  passwordSubmitted = false; // Nuevo flag para controlar el envío del formulario
   isDarkMode = false;
   activeTab = 0;
   mostrarFormMetodoPago = false;
+  mostrarFormPassword = false; // Nuevo flag para mostrar/ocultar el formulario
   tabSeleccionado = 0;
   nuevoMetodoPago = false;
   cargandoMetodosPago = false;
   errorCarga = '';
+  passwordError = ''; // Para mostrar errores
+  passwordSuccess = ''; // Para mostrar mensajes de éxito
 
   metodosPago: any[] = [];
   pedidos: any[] = [];
@@ -50,7 +53,10 @@ export class PerfilUsuarioComponent implements OnInit {
       tipo: ['Tarjeta', Validators.required],
       numero: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
       titular: ['', Validators.required],
-      fechaExpiracion: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]]
+      fechaExpiracion: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
+      correoPaypal: ['', [Validators.email]],
+      numeroCuenta: [''],
+      entidadBancaria: ['']
     });
 
     this.pagoForm = this.fb.group({
@@ -85,6 +91,15 @@ export class PerfilUsuarioComponent implements OnInit {
     );
 
     this.pedidos = [];
+    
+    // Inicializar el formulario de cambio de contraseña
+    this.passwordForm = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validators: this.passwordMatchValidator
+    });
   }
 
   get p() { 
@@ -107,10 +122,16 @@ export class PerfilUsuarioComponent implements OnInit {
     this.nuevoMetodoPago = true;
   }
 
-  // Update the cargarMetodosPago method
   cargarMetodosPago(): void {
-    // Check for payment methods in localStorage
-    const metodosGuardados = localStorage.getItem('metodosPago');
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.metodosPago = [];
+      return;
+    }
+    
+    // Utilizar la clave específica del usuario
+    const userKey = `metodosPago_${currentUser.email}`;
+    const metodosGuardados = localStorage.getItem(userKey);
     
     console.log('Métodos guardados en localStorage:', metodosGuardados);
     
@@ -135,14 +156,23 @@ export class PerfilUsuarioComponent implements OnInit {
       if (!currentUser) return;
       
       // Create new payment method with ID
-      const nuevoMetodo = {
+      let nuevoMetodo: any = {
         id: Date.now(), // Simple unique ID
-        tipo: this.metodoPagoForm.value.tipo,
-        numero: this.ocultarNumeroTarjeta(this.metodoPagoForm.value.numero),
-        titular: this.metodoPagoForm.value.titular,
-        fechaExpiracion: this.metodoPagoForm.value.fechaExpiracion,
-        numeroCompleto: this.metodoPagoForm.value.numero // Save for internal use
+        tipo: this.metodoPagoForm.value.tipo
       };
+      
+      // Afegir propietats específiques segons el tipus de pagament
+      if (this.metodoPagoForm.value.tipo === 'Tarjeta') {
+        nuevoMetodo.numero = this.ocultarNumeroTarjeta(this.metodoPagoForm.value.numero);
+        nuevoMetodo.titular = this.metodoPagoForm.value.titular;
+        nuevoMetodo.fechaExpiracion = this.metodoPagoForm.value.fechaExpiracion;
+        nuevoMetodo.numeroCompleto = this.metodoPagoForm.value.numero; // Save for internal use
+      } else if (this.metodoPagoForm.value.tipo === 'PayPal') {
+        nuevoMetodo.correoPaypal = this.metodoPagoForm.value.correoPaypal;
+      } else if (this.metodoPagoForm.value.tipo === 'Transferencia') {
+        nuevoMetodo.numeroCuenta = this.metodoPagoForm.value.numeroCuenta;
+        nuevoMetodo.entidadBancaria = this.metodoPagoForm.value.entidadBancaria;
+      }
       
       // Add to the list
       this.metodosPago.push(nuevoMetodo);
@@ -214,7 +244,42 @@ export class PerfilUsuarioComponent implements OnInit {
     this.metodoPagoSubmitted = false;
   }
 
- 
+  onTipoPagoChange(event: any): void {
+    const tipoPago = event.target.value;
+    this.metodoPagoForm.get('tipo')?.setValue(tipoPago);
+    
+    // Reset validation based on payment type
+    if (tipoPago === 'Tarjeta') {
+      this.metodoPagoForm.get('numero')?.setValidators([Validators.required, Validators.pattern(/^\d{16}$/)]);
+      this.metodoPagoForm.get('titular')?.setValidators([Validators.required]);
+      this.metodoPagoForm.get('fechaExpiracion')?.setValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]);
+      this.metodoPagoForm.get('correoPaypal')?.clearValidators();
+      this.metodoPagoForm.get('numeroCuenta')?.clearValidators();
+      this.metodoPagoForm.get('entidadBancaria')?.clearValidators();
+    } else if (tipoPago === 'PayPal') {
+      this.metodoPagoForm.get('correoPaypal')?.setValidators([Validators.required, Validators.email]);
+      this.metodoPagoForm.get('numero')?.clearValidators();
+      this.metodoPagoForm.get('titular')?.clearValidators();
+      this.metodoPagoForm.get('fechaExpiracion')?.clearValidators();
+      this.metodoPagoForm.get('numeroCuenta')?.clearValidators();
+      this.metodoPagoForm.get('entidadBancaria')?.clearValidators();
+    } else if (tipoPago === 'Transferencia') {
+      this.metodoPagoForm.get('numeroCuenta')?.setValidators([Validators.required]);
+      this.metodoPagoForm.get('entidadBancaria')?.setValidators([Validators.required]);
+      this.metodoPagoForm.get('numero')?.clearValidators();
+      this.metodoPagoForm.get('titular')?.clearValidators();
+      this.metodoPagoForm.get('fechaExpiracion')?.clearValidators();
+      this.metodoPagoForm.get('correoPaypal')?.clearValidators();
+    }
+    
+    // Update form controls validation status
+    this.metodoPagoForm.get('numero')?.updateValueAndValidity();
+    this.metodoPagoForm.get('titular')?.updateValueAndValidity();
+    this.metodoPagoForm.get('fechaExpiracion')?.updateValueAndValidity();
+    this.metodoPagoForm.get('correoPaypal')?.updateValueAndValidity();
+    this.metodoPagoForm.get('numeroCuenta')?.updateValueAndValidity();
+    this.metodoPagoForm.get('entidadBancaria')?.updateValueAndValidity();
+  }
 
   ocultarNumeroTarjeta(numero: string): string {
     if (numero && numero.length >= 4) {
@@ -225,58 +290,111 @@ export class PerfilUsuarioComponent implements OnInit {
 
 
 
+  // Validador para comprobar que las contraseñas coinciden
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const newPassword = control.get('newPassword')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (newPassword !== confirmPassword) {
+      control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      const confirmPasswordControl = control.get('confirmPassword');
+      if (confirmPasswordControl?.errors) {
+        const errors = { ...confirmPasswordControl.errors };
+        delete errors['passwordMismatch'];
+        
+        confirmPasswordControl.setErrors(Object.keys(errors).length ? errors : null);
+      }
+      return null;
+    }
+  }
+  
+  // Getter per accedir als controls del formulari
+  get p_form() { 
+    return this.passwordForm.controls; 
+  }
+  
+  // Mostrar el formulari de canvi de contrasenya
+  mostrarFormularioPassword(): void {
+    this.mostrarFormPassword = true;
+    this.passwordForm.reset();
+    this.passwordError = '';
+    this.passwordSuccess = '';
+  }
+  
+  // Ocultar el formulari de canvi de contrasenya
+  ocultarFormularioPassword(): void {
+    this.mostrarFormPassword = false;
+    this.passwordSubmitted = false;
+  }
+  
+  // Mètode per canviar la contrasenya
   cambiarPassword(): void {
-    alert('Funcionalidad de cambio de contraseña en desarrollo');
+    this.passwordSubmitted = true;
+    this.passwordError = '';
+    this.passwordSuccess = '';
+    
+    if (this.passwordForm.valid) {
+      const currentUser = this.authService.getCurrentUser();
+      if (!currentUser) return;
+      
+      // Obtenir els usuaris del localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex((u: any) => u.email === currentUser.email);
+      
+      if (userIndex === -1) {
+        this.passwordError = 'No s\'ha trobat l\'usuari al sistema';
+        return;
+      }
+      
+      // Verificar la contrasenya actual
+      if (users[userIndex].password !== this.passwordForm.value.currentPassword) {
+        this.passwordError = 'La contrasenya actual no és correcta';
+        return;
+      }
+      
+      // Actualitzar la contrasenya
+      users[userIndex].password = this.passwordForm.value.newPassword;
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Actualitzar l'usuari actual
+      const updatedUser = { ...currentUser, password: this.passwordForm.value.newPassword };
+      this.authService.updateCurrentUser(updatedUser);
+      
+      this.passwordSuccess = 'Contrasenya actualitzada correctament';
+      this.passwordSubmitted = false;
+      this.passwordForm.reset();
+      
+      // Ocultar el formulari després d'uns segons
+      setTimeout(() => {
+        this.ocultarFormularioPassword();
+      }, 3000);
+    }
   }
 
   verDetallesPedido(id: number): void {
     alert(`Viendo detalles del pedido ${id}`);
   }
 
-  // Add this method to handle payment form submission
-  guardarMetodoPago(): void {
-    this.pagoSubmitted = true;
+  guardarMetodoPago() {
+    this.metodoPagoSubmitted = true;
     
-    if (this.pagoForm.valid) {
-      // Create new payment method object
-      const nuevoMetodo = {
-        id: Date.now(), // Generate a simple unique ID
-        tipo: this.p['tipo'].value,
-        numero: this.p['tipo'].value === 'credit_card' ? 
-          this.ocultarNumeroTarjeta(this.p['numeroTarjeta'].value) : 
-          (this.p['tipo'].value === 'paypal' ? this.p['correoPaypal'].value : this.p['numeroCuenta'].value),
-        titular: this.p['titular'].value,
-        fechaExpiracion: this.p['fechaExpiracion'].value,
-        isDefault: true
-      };
-      
-      // Add to the list
-      this.metodosPago.push(nuevoMetodo);
-      
-      // Save to localStorage
-      localStorage.setItem('metodosPago', JSON.stringify(this.metodosPago));
-      
-      // Reset form and hide
-      this.nuevoMetodoPago = false;
-      this.pagoSubmitted = false;
-      this.pagoForm.reset({
-        tipo: 'credit_card',
-        guardarMetodo: true
-      });
-      
-      // Show success message
-      alert('Método de pago añadido correctamente');
+    if (this.metodoPagoForm.invalid) {
+      return;
     }
+    
+    const nuevoMetodo = {
+      tipo: this.metodoPagoForm.value.tipo,
+      numero: this.metodoPagoForm.value.numero,
+      titular: this.metodoPagoForm.value.titular,
+      fechaExpiracion: this.metodoPagoForm.value.fechaExpiracion,
+      email: this.metodoPagoForm.value.email
+    };
+    
+    this.metodosPago.push(nuevoMetodo);
+    this.mostrarFormMetodoPago = false;
+    this.metodoPagoForm.reset({tipo: 'tarjeta'});
+    this.metodoPagoSubmitted = false;
   }
 }
-
-const routes: Routes = [
-  { path: 'perfil', component: PerfilUsuarioComponent },
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
-
