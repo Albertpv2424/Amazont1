@@ -207,6 +207,18 @@ class ProductosSeeder extends Seeder
 
         ];
 
+        // Insert products into productos table
+        foreach ($productos as $producto) {
+            // Remove 'categorias' key before insert
+            $productoData = $producto;
+            unset($productoData['categorias']);
+            DB::table('productos')->updateOrInsert(
+                ['id_prod' => $productoData['id_prod']],
+                $productoData
+            );
+        }
+    
+        // Now insert into categoria_producto pivot table
         foreach ($productos as $producto) {
             if (isset($producto['categorias'])) {
                 foreach ($producto['categorias'] as $catId) {

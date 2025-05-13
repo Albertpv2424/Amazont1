@@ -44,7 +44,7 @@ export class CategoriaDetalleComponent implements OnInit {
     this.themeService.darkMode$.subscribe(
       isDark => this.isDarkMode = isDark
     );
-  }
+ }
 
   get productosFiltrados() {
     return this.productos

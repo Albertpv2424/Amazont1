@@ -1,6 +1,6 @@
 <div class="producto" role="article" aria-labelledby="producto-titulo">
   <div class="producto-content" (click)="navegarAProducto()">
-    <img class="imagggg" [src]="producto.imagen" [alt]="producto.nombre" />
+    <img class="imagggg" [src]="'assets/' + producto.imagen" [alt]="producto.nombre" />
     <p id="producto-titulo">
       {{ producto.nombre }}
       <span class="descuento">{{ producto.descuento }}</span>

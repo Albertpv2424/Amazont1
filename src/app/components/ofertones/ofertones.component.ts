@@ -3,38 +3,71 @@ import { ProductosService } from '../../services/productos.service';
 import { ProductoCategoria } from '../../interfaces/producto-categoria.interface';
 import { ThemeService } from '../../services/theme.service';
 import { CommonModule } from '@angular/common';
-import { ProductoComponent } from '../producto/producto.component'; // Add this import
+import { ProductoComponent } from '../producto/producto.component';
+import { AuthService } from '../../services/auth.service';
+import { CarritoService } from '../../services/carrito.service'; // Add this import
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-ofertones',
   templateUrl: './ofertones.component.html',
   styleUrls: ['./ofertones.component.css'],
   standalone: true,
-  imports: [CommonModule, ProductoComponent] // Add ProductoComponent here
+  imports: [CommonModule, ProductoComponent]
 })
 export class OfertonesComponent implements OnInit {
   productos: ProductoCategoria[] = [];
-  ofertas: ProductoCategoria[] = []; // Add this property
+  ofertas: ProductoCategoria[] = [];
   visibleOffers: ProductoCategoria[] = [];
   currentIndex = 0;
   itemsPerPage = 3;
   isDarkMode = false;
-  
+  isLoggedIn = false;
+  userName = '';
+  cantidadCarrito: number = 0; // Add cart quantity
+
   constructor(
     private productosService: ProductosService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private authService: AuthService,
+    private carritoService: CarritoService,
+    private http: HttpClient // Add HttpClient here
   ) {}
 
   ngOnInit(): void {
-    this.productos = this.productosService.getAllProductos();
-    console.log('Productes carregats:', this.productos); // Afegir aquesta línia
-    this.ofertas = this.productos.filter(p => p.oferta); // Filtrar productes amb ofertes
-    this.updateVisibleOffers();
-
-    this.themeService.darkMode$.subscribe(isDark => {
-      this.isDarkMode = isDark;
+    // Fetch products from API
+    this.http.get<any>('http://localhost:8000/api/products').subscribe({
+      next: (response) => {
+        // Adjust this according to your API response structure
+        this.ofertas = response.productos.data;
+        this.updateVisibleOffers();
+      },
+      error: (err) => {
+        console.error('Error fetching products from API:', err);
+        this.ofertas = [];
+        this.updateVisibleOffers();
+      }
     });
-}
+
+    // Add login state handling
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      console.log('OFERTONES: isLoggedIn changed:', isLoggedIn); // DEBUG
+      this.isLoggedIn = isLoggedIn;
+      if (isLoggedIn) {
+        const user = this.authService.getCurrentUser();
+        if (user) {
+          this.userName = user.nombre;
+        }
+      } else {
+        this.userName = '';
+      }
+    });
+
+    // Subscribe to cart changes
+    this.carritoService.getCarrito().subscribe(items => {
+      this.cantidadCarrito = this.carritoService.obtenerCantidadTotal();
+    });
+  }
 
   updateVisibleOffers(): void {
     this.visibleOffers = this.ofertas.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);

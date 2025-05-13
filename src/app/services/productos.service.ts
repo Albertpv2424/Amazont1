@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ProductoCategoria } from '../interfaces/producto-categoria.interface';
+import { Producto } from '../interfaces/producto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,9 @@ import { ProductoCategoria } from '../interfaces/producto-categoria.interface';
 export class ProductosService {
   private apiUrl = 'http://localhost:8000/api';
   private productos: ProductoCategoria[] = []; // Mantenim la llista local com a cache
+  private currentProduct = new BehaviorSubject<Producto | null>(null);
+
+  public currentProduct$: Observable<Producto | null> = this.currentProduct.asObservable();
 
   constructor(private http: HttpClient) {
     this.cargarProductos();
