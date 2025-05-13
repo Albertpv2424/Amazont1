@@ -56,13 +56,12 @@ POST /api/categorias
 POST /api/productos
 
 {
-  "nombre": "Product Name",
-  "descripcion": "Description",
-  "precio": 99.99,
+  "nombre": "Producte Prova",
+  "descripcion": "Descripció del producte",
+  "precio": 49.99,
   "imagen": "url_or_base64",
-  "categoria_id": 1,
-  "oferta": true,
-  "stock": 50
+  "stock": 20,
+  "categorias": [1, 2]
 }
 
 POST /api/reviews
@@ -90,10 +89,42 @@ POST api/cart/add
 }
 
 
+PUT /cart/item/3
+
+{
+ "producto_id": 1, 
+ "cantidad": 3
+}
+GET /cart/3
+
+
+DELETE /cart/item/5
+
+DELETE /cart/clear
+
+POST /cart/checkout
+{
+    "payment_method_id":2
+}
 
 
 
+PUT /cart/finish
 
+{
+    "payment_method_id":2
+}
+
+PUT /user/shipping-address
+
+{
+    "shipping_address": "HOLA",
+    "ciudad": "hola",
+    "codigo_postal": "12345",
+    "provincia": "hola",
+    "pais": "hola",
+    "telefono": "123456789"
+}
 
 
 
