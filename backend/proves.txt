@@ -1,0 +1,100 @@
+1|tlitb969wydGxakAWwCraXZtWqXtQmKXTBmnKrWf01de0ae8 client 
+http://localhost:8000/api/orders
+Back-end (MP07):
+○ Modificar la tabla estándar de Laravel para crear los campos necesarios para
+realizar el registro de usuario.
+○ Crear consulta para guardar información de registro de usuario.
+○ Encriptar la contraseña a la hora de guardarla en la base de datos
+
+REGISTER /api/register
+{
+    "nombre": "Nom Prova",
+    "email": "prova@email.com",
+    "contraseña": "password123",
+    "contraseña_confirmation": "password123",
+    "direccion": "Carrer Falsa 123",
+    "telefono": "123456789",
+    "ciudad": "Barcelona",
+    "codigo_postal": "08001",
+    "pais": "Espanya",
+    "rol": "cliente"
+}
+
+PER A ANGULAR ES NECESSITA 
+
+{
+    "nombre": "Nom Prova1",
+    "email": "prova1@email.com",
+    "contraseña": "password123",
+    "contraseña_confirmation": "password123",
+    "rol": "cliente"
+}
+
+POST /api/login
+bearer token 3|vrZ6EIBnPaZnfz7uJS6MKB8s90LnOCyiKG92Tthv2305c9d8
+CLIENTE
+{
+    "email": "prova@email.com",
+    "contraseña": "password123"
+}
+VENDEDOR
+bearer token 5|u2mXyuyPmxOEHWFDnc1DCEnV0mMJCGJgPPie2AkB791dbcb2
+{
+    "email": "vendedor@email.com",
+    "contraseña": "password123"
+}
+
+
+POST /api/categorias
+
+{
+  "nombre": "Electrónica",
+  "descripcion": "Productos electrónicos"
+}
+
+
+POST /api/productos
+
+{
+  "nombre": "Product Name",
+  "descripcion": "Description",
+  "precio": 99.99,
+  "imagen": "url_or_base64",
+  "categoria_id": 1,
+  "oferta": true,
+  "stock": 50
+}
+
+POST /api/reviews
+
+{
+  "producto_id": 1,
+  "titulo": "Muy buena",
+  "comentario": "Me ha encantado"
+}
+
+POST /api/ratings
+
+
+{
+  "producto_id": 1,
+  "puntuacion": 5
+}
+
+POST api/cart/add
+
+
+{
+ "producto_id": 1, 
+ "cantidad": 2
+}
+
+
+
+
+
+
+
+
+
+

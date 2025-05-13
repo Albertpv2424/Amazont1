@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Producto } from '../interfaces/producto.interface';
@@ -11,10 +12,15 @@ export interface ProductoCarrito extends Producto {
   providedIn: 'root'
 })
 export class CarritoService {
+  private apiUrl = 'http://localhost:8000/api';
+
   private carritoItems: ProductoCarrito[] = [];
   private carritoSubject = new BehaviorSubject<ProductoCarrito[]>([]);
-  
-  constructor(private productosService: ProductosService) {
+
+  constructor(
+    private http: HttpClient,
+    private productosService: ProductosService
+  ) {
     // Cargar carrito desde localStorage al iniciar
     const carritoGuardado = localStorage.getItem('carrito');
     if (carritoGuardado) {
@@ -27,6 +33,14 @@ export class CarritoService {
         localStorage.removeItem('carrito');
       }
     }
+  }
+
+  sincronitzarCarretAmbBackend(productes: any[]) {
+    return this.http.post(`${this.apiUrl}/cart/add`, { productes });
+  }
+
+  obtenirCarretBackend() {
+    return this.http.get(`${this.apiUrl}/cart`);
   }
 
   getCarrito(): Observable<ProductoCarrito[]> {
