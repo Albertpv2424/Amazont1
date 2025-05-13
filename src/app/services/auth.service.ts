@@ -3,11 +3,14 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../interfaces/usuario.interface';
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:8000/api'; // Añade esta línea
+
   private currentUserSubject = new BehaviorSubject<Usuario | null>(null);
   public currentUser$: Observable<Usuario | null> = this.currentUserSubject.asObservable();
   
@@ -75,16 +78,30 @@ export class AuthService {
       localStorage.setItem('users', JSON.stringify(users));
     }
   }
-
-  logout(): void {
-    localStorage.removeItem('currentUser');
-    
-    this.currentUserSubject.next(null);
-    this.loggedInSubject.next(false);
-    
-    this.router.navigate(['/']);
+  getAuthHeaders() {
+    const token = this.getToken();
+    return token ? { Authorization: `Bearer ${token}` } : undefined;
   }
-
+  
+  logout() {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.apiUrl}/logout`, {}, headers ? { headers: new HttpHeaders(headers) } : {}).pipe(
+      tap(() => {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('carrito'); // Opcional: limpia el carrito si lo guardas en localStorage
+  
+        this.currentUserSubject.next(null);
+        this.loggedInSubject.next(false);
+      })
+    );
+  }
+  
+  
+  removeToken() {
+    localStorage.removeItem('access_token');
+  }
+  
   getCurrentUser(): Usuario | null {
     return this.currentUserSubject.value;
   }

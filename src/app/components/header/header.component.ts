@@ -64,7 +64,16 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logout().subscribe({
+      next: () => {
+        // Aquí pots fer redirecció o mostrar un missatge si vols
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        // Gestiona l'error si cal
+        console.error('Error al fer logout:', error);
+      }
+    });
   }
   
   navegarACategoria(categoria: string) {
