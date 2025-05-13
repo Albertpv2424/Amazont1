@@ -144,3 +144,25 @@ app-producto:hover {
   transform: scale(1.05);
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
 }
+
+.no-ofertas {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-ofertas p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.dark-mode .no-ofertas {
+  background-color: #333;
+}
+
+.dark-mode .no-ofertas p {
+  color: #ddd;
+}

@@ -6,7 +6,6 @@ import { RecomendadosComponent } from "../recomendados/recomendados.component";
 import { ActivatedRoute } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 
-
 @Component({
   selector: 'app-home',
   standalone: true,

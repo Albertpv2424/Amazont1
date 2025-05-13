@@ -5,6 +5,7 @@ export interface Opinion {
 }
 
 export interface ProductoCategoria {
+  oferta: unknown;
   id: number;
   nombre: string;
   descripcion: string;
@@ -18,4 +19,6 @@ export interface ProductoCategoria {
   descuento?: string;
   stock?: number; // Add stock property
   opiniones: Opinion[]; // Afegir la propietat 'opiniones'
+  precio_oferta: number | null;
+  en_oferta: boolean;
 }

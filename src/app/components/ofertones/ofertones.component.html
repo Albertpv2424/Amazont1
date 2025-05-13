@@ -1,13 +1,17 @@
 <section class="ofertones" [ngClass]="{'dark-mode': isDarkMode}">
-  <div class="hola"></div>
   <h1>Ofertones del día</h1>
-  <div class="carrusel">
+  
+  <div *ngIf="ofertas.length > 0" class="carrusel">
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
-      @for (oferta of visibleOffers; track oferta.id) {
+      <div *ngFor="let oferta of visibleOffers">
         <app-producto [producto]="oferta"></app-producto>
-      }
+      </div>
     </div>
     <button class="flecha derecha" (click)="next()"> → </button>
+  </div>
+  
+  <div *ngIf="ofertas.length === 0" class="no-ofertas">
+    <p>No hi ha ofertes disponibles en aquest moment.</p>
   </div>
 </section>

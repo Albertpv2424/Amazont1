@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Validator; 
+use Illuminate\Support\Facades\DB; // Add this line
 
 class CartController extends Controller
 {
@@ -141,11 +142,11 @@ class CartController extends Controller
     public function updateCartItem(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required|exists:products,id', // Canviat de 'productos,id_prod' a 'products,id'
-            'quantity' => 'required|integer|min:1',
+            'producto_id' => 'required|exists:productos,id_prod',
+            'cantidad' => 'required|integer|min:1', // Ensure cantidad is required and is a valid integer
         ]);
         
-        if ($validator->fails()) { // Si la validación falla, devolver errores
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'errors' => $validator->errors()
@@ -155,13 +156,12 @@ class CartController extends Controller
         $user = Auth::user(); // Obtener el usuario autenticado
         $cart = Cart::where('user_id', $user->id)->firstOrFail(); // Buscar el carrito del usuario
         $cartItem = CartItem::where('carrito_id', $cart->id) // Buscar el ítem en el carrito
-            ->where('id', $id)
+            ->where('producto_id', $request->producto_id) // Correct column name
             ->firstOrFail();
             
-        $product = Product::findOrFail($cartItem->producto_id); // Buscar el producto asociado
-        
         // Comprobar si hay suficiente stock
-        if ($product->stock < $request->quantity) {
+        $product = DB::table('productos')->where('id_prod', $request->producto_id)->first();
+        if ($product->stock < $request->cantidad) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Not enough stock available'
@@ -169,15 +169,15 @@ class CartController extends Controller
         }
         
         $cartItem->update([ // Actualizar la cantidad del ítem
-            'cantidad' => $request->quantity
+            'cantidad' => $request->cantidad // Ensure cantidad is set correctly
         ]);
         
         // Actualizar el total del carrito
         $this->updateCartTotal($cart);
         
-        return response()->json([ // Devolver el carrito actualizado
+        return response()->json([
             'status' => 'success',
-            'message' => 'Cart item updated',
+            'message' => 'Cart item updated successfully',
             'cart' => $cart->load('cartItems.product')
         ]);
     }
@@ -231,7 +231,7 @@ class CartController extends Controller
     public function checkout(Request $request)
     {
         $validator = Validator::make($request->all(), [ // Validar el método de pago
-            'payment_method_id' => 'nullable|exists:metodo_pago,id',
+            'metodo_pago_id' => 'nullable|exists:metodos_pago,id',
         ]);
         
         if ($validator->fails()) { // Si la validación falla, devolver errores

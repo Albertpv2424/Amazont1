@@ -1,52 +1,56 @@
 import { Component, OnInit } from '@angular/core';
-import { Producto } from '../../interfaces/producto.interface';
-import { ProductoComponent } from '../producto/producto.component';
-import { CommonModule } from '@angular/common';
 import { ProductosService } from '../../services/productos.service';
+import { ProductoCategoria } from '../../interfaces/producto-categoria.interface';
 import { ThemeService } from '../../services/theme.service';
+import { CommonModule } from '@angular/common';
+import { ProductoComponent } from '../producto/producto.component'; // Add this import
 
 @Component({
   selector: 'app-ofertones',
-  standalone: true,
   templateUrl: './ofertones.component.html',
   styleUrls: ['./ofertones.component.css'],
-  imports: [CommonModule, ProductoComponent] 
+  standalone: true,
+  imports: [CommonModule, ProductoComponent] // Add ProductoComponent here
 })
 export class OfertonesComponent implements OnInit {
-  ofertas: Producto[] = [];
+  productos: ProductoCategoria[] = [];
+  ofertas: ProductoCategoria[] = []; // Add this property
+  visibleOffers: ProductoCategoria[] = [];
+  currentIndex = 0;
+  itemsPerPage = 3;
   isDarkMode = false;
-  currentIndex: number = 0;
-
+  
   constructor(
     private productosService: ProductosService,
     private themeService: ThemeService
   ) {}
 
-  ngOnInit() {
-    // Obtener productos con descuento del servicio
-    this.ofertas = this.productosService.getOfertones();
-    console.log('Ofertas cargadas:', this.ofertas);
+  ngOnInit(): void {
+    this.productos = this.productosService.getAllProductos();
+    console.log('Productes carregats:', this.productos); // Afegir aquesta línia
+    this.ofertas = this.productos.filter(p => p.oferta); // Filtrar productes amb ofertes
+    this.updateVisibleOffers();
 
-    this.themeService.darkMode$.subscribe(
-      isDark => this.isDarkMode = isDark
-    );
+    this.themeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+}
+
+  updateVisibleOffers(): void {
+    this.visibleOffers = this.ofertas.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
   }
 
-  next() {
-    this.currentIndex = (this.currentIndex + 1) % this.ofertas.length; 
+  next(): void {
+    if (this.currentIndex + this.itemsPerPage < this.ofertas.length) {
+      this.currentIndex += this.itemsPerPage;
+      this.updateVisibleOffers();
+    }
   }
 
-  previous() {
-    this.currentIndex = (this.currentIndex - 1 + this.ofertas.length) % this.ofertas.length; 
-  }
-
-  get visibleOffers() {
-    if (this.ofertas.length === 0) return [];
-    return [
-      this.ofertas[this.currentIndex],
-      this.ofertas[(this.currentIndex + 1) % this.ofertas.length],
-      this.ofertas[(this.currentIndex + 2) % this.ofertas.length],
-      this.ofertas[(this.currentIndex + 3) % this.ofertas.length]
-    ].filter(oferta => oferta !== undefined);
+  previous(): void {
+    if (this.currentIndex - this.itemsPerPage >= 0) {
+      this.currentIndex -= this.itemsPerPage;
+      this.updateVisibleOffers();
+    }
   }
 }
