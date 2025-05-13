@@ -38,8 +38,11 @@ export class OfertonesComponent implements OnInit {
     // Fetch products from API
     this.http.get<any>('http://localhost:8000/api/products').subscribe({
       next: (response) => {
-        // Adjust this according to your API response structure
-        this.ofertas = response.productos.data;
+        console.log('Productes rebuts:', response.productos.data); // <-- Afegit per depuració
+        // Filtrar només els productes amb oferta
+        this.ofertas = response.productos.data.filter((p: any) => 
+          p.precio_oferta && p.precio_oferta < p.precio
+        );
         this.updateVisibleOffers();
       },
       error: (err) => {
