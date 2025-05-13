@@ -1,8 +1,9 @@
 export interface Usuario {
   nombre: string;
   email: string;
-  password: string;
-  tipoUsuario: 'Cliente' | 'Vendedor';
+  contraseña: string;
+  contraseña_confirmation: string;
+  rol: 'Cliente' | 'Vendedor';
   aceptaTerminos: boolean;
   telefono?: string;
   ciudad?: string;

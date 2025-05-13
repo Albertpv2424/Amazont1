@@ -37,9 +37,9 @@ class OrderController extends Controller
         // Validem les dades d'entrada
         $validator = Validator::make($request->all(), [
             'items' => 'required|array',
-            'items.*.product_id' => 'required|exists:productos,id_prod',
-            'items.*.quantity' => 'required|integer|min:1',
-            'payment_method_id' => 'nullable|exists:metodo_pago,id',  // Changed from metodos_pago to metodo_pago
+            'items.*.producto_id' => 'required|exists:productos,id_prod',
+            'items.*.cantidad' => 'required|integer|min:1',
+            'payment_method_id' => 'nullable|exists:metodos_pago,id',
         ]);
     
         // Si la validació falla, retornem errors
@@ -59,10 +59,10 @@ class OrderController extends Controller
         // Calculem el total de la comanda
         $total = 0;
         foreach ($request->items as $item) {
-            $product = Product::findOrFail($item['product_id']);
+            $product = Product::findOrFail($item['producto_id']);
             // Utilitzem el preu de rebaixa si està en oferta
             $price = $product->rebajas ? $product->precio_rebajado : $product->precio;
-            $total += $price * $item['quantity'];
+            $total += $price * $item['cantidad'];
         }
     
         try {
@@ -95,21 +95,21 @@ class OrderController extends Controller
     
             // Per cada producte a la comanda
             foreach ($request->items as $item) {
-                $product = Product::findOrFail($item['product_id']);
+                $product = Product::findOrFail($item['producto_id']);
                 // Tornem a calcular el preu per si hi ha discrepàncies
                 $price = $product->rebajas ? $product->precio_rebajado : $product->precio;
                 
                 // Creem l'ítem de la comanda
                 OrderItem::create([
                     'pedido_id' => $order->id,
-                    'producto_id' => $item['product_id'],
-                    'cantidad' => $item['quantity'],
+                    'producto_id' => $item['producto_id'],
+                    'cantidad' => $item['cantidad'],
                     'precio' => $price,
                 ]);
                 
                 // Actualitzem l'estoc del producte
                 $product->update([
-                    'stock' => $product->stock - $item['quantity'],
+                    'stock' => $product->stock - $item['cantidad'],
                 ]);
             }
             
@@ -149,3 +149,4 @@ class OrderController extends Controller
         ]);
     }
 }
+

@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    // Mostrar llistat de categories.
+    // Mostrar listado de categorías.
 
     public function index()
     {
         $categories = Category::all();
         return response()->json([
-            'status' => 'success',
+            'status' => 'éxito',
             'categorias' => $categories
         ]);
     }
 
-    // Emmagatzemar una nova categoria.
+    // Almacenar una nueva categoría.
 
     public function store(Request $request)
     {
@@ -32,26 +32,26 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'errors' => $validator->errors()
+                'errores' => $validator->errors()
             ], 422);
         }
 
         $category = Category::create($request->all());
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Category created successfully',
+            'status' => 'éxito',
+            'mensaje' => 'Categoría creada correctamente',
             'categoria' => $category
         ], 201);
     }
 
-    // Mostrar una categoria específica.
+    // Mostrar una categoría específica.
 
     public function show($id)
     {
         $category = Category::with('products')->findOrFail($id);
         return response()->json([
-            'status' => 'success',
+            'status' => 'éxito',
             'categoria' => $category
         ]);
     }

@@ -9,20 +9,22 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ReviewController;
-use App\Http\Controllers\API\CartController; // Add this line
+use App\Http\Controllers\API\CartController; 
 
 // Rutes públiques
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // Categories i Productes (públics)
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::get('/categorias', [CategoryController::class, 'index']);
+Route::get('/categorias/{id}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
-Route::get('/products/{id}/reviews', [ReviewController::class, 'getProductReviews']);
-Route::get('/products/{id}/ratings', [ReviewController::class, 'getProductRatings']);
+Route::get('/products/reviews/{id}', [ReviewController::class, 'getProductReviews']);
+Route::get('/products/ratings/{id}', [ReviewController::class, 'getProductRatings']);
+Route::get('/reviews', [ReviewController::class, 'getAllReviews']); 
+Route::get('/ratings', [ReviewController::class, 'getAllRatings']); 
 
 // Rutes protegides (requereixen autenticació)
 Route::middleware('auth:sanctum')->group(function () {
@@ -37,10 +39,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/orders', [UserController::class, 'orderHistory']);
     
     // Mètodes de pagament
-    Route::get('/user/payment-methods', [UserController::class, 'paymentMethods']);
-    Route::post('/user/payment-methods', [PaymentMethodController::class, 'store']);
-    Route::put('/user/payment-methods/{id}', [PaymentMethodController::class, 'update']);
-    Route::delete('/user/payment-methods/{id}', [PaymentMethodController::class, 'destroy']);
+    Route::get('/user/metodopago', [UserController::class, 'paymentMethods']);
+    Route::post('/user/metodopago', [PaymentMethodController::class, 'store']);
+    Route::put('/user/metodopago/{id}', [PaymentMethodController::class, 'update']);
+    Route::delete('/user/metodopago/{id}', [PaymentMethodController::class, 'destroy']);
+    
+    // Add the missing route for payment-methods
+    Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
     
     // Comandes
     Route::post('/orders', [OrderController::class, 'store']);
@@ -48,13 +53,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
     
     // Rutes d'administració
-    Route::post('/categories', [CategoryController::class, 'store']);
-    Route::put('/categories/{id}', [CategoryController::class, 'update']);
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+    Route::post('/categorias', [CategoryController::class, 'store']);
+    Route::put('/categorias/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categorias/{id}', [CategoryController::class, 'destroy']);
     
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    // Rutas protegidas para vendedores
+    Route::middleware(['auth:sanctum', 'check.seller'])->group(function () {
+    // Productos
+    Route::post('/productos', [ProductController::class, 'store']);
+    Route::put('/productos/{id}', [ProductController::class, 'update']);
+    Route::delete('/productos/{id}', [ProductController::class, 'destroy']);
+    Route::get('/seller/productos', [ProductController::class, 'sellerProducts']);
+    });
+    Route::get('/productos', [ProductController::class, 'index']);
     
     // Protected review/rating actions
     Route::post('/reviews', [ReviewController::class, 'storeReview']);
@@ -64,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/register-admin', function (Request $request) {
-        // Check if the current user is an admin
+        // Mirem si és admin
         if (!$request->user()->isAdmin()) {
             return response()->json([
                 'status' => 'error',
@@ -79,10 +90,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Rutas del carrito
     Route::get('/cart', [CartController::class, 'getCart']);
+    Route::get('/cart/{id}', [CartController::class, 'getCartById']);
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::put('/cart/item/{id}', [CartController::class, 'updateCartItem']);
     Route::delete('/cart/item/{id}', [CartController::class, 'removeFromCart']);
     Route::delete('/cart/clear', [CartController::class, 'clearCart']);
     Route::post('/cart/checkout', [CartController::class, 'checkout']);
+    // Ruta per finalitzar el carret
+    Route::put('/cart/finish', [CartController::class, 'finishCart']);
+    
+    // Ruta per actualitzar l'adreça d'enviament
+    Route::put('/user/shipping-address', [UserController::class, 'updateShippingAddress']);
 });
+

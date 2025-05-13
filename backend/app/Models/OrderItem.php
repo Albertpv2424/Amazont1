@@ -14,7 +14,7 @@ class OrderItem extends Model
      *
      * @var string
      */
-    protected $table = 'pedir_productos';
+    protected $table = 'detalles_pedido';
 
     /**
      * The attributes that are mass assignable.

@@ -31,8 +31,8 @@ class Category extends Model
     /**
      * Obtenir els productes de la categoria.
      */
-    public function products()
+    public function productos()
     {
-        return $this->hasMany(Product::class, 'categoria_id', 'id_cat');
+        return $this->belongsToMany(Product::class, 'categoria_producto', 'categoria_id', 'producto_id');
     }
 }

@@ -9,29 +9,29 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'productos';
+    protected $table = 'productos'; // Changed from 'productos' to 'products'
     
     protected $primaryKey = 'id_prod';
     
     protected $fillable = [
         'nombre',
-        'descricion',  // Corregido de 'descripcion' a 'descricion' para coincidir con la BD
-        'precio',
+        'descripcion',  // Corregido de 'descricion' a 'description'
+        'precio',        // Corregido de 'precio' a 'price'
         'stock',
-        'categoria_id',  // Corregido de 'category_id' a 'categoria_id'
+        'categoria_id',  // Corregido de 'categoria_id' a 'category_id'
         'imagen',
-        'rebajas',
-        'precio_rebajado'
+        'on_sale',      // Corregido de 'rebajas' a 'on_sale'
+        'sale_price'    // Corregido de 'precio_rebajado' a 'sale_price'
     ];
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'categoria_id', 'id_cat');  // Corregido de 'category_id' a 'categoria_id'
+        return $this->belongsTo(Category::class, 'category_id', 'id_cat');  // Corregido de 'categoria_id' a 'category_id'
     }
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'producto_id', 'id_prod');
+        return $this->hasMany(OrderItem::class, 'product_id', 'id_prod');
     }
 
     /**
@@ -39,7 +39,7 @@ class Product extends Model
      */
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'producto_id', 'id_prod');
+        return $this->hasMany(Review::class, 'product_id', 'id_prod');
     }
 
     /**
@@ -47,7 +47,7 @@ class Product extends Model
      */
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'producto_id', 'id_prod');
+        return $this->hasMany(Rating::class, 'product_id', 'id_prod');
     }
 
     /**
@@ -56,5 +56,10 @@ class Product extends Model
     public function getAverageRatingAttribute()
     {
         return $this->ratings()->avg('puntuacion') ?? 0;
+    }
+
+    public function categorias()
+    {
+        return $this->belongsToMany(Category::class, 'categoria_producto', 'producto_id', 'categoria_id');
     }
 }

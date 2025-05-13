@@ -34,7 +34,6 @@ class UserController extends Controller
         // Validació de les dades d'entrada
         $validator = Validator::make($request->all(), [
             'email' => 'required_with:contraseña,contrasena|string|email|unique:users,email,' . Auth::id(),
-            'dirección' => 'nullable|string|max:255',
             'direccion' => 'nullable|string|max:255',
             'current_password' => 'required_with:contraseña,contrasena|string',
             'contraseña' => 'nullable|string|min:8|confirmed',
@@ -58,12 +57,7 @@ class UserController extends Controller
             $data['email'] = $request->email;
         }
 
-        // Actualitzar adreça si s'ha proporcionat (amb o sense accent)
-        if ($request->has('dirección')) {
-            $data['dirección'] = $request->dirección;
-        } elseif ($request->has('direccion')) {
-            $data['dirección'] = $request->direccion;
-        }
+
 
         // Actualitzar contrasenya si s'ha proporcionat
         if ($request->has('contraseña') || $request->has('contrasena')) {
@@ -134,6 +128,44 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'payment_methods' => $paymentMethods
+        ]);
+    }
+
+    /**
+     * Actualitzar l'adreça d'enviament de l'usuari.
+     */
+    public function updateShippingAddress(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'shipping_address' => 'required|string',
+            'ciudad' => 'required|string',
+            'codigo_postal' => 'required|string',
+            'provincia' => 'required|string',
+            'pais' => 'required|string',
+            'telefono' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = Auth::user();
+        $user->update([
+            'shipping_address' => $request->shipping_address,
+            'ciudad' => $request->ciudad,
+            'codigo_postal' => $request->codigo_postal,
+            'provincia' => $request->provincia,
+            'pais' => $request->pais,
+            'telefono' => $request->telefono,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Adreça d\'enviament actualitzada correctament',
+            'user' => $user
         ]);
     }
 }

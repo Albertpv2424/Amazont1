@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->decimal('total', 10, 2);
-            $table->string('status')->default('pending');
-            $table->unsignedBigInteger('payment_method_id')->nullable();
+            $table->string('estado')->default('pendiente');
+            $table->unsignedBigInteger('metodo_pago_id')->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('pedidos');
     }
 };

@@ -19,12 +19,12 @@ class AuthController extends Controller
             'nombre' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'contraseña' => 'required|string|min:8|confirmed',
-            'dirección' => 'nullable|string',
+            'direccion' => 'nullable|string',
             'telefono' => 'nullable|string',
             'ciudad' => 'nullable|string',
             'codigo_postal' => 'nullable|string',
             'pais' => 'nullable|string',
-            'rol' => 'nullable|string|in:admin,customer', // Add validation for role
+            'rol' => 'nullable|string|in:admin,Cliente,vendedor', // Update with correct role values
         ]);
 
         if ($validator->fails()) {
@@ -38,12 +38,12 @@ class AuthController extends Controller
             'nombre' => $request->nombre,
             'email' => $request->email,
             'contraseña' => Hash::make($request->contraseña),
-            'dirección' => $request->dirección,
+            'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'ciudad' => $request->ciudad,
             'codigo_postal' => $request->codigo_postal,
             'pais' => $request->pais,
-            'rol' => $request->rol ?? 'customer', // Set default role to customer if not provided
+            'rol' => $request->rol ?? 'Cliente',
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

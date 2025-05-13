@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -49,15 +50,20 @@ export class LoginComponent implements OnInit {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
       
-      const success = this.authService.login(email, password);
-      
-      if (success) {
-        this.router.navigate(['/']);
-      } else {
-        this.loginError = true;
-      }
+      this.authService.login(email, password).subscribe({
+        next: (response) => {
+          // Guarda el token rebut
+          if (response && response.access_token) {
+            this.authService.saveToken(response.access_token);
+          }
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.loginError = true;
+        }
+      });
     }
-  }
+}
 
   // Helper methods for form validation
   get f() { return this.loginForm.controls; }

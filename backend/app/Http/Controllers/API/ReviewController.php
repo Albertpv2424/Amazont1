@@ -113,4 +113,30 @@ class ReviewController extends Controller
             'rating' => $rating
         ], 201);
     }
+
+    /**
+     * Obtener todas las reviews
+     */
+    public function getAllReviews()
+    {
+        $reviews = Review::with(['user', 'product'])->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'reviews' => $reviews
+        ]);
+    }
+
+    /**
+     * Obtener todos los ratings
+     */
+    public function getAllRatings()
+    {
+        $ratings = Rating::with(['user', 'product'])->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'ratings' => $ratings
+        ]);
+    }
 }

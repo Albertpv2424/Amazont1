@@ -40,10 +40,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Subscribe to authentication state changes
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      console.log('HEADER: isLoggedIn canviat:', isLoggedIn); // DEBUG
       this.isLoggedIn = isLoggedIn;
-      
       if (isLoggedIn) {
         const user = this.authService.getCurrentUser();
         if (user) {

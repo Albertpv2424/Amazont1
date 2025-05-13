@@ -3,32 +3,57 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Cart; 
+use App\Models\CartItem; 
+use App\Models\Product; 
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Validator; 
 
 class CartController extends Controller
 {
     /**
-     * Obtenir el carrito de l'usuari autenticat.
+     * Obtener el carrito del usuario autenticado.
      */
     public function getCart()
     {
-        $user = Auth::user();
-        $cart = Cart::with('cartItems.product')
-            ->where('user_id', $user->id)
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::with('cartItems.product') // Cargar el carrito con sus ítems y productos
+            ->where('user_id', $user->id) // Buscar el carrito del usuario
             ->first();
             
-        if (!$cart) {
+        if (!$cart) { // Si no existe el carrito, crearlo
             $cart = Cart::create([
-                'user_id' => $user->id,
-                'total' => 0
+                'user_id' => $user->id, // Asociar el carrito al usuario
+                'total' => 0 // Inicializar el total en 0
             ]);
         }
             
+        return response()->json([ // Devolver el carrito en la respuesta
+            'status' => 'success',
+            'cart' => $cart
+        ]);
+    }
+    
+    /**
+     * Obtener un carrito específico por ID.
+     */
+    public function getCartById($id)
+    {
+        $user = Auth::user(); // Obtener el usuario autenticado
+        
+        // Si el usuario es administrador, puede ver cualquier carrito
+        if ($user->rol === 'admin') {
+            $cart = Cart::with('cartItems.product')
+                ->findOrFail($id);
+        } else {
+            // Si no es admin, solo puede ver sus propios carritos
+            $cart = Cart::with('cartItems.product')
+                ->where('user_id', $user->id)
+                ->where('id', $id)
+                ->firstOrFail();
+        }
+        
         return response()->json([
             'status' => 'success',
             'cart' => $cart
@@ -36,34 +61,42 @@ class CartController extends Controller
     }
     
     /**
-     * Afegir un producte al carrito.
+     * Agregar un producto al carrito.
      */
     public function addToCart(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required|exists:productos,id_prod',
-            'quantity' => 'required|integer|min:1',
+            'producto_id' => 'required|exists:productos,id_prod',
+            'cantidad' => 'required|integer|min:1',
         ]);
-        
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'errors' => $validator->errors()
             ], 422);
         }
-        
+    
         $user = Auth::user();
-        $product = Product::findOrFail($request->product_id);
-        
-        // Comprovar si hi ha suficient estoc
-        if ($product->stock < $request->quantity) {
+        $product = Product::findOrFail($request->producto_id);
+    
+        // Utilitza els noms correctes segons la base de dades
+        $price = ($product->en_oferta && $product->precio_oferta !== null) ? $product->precio_oferta : $product->precio;
+    
+        if ($price === null) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Not enough stock available'
+                'message' => 'El preu del producte no està definit'
             ], 400);
         }
-        
-        // Obtenir o crear el carrito
+    
+        if ($product->stock < $request->cantidad) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No hi ha prou estoc disponible'
+            ], 400);
+        }
+    
         $cart = Cart::where('user_id', $user->id)->first();
         if (!$cart) {
             $cart = Cart::create([
@@ -71,65 +104,63 @@ class CartController extends Controller
                 'total' => 0
             ]);
         }
-        
-        // Comprovar si el producte ja està al carrito
+    
         $cartItem = CartItem::where('carrito_id', $cart->id)
-            ->where('producto_id', $request->product_id)
+            ->where('producto_id', $request->producto_id)
             ->first();
-            
-        $price = $product->rebajas ? $product->precio_rebajado : $product->precio;
-        
+    
         if ($cartItem) {
-            // Actualitzar la quantitat
+            // Si el producte ja està al carret, actualitza la quantitat
             $cartItem->update([
-                'cantidad' => $cartItem->cantidad + $request->quantity,
+                'cantidad' => $cartItem->cantidad + $request->cantidad,
                 'precio' => $price
             ]);
         } else {
-            // Crear un nou element al carrito
+            // Si no hi és, afegeix-lo com a nou ítem
             $cartItem = CartItem::create([
                 'carrito_id' => $cart->id,
-                'producto_id' => $request->product_id,
-                'cantidad' => $request->quantity,
+                'producto_id' => $request->producto_id,
+                'cantidad' => $request->cantidad,
                 'precio' => $price
             ]);
         }
-        
-        // Actualitzar el total del carrito
+    
+        // Actualitza el total del carret
         $this->updateCartTotal($cart);
-        
+    
         return response()->json([
             'status' => 'success',
-            'message' => 'Product added to cart',
+            'message' => 'Producte afegit al carret',
             'cart' => $cart->load('cartItems.product')
         ]);
     }
     
     /**
-     * Actualitzar la quantitat d'un producte al carrito.
+     * Actualizar la cantidad de un producto en el carrito.
      */
     public function updateCartItem(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'product_id' => 'required|exists:products,id', // Canviat de 'productos,id_prod' a 'products,id'
             'quantity' => 'required|integer|min:1',
         ]);
         
-        if ($validator->fails()) {
+        if ($validator->fails()) { // Si la validación falla, devolver errores
             return response()->json([
                 'status' => 'error',
                 'errors' => $validator->errors()
             ], 422);
         }
         
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->firstOrFail();
-        $cartItem = CartItem::where('carrito_id', $cart->id)
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::where('user_id', $user->id)->firstOrFail(); // Buscar el carrito del usuario
+        $cartItem = CartItem::where('carrito_id', $cart->id) // Buscar el ítem en el carrito
             ->where('id', $id)
             ->firstOrFail();
             
-        $product = Product::findOrFail($cartItem->producto_id);
+        $product = Product::findOrFail($cartItem->producto_id); // Buscar el producto asociado
         
-        // Comprovar si hi ha suficient estoc
+        // Comprobar si hay suficiente stock
         if ($product->stock < $request->quantity) {
             return response()->json([
                 'status' => 'error',
@@ -137,14 +168,14 @@ class CartController extends Controller
             ], 400);
         }
         
-        $cartItem->update([
+        $cartItem->update([ // Actualizar la cantidad del ítem
             'cantidad' => $request->quantity
         ]);
         
-        // Actualitzar el total del carrito
+        // Actualizar el total del carrito
         $this->updateCartTotal($cart);
         
-        return response()->json([
+        return response()->json([ // Devolver el carrito actualizado
             'status' => 'success',
             'message' => 'Cart item updated',
             'cart' => $cart->load('cartItems.product')
@@ -152,22 +183,22 @@ class CartController extends Controller
     }
     
     /**
-     * Eliminar un producte del carrito.
+     * Eliminar un producto del carrito.
      */
     public function removeFromCart($id)
     {
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->firstOrFail();
-        $cartItem = CartItem::where('carrito_id', $cart->id)
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::where('user_id', $user->id)->firstOrFail(); // Buscar el carrito del usuario
+        $cartItem = CartItem::where('carrito_id', $cart->id) // Buscar el ítem en el carrito
             ->where('id', $id)
             ->firstOrFail();
             
-        $cartItem->delete();
+        $cartItem->delete(); // Eliminar el ítem del carrito
         
-        // Actualitzar el total del carrito
+        // Actualizar el total del carrito
         $this->updateCartTotal($cart);
         
-        return response()->json([
+        return response()->json([ // Devolver el carrito actualizado
             'status' => 'success',
             'message' => 'Product removed from cart',
             'cart' => $cart->load('cartItems.product')
@@ -175,19 +206,19 @@ class CartController extends Controller
     }
     
     /**
-     * Buidar el carrito.
+     * Vaciar el carrito.
      */
     public function clearCart()
     {
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->first();
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::where('user_id', $user->id)->first(); // Buscar el carrito del usuario
         
         if ($cart) {
-            CartItem::where('carrito_id', $cart->id)->delete();
-            $cart->update(['total' => 0]);
+            CartItem::where('carrito_id', $cart->id)->delete(); // Eliminar todos los ítems del carrito
+            $cart->update(['total' => 0]); // Reiniciar el total del carrito
         }
         
-        return response()->json([
+        return response()->json([ // Devolver el carrito vacío
             'status' => 'success',
             'message' => 'Cart cleared',
             'cart' => $cart
@@ -195,37 +226,35 @@ class CartController extends Controller
     }
     
     /**
-     * Convertir el carrito en una comanda.
+     * Convertir el carrito en una orden.
      */
     public function checkout(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [ // Validar el método de pago
             'payment_method_id' => 'nullable|exists:metodo_pago,id',
         ]);
         
-        if ($validator->fails()) {
+        if ($validator->fails()) { // Si la validación falla, devolver errores
             return response()->json([
                 'status' => 'error',
                 'errors' => $validator->errors()
             ], 422);
         }
         
-        $user = Auth::user();
-        $cart = Cart::with('cartItems.product')
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::with('cartItems.product') // Cargar el carrito con sus ítems y productos
             ->where('user_id', $user->id)
             ->first();
             
-        if (!$cart || $cart->cartItems->isEmpty()) {
+        if (!$cart || $cart->cartItems->isEmpty()) { // Si el carrito está vacío, devolver error
             return response()->json([
                 'status' => 'error',
                 'message' => 'Cart is empty'
             ], 400);
         }
         
-        // Get payment method ID from request or use default if not provided
+        // Obtener el método de pago o usar el predeterminado
         $paymentMethodId = $request->payment_method_id;
-        
-        // If no payment method provided, get user's default payment method
         if (!$paymentMethodId) {
             $defaultPaymentMethod = $user->paymentMethods()
                 ->where('is_default', true)
@@ -237,17 +266,17 @@ class CartController extends Controller
         }
         
         try {
-            // Start transaction
+            // Iniciar una transacción
             \DB::beginTransaction();
             
-            // Create order
+            // Crear la orden
             $order = \App\Models\Order::create([
                 'user_id' => $user->id,
                 'total' => $cart->total,
                 'metodo_pago_id' => $paymentMethodId,
             ]);
             
-            // Create order items
+            // Crear los ítems de la orden
             foreach ($cart->cartItems as $cartItem) {
                 \App\Models\OrderItem::create([
                     'pedido_id' => $order->id,
@@ -256,26 +285,28 @@ class CartController extends Controller
                     'precio' => $cartItem->precio,
                 ]);
                 
-                // Update product stock
+                // Actualizar el stock del producto
                 $product = $cartItem->product;
                 $product->update([
                     'stock' => $product->stock - $cartItem->cantidad,
                 ]);
             }
             
-            // Clear cart
+            // Vaciar el carrito
             CartItem::where('carrito_id', $cart->id)->delete();
             $cart->update(['total' => 0]);
+            $cart->estado = 'finalizado';
+            $cart->save();
             
-            \DB::commit();
+            \DB::commit(); // Confirmar la transacción
             
-            return response()->json([
+            return response()->json([ // Devolver la orden creada
                 'status' => 'success',
                 'message' => 'Order created successfully',
                 'order' => $order->load('orderItems.product'),
             ], 201);
         } catch (\Exception $e) {
-            \DB::rollBack();
+            \DB::rollBack(); // Revertir la transacción en caso de error
             return response()->json([
                 'status' => 'error',
                 'message' => 'Error creating order',
@@ -285,15 +316,92 @@ class CartController extends Controller
     }
     
     /**
-     * Actualitzar el total del carrito.
+     * Actualizar el total del carrito.
      */
     private function updateCartTotal(Cart $cart)
     {
-        $total = 0;
-        foreach ($cart->cartItems as $item) {
-            $total += $item->precio * $item->cantidad;
+        $total = 0; // Inicializar el total
+        foreach ($cart->cartItems as $item) { // Recorrer los ítems del carrito
+            $total += $item->precio * $item->cantidad; // Sumar el precio por la cantidad
         }
         
-        $cart->update(['total' => $total]);
+        $cart->update(['total' => $total]); // Actualizar el total en el carrito
+    }
+    
+    /**
+     * Finalitzar un carret de compra.
+     */
+    public function finishCart(Request $request)
+    {
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->where('estado', 'actiu')->first();
+    
+        if (!$cart) {
+            return response()->json(['status' => 'error', 'message' => 'No active cart found.'], 404);
+        }
+    
+        $cartItems = $cart->cartItems;
+        if ($cartItems->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'Cart is empty.'], 400);
+        }
+    
+        $request->validate([
+            'metodo_pago_id' => 'required|exists:metodos_pago,id'
+        ]);
+    
+        // Check that the payment method belongs to the user
+        $paymentMethod = $user->paymentMethods()->where('id', $request->metodo_pago_id)->first();
+        if (!$paymentMethod) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid payment method.'], 403);
+        }
+    
+        // Create the order
+        $order = \App\Models\Order::create([
+            'user_id' => $user->id,
+            'estado' => 'pendent',
+            'total' => $cart->total,
+            'metodo_pago_id' => $request->metodo_pago_id
+        ]);
+    
+        // Create order items
+        foreach ($cartItems as $item) {
+            \App\Models\OrderItem::create([
+                'pedido_id' => $order->id,
+                'producto_id' => $item->producto_id,
+                'cantidad' => $item->cantidad,
+                'precio' => $item->precio
+            ]);
+            // Optionally update product stock here
+             $item->product->decrement('stock', $item->cantidad);
+        }
+    
+        // Mark cart as finished or clear it
+        $cart->estado = 'finalitzat';
+        $cart->save();
+        $cart->cartItems()->delete();
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Order created successfully.',
+            'order' => $order
+        ]);
+    }
+    
+    public function getCartState(Request $request)
+    {
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $cart = Cart::where('user_id', $user->id)->first();
+    
+        if (!$cart) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No cart found for the user'
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => 'success',
+            'cart' => $cart->load('cartItems.product')
+        ]);
     }
 }

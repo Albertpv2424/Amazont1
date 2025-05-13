@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Usuario } from '../../interfaces/usuario.interface';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro',
@@ -75,23 +76,30 @@ export class RegistroComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     this.registrationError = '';
-
+  
     if (this.registroForm.valid) {
       const user: Usuario = {
         nombre: this.registroForm.value.nombre,
         email: this.registroForm.value.email,
-        password: this.registroForm.value.password,
-        tipoUsuario: this.registroForm.value.tipoUsuario,
-        aceptaTerminos: this.registroForm.value.aceptaTerminos
+        contraseña: this.registroForm.value.password,
+        contraseña_confirmation: this.registroForm.value.confirmPassword,
+        rol: this.registroForm.value.tipoUsuario,
+        aceptaTerminos: false
       };
+      console.log('User object being sent:', user);
 
-      const success = this.authService.register(user);
-      
-      if (success) {
-        this.router.navigate(['/login']);
-      } else {
-        this.registrationError = 'El correo electrónico ya está registrado';
-      }
+      this.authService.register(user).subscribe({
+        next: (response) => {
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          if (error.status === 422) {
+            this.registrationError = 'El correo electrónico ya está registrado o los datos son incorrectos';
+          } else {
+            this.registrationError = 'Error en el registro. Inténtalo de nuevo.';
+          }
+        }
+      });
     }
   }
 

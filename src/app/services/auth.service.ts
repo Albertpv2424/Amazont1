@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../interfaces/usuario.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<Usuario | null>(null);
   public currentUser$: Observable<Usuario | null> = this.currentUserSubject.asObservable();
   
-  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  public isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  private loggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     this.checkUserInStorage();
   }
 
@@ -22,70 +23,39 @@ export class AuthService {
     if (storedUser) {
       const user = JSON.parse(storedUser);
       this.currentUserSubject.next(user);
-      this.isLoggedInSubject.next(true);
+      this.loggedInSubject.next(true);
     }
   }
 
-  login(email: string, password: string): boolean {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    const user = users.find((u: Usuario) => 
-      u.email === email && u.password === password
+  login(email: string, password: string): Observable<any> {
+    return this.http.post('http://localhost:8000/api/login', { email, contraseña: password }).pipe(
+      tap((response: any) => {
+        // Guarda el token si existe
+        if (response.access_token) {
+          this.saveToken(response.access_token);
+        }
+        // Guarda el usuario en localStorage y actualiza el estado
+        if (response.user) {
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
+          this.currentUserSubject.next(response.user);
+          this.loggedInSubject.next(true);
+        }
+      })
     );
-    
-    if (user) {
-      const safeUser = { ...user };
-      
-      localStorage.setItem('currentUser', JSON.stringify(safeUser));
-      
-      this.currentUserSubject.next(safeUser);
-      this.isLoggedInSubject.next(true);
-      
-      return true;
-    }
-    
-    if (email === 'test@example.com' && password === 'password') {
-      const user: Usuario = {
-        nombre: 'Usuario de Prueba',
-        email: email,
-        password: '', 
-        tipoUsuario: 'Cliente',
-        aceptaTerminos: true
-      };
-      
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
-      this.isLoggedInSubject.next(true);
-      
-      return true;
-    }
-    
-    return false;
   }
 
-  register(user: Usuario): boolean {
+  // Afegeix aquest mètode per guardar el token
+  saveToken(token: string): void {
+    localStorage.setItem('access_token', token);
+  }
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
+  getToken(): string | null {
+    return localStorage.getItem('access_token');
+  }
 
-    const emailExists = users.some((u: Usuario) => u.email === user.email);
-    if (emailExists) {
-      console.error('Email already registered');
-      return false;
-    }
-    
-
-    users.push(user);
-    
-
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    // Set the current user after registration
-    this.updateCurrentUser(user);
-    this.isLoggedInSubject.next(true);
-    
-    console.log('User registered successfully:', user.email);
-    return true;
+  register(user: Usuario): Observable<any> {
+    // Envia una petició POST al backend per registrar l'usuari
+    return this.http.post('http://localhost:8000/api/register', user);
   }
 
   // Add this method if it doesn't exist or fix it if it's incorrectly implemented
@@ -110,7 +80,7 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     
     this.currentUserSubject.next(null);
-    this.isLoggedInSubject.next(false);
+    this.loggedInSubject.next(false);
     
     this.router.navigate(['/']);
   }
@@ -120,6 +90,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.isLoggedInSubject.value;
+    return this.loggedInSubject.value;
   }
 }

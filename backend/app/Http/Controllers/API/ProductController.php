@@ -7,24 +7,28 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     /**
-     * Mostrar llistat de productes.
+     * Mostrar listado de productos.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with('categorias');
         
-        // Filtra per categoria si s'ha proporcionat
+        // Filtrar por categoría si se ha proporcionado
         if ($request->has('categoria_id')) {
-            $query->where('categoria_id', $request->categoria_id);
+            $categoriaId = $request->categoria_id;
+            $query->whereHas('categorias', function($q) use ($categoriaId) {
+                $q->where('categorias.id_cat', $categoriaId);
+            });
         }
         
-        // Filter by price range if provided
+        // Filtrar por rango de precio si se ha proporcionado
         if ($request->has('precio_min')) {
             $query->where('precio', '>=', $request->precio_min);
         }
@@ -33,71 +37,38 @@ class ProductController extends Controller
             $query->where('precio', '<=', $request->precio_max);
         }
         
-        // Search by name if provided
+        // Buscar por nombre si se ha proporcionado
         if ($request->has('buscar')) {
             $query->where('nombre', 'like', '%' . $request->buscar . '%')
                   ->orWhere('descricion', 'like', '%' . $request->buscar . '%');
         }
         
-        // Sort products
+        // Ordenar productos
         $sortBy = $request->get('ordenar_por', 'created_at');
         $sortOrder = $request->get('orden', 'desc');
         $query->orderBy($sortBy, $sortOrder);
         
-        // Paginate results
+        // Paginación de resultados
         $perPage = $request->get('por_pagina', 10);
         $products = $query->paginate($perPage);
         
         return response()->json([
-            'status' => 'success',
+            'status' => 'éxito',
             'productos' => $products
         ]);
     }
 
-    //Mostrar un producte específic.
-    
+    // Mostrar un producto específico.
     public function show($id)
     {
-        $product = Product::with(['category', 'reviews.user', 'ratings'])
-            ->findOrFail($id);
-        
-        // Añadir valoración media al producto
-        $product->average_rating = $product->getAverageRatingAttribute();
-        
+        $producto = Product::with('category')->findOrFail($id);
         return response()->json([
-            'status' => 'success',
-            'producto' => $product
+            'status' => 'éxito',
+            'producto' => $producto
         ]);
     }
 
-    //Obtenir productes destacats per la pàgina principal.
-
-    public function featured()
-    {
-        $featuredProducts = Product::where('rebajas', true)
-                                  ->orderBy('created_at', 'desc')
-                                  ->take(6)
-                                  ->get();
-        
-        return response()->json([
-            'status' => 'success',
-            'productos_destacados' => $featuredProducts
-        ]);
-    }
-
-    // Obtenir productes per categoria.
-
-    public function byCategory($categoryId)
-    {
-        $products = Product::where('categoria_id', $categoryId)->get();
-        
-        return response()->json([
-            'status' => 'success',
-            'productos' => $products
-        ]);
-    }
-
-    // Emmagatzemar un nou producte.
+    // Crear un nuevo producto.
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -107,66 +78,90 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'rebajas' => 'boolean',
             'precio_rebajado' => 'nullable|numeric|min:0',
-            'categoria_id' => 'required|exists:categorias,id_cat',
+            'categorias' => 'required|array|min:1',
+            'categorias.*' => 'exists:categorias,id_cat',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'errors' => $validator->errors()
+                'errores' => $validator->errors()
             ], 422);
         }
 
-        $product = Product::create($request->all());
+        DB::beginTransaction();
+        try {
+            $producto = Product::create($request->except('categorias'));
+            $producto->categorias()->sync($request->categorias);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product created successfully',
-            'producto' => $product
-        ], 201);
+            DB::commit();
+            return response()->json([
+                'status' => 'éxito',
+                'mensaje' => 'Produto criado corretamente',
+                'producto' => $producto->load('categorias')
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'mensaje' => 'Erro ao criar produto',
+                'errores' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    // Actualitzar un producte específic.
- 
+    // Actualizar un producto específico.
     public function update(Request $request, $id)
     {
+        $producto = Product::findOrFail($id);
+
         $validator = Validator::make($request->all(), [
-            'nombre' => 'string|max:255',
+            'nombre' => 'sometimes|required|string|max:255',
             'descricion' => 'nullable|string',
-            'precio' => 'numeric|min:0',
-            'stock' => 'integer|min:0',
+            'precio' => 'sometimes|required|numeric|min:0',
+            'stock' => 'sometimes|required|integer|min:0',
             'rebajas' => 'boolean',
             'precio_rebajado' => 'nullable|numeric|min:0',
-            'categoria_id' => 'exists:categorias,id_cat',
+            'categoria_id' => 'sometimes|required|exists:categorias,id_cat',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'errors' => $validator->errors()
+                'errores' => $validator->errors()
             ], 422);
         }
 
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
+        $producto->update($request->all());
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Product updated successfully',
-            'producto' => $product
+            'status' => 'éxito',
+            'mensaje' => 'Producto actualizado correctamente',
+            'producto' => $producto
         ]);
     }
 
-    // Eliminar un producte específic.
-
+    // Eliminar un producto específico.
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
+        $producto = Product::findOrFail($id);
+        $producto->delete();
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Product deleted successfully'
+            'status' => 'éxito',
+            'mensaje' => 'Producto eliminado correctamente'
+        ]);
+    }
+
+    // Mostrar los productos del vendedor autenticado.
+    public function sellerProducts(Request $request)
+    {
+        $user = $request->user();
+        $productos = Product::where('vendedor_id', $user->id)->get();
+
+        return response()->json([
+            'status' => 'éxito',
+            'productos' => $productos
         ]);
     }
 }

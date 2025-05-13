@@ -13,22 +13,17 @@ class Cart extends Model
 
     protected $fillable = [
         'user_id',
-        'total'
+        'total',
+        'estado' // Ensure this field is included
     ];
 
-    /**
-     * Obtenir l'usuari propietari del carrito.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Obtenir els elements del carrito.
-     */
     public function cartItems()
     {
-        return $this->hasMany(CartItem::class, 'carrito_id', 'id');
+        return $this->hasMany(CartItem::class, 'carrito_id');
     }
 }

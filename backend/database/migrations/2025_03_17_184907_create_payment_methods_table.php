@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
+        Schema::create('metodos_pago', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('type'); // credit_card, paypal, bank_transfer
-            $table->string('card_number')->nullable();
-            $table->string('card_holder_name')->nullable();
-            $table->string('expiration_date')->nullable();
-            $table->boolean('is_default')->default(false);
+            $table->string('tipo'); // tarjeta_credito, paypal, transferencia_bancaria
+            $table->string('numero_tarjeta')->nullable();
+            $table->string('nombre_titular')->nullable();
+            $table->string('fecha_expiracion')->nullable();
+            $table->boolean('es_predeterminado')->default(false);
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('metodos_pago');
     }
 };
