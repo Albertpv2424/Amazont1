@@ -47,9 +47,23 @@ class CategoryController extends Controller
 
     // Mostrar una categoría específica.
 
+    // Mostrar una categoría específica por ID.
     public function show($id)
     {
         $category = Category::with('productos')->findOrFail($id);
+        return response()->json([
+            'status' => 'éxito',
+            'categoria' => $category
+        ]);
+    }
+
+    // Mostrar una categoría específica por nombre.
+    public function showByName($name)
+    {
+        $category = Category::with('productos')
+            ->where('nombre', $name)
+            ->firstOrFail();
+            
         return response()->json([
             'status' => 'éxito',
             'categoria' => $category

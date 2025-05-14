@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../interfaces/usuario.interface';
 import { HttpClient } from '@angular/common/http';
@@ -84,8 +84,12 @@ export class AuthService {
   }
   
   logout() {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/logout`, {}, headers ? { headers: new HttpHeaders(headers) } : {}).pipe(
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
       tap(() => {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('access_token');
@@ -93,6 +97,18 @@ export class AuthService {
   
         this.currentUserSubject.next(null);
         this.loggedInSubject.next(false);
+      }),
+      catchError(error => {
+        // En caso de error, limpiamos igualmente los datos locales
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('carrito');
+        
+        this.currentUserSubject.next(null);
+        this.loggedInSubject.next(false);
+        
+        // Devolvemos un observable vacío para que la aplicación continúe
+        return of(null);
       })
     );
   }

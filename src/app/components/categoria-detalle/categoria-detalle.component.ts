@@ -41,35 +41,30 @@ export class CategoriaDetalleComponent implements OnInit {
       const nombreCategoria = params['nombre'];
       this.nombreCategoria = nombreCategoria;
       console.log('Nom de la categoria:', nombreCategoria);
-
-      // Primer, obtenim totes les categories per trobar la id
-      this.http.get<any>('http://localhost:8000/api/categorias').subscribe({
+  
+      // Hacer la petición directa a la API usando el nombre de la categoría
+      this.http.get<any>(`http://localhost:8000/api/categorias/nombre/${nombreCategoria}`).subscribe({
         next: (response) => {
-          const categories = response.categorias || [];
-          // CORRECCIÓ: Buscar per id_cat, no per id!
-          const categoria = categories.find((cat: any) => cat.nombre.toLowerCase() === nombreCategoria.toLowerCase());
-          if (categoria && categoria.id_cat) {
-            const idCategoria = categoria.id_cat; // <-- Aquí el canvi important
-            console.log('ID de la categoria trobada:', idCategoria);
-
-            // Ara sí, fem la petició pel detall de la categoria o productes
-            this.http.get<any>(`http://localhost:8000/api/categorias/${idCategoria}`).subscribe({
-              next: (resp) => {
-                this.productos = resp.productos || [];
-                console.log('Productes carregats des de l\'API:', this.productos);
-              },
-              error: (err) => {
-                console.error('Error carregant productes des de l\'API:', err);
-                this.productos = [];
-              }
-            });
+          console.log('Resposta detall categoria:', response);
+          if ((response.status === "exito" || response.status === "éxito") && response.categoria) {
+            // Extraer la información de la categoría
+            const categoria = response.categoria;
+            
+            // Guardar los productos de la categoría
+            this.productos = categoria.productos || [];
+            console.log('Productos cargados desde la API:', this.productos);
+            
+            // Añadir este log para verificar la estructura exacta de cada producto
+            if (this.productos.length > 0) {
+              console.log('Estructura del primer producto:', JSON.stringify(this.productos[0]));
+            }
           } else {
-            console.error('No s\'ha trobat la categoria amb aquest nom!');
+            console.error('Respuesta de API incorrecta:', response);
             this.productos = [];
           }
         },
         error: (err) => {
-          console.error('Error carregant categories des de l\'API:', err);
+          console.error('Error cargando productos desde la API:', err);
           this.productos = [];
         }
       });

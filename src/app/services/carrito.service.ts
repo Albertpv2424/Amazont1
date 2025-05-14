@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Producto } from '../interfaces/producto.interface';
 import { ProductosService } from './productos.service';
+import { AuthService } from './auth.service';
 
 export interface ProductoCarrito extends Producto {
   cantidad: number;
@@ -16,10 +17,11 @@ export class CarritoService {
 
   private carritoItems: ProductoCarrito[] = [];
   private carritoSubject = new BehaviorSubject<ProductoCarrito[]>([]);
+  private authService!: AuthService;
 
   constructor(
     private http: HttpClient,
-    private productosService: ProductosService
+    private productosService: ProductosService,
   ) {
     // Cargar carrito desde localStorage al iniciar
     const carritoGuardado = localStorage.getItem('carrito');
@@ -44,7 +46,12 @@ export class CarritoService {
   }
 
   getCarrito(): Observable<ProductoCarrito[]> {
-    return this.carritoSubject.asObservable();
+    return this.carritoSubject.asObservable().pipe(
+      map(items => {
+        // Assegurar-nos que sempre retornem un array
+        return Array.isArray(items) ? items : [];
+      })
+    );
   }
 
   actualizarCantidad(id: number, cantidad: number): void {
@@ -109,7 +116,19 @@ export class CarritoService {
       console.log('Nuevo producto añadido al carrito');
     }
     
-this.actualizarCarrito();
+    this.actualizarCarrito();
+    
+    // Sincronizar con el backend si el usuario está autenticado
+    if (this.authService.isLoggedIn()) {
+      this.http.post(`${this.apiUrl}/cart/add`, {
+        producto_id: producto.id,
+        cantidad: cantidad
+      }).subscribe(
+        response => console.log('Producto sincronizado con el backend', response),
+        error => console.error('Error al sincronizar con el backend', error)
+      );
+    }
+    
     return true;
   }
 

@@ -41,7 +41,7 @@
     @for (producto of productosFiltrados; track producto.id) {
       <div class="producto-card">
         <div (click)="navegarAProducto(producto)" style="cursor: pointer;">
-          <img [src]="producto.imagen" [alt]="producto.nombre">
+          <img [src]="'assets/' + producto.imagen" [alt]="producto.nombre">
           <h3>{{ producto.nombre }}</h3>
           <p>{{ producto.descripcion }}</p>
           <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
@@ -54,14 +54,3 @@
   </div>
 </div>
 
-<div *ngIf="productosFiltrados.length === 0">
-  <p>No hi ha productes en aquesta categoria.</p>
-</div>
-<div *ngFor="let producto of productosFiltrados">
-  <div (click)="navegarAProducto(producto)">
-    <h3>{{ producto.nombre }}</h3>
-    <p>{{ producto.descripcion }}</p>
-    <p>Preu: {{ producto.precio }} €</p>
-    <button (click)="anadirAlCarrito(producto); $event.stopPropagation()">Afegir al carret</button>
-  </div>
-</div>

@@ -18,6 +18,7 @@ Route::post('/login', [AuthController::class, 'login']);
 // Categories i Productes (públics)
 Route::get('/categorias', [CategoryController::class, 'index']);
 Route::get('/categorias/{id}', [CategoryController::class, 'show']);
+Route::get('/categorias/nombre/{name}', [CategoryController::class, 'showByName']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 

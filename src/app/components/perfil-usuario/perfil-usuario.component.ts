@@ -5,6 +5,8 @@ import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 import { PedidoService } from '../../services/pedido.service';
 import { Pedido } from '../../models/pedido.model';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -35,6 +37,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   metodosPago: any[] = [];
   pedidos: any[] = [];
+  http: any;
 
   constructor(
     private fb: FormBuilder,
@@ -391,7 +394,60 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   cargarPedidos(): void {
+    // Obtener los pedidos del servicio
     this.pedidos = this.pedidoService.getPedidos();
+    console.log('Pedidos cargados en perfil usuario:', this.pedidos);
+    
+    // Si no hay pedidos, intentar obtenerlos del backend
+    if (this.pedidos.length === 0 && this.authService.isLoggedIn()) {
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+        
+        // Hacer una petición al backend para obtener los pedidos
+        this.http.get('http://localhost:8000/api/orders', { headers }).subscribe(
+          (response: any) => {
+            console.log('Respuesta del backend (pedidos):', response);
+            if (response.status === 'success' && response.orders && Array.isArray(response.orders)) {
+              // Transformar los pedidos del backend al formato de la aplicación
+              this.pedidos = response.orders.map((order: any) => {
+                const pedido: Pedido = {
+                  id: order.id,
+                  fecha: order.created_at,
+                  total: order.total,
+                  estado: order.estado || 'Pendiente',
+                  productos: []
+                };
+                
+                // Si hay productos en el pedido, añadirlos
+                if (order.orderItems && Array.isArray(order.orderItems)) {
+                  pedido.productos = order.orderItems.map((item: any) => ({
+                    id: item.producto_id,
+                    nombre: item.product?.nombre || 'Producto',
+                    precio: item.precio,
+                    cantidad: item.cantidad,
+                    imagen: item.product?.imagen ? 'assets/' + item.product.imagen : 'assets/placeholder.png'
+                  }));
+                }
+                
+                return pedido;
+              });
+              
+              // Guardar los pedidos en el servicio
+              this.pedidos.forEach(pedido => {
+                this.pedidoService.guardarPedido(pedido);
+              });
+            }
+          },
+          (          error: any) => {
+            console.error('Error al obtener los pedidos del backend:', error);
+          }
+        );
+      }
+    }
   }
 
   verDetallesPedido(id: number): void {

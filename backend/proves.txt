@@ -37,6 +37,13 @@ CLIENTE
     "email": "prova@email.com",
     "contraseña": "password123"
 }
+bearer token 25|VrHrlH7UUSKz1lYtl01ASgZU9EfHiShpICJ8gxvrdd2b8098
+
+{
+    "email": "paudomec1212@gmail.com",
+    "contraseña": "password123"
+}
+
 VENDEDOR
 bearer token 5|u2mXyuyPmxOEHWFDnc1DCEnV0mMJCGJgPPie2AkB791dbcb2
 {

@@ -1,82 +1,82 @@
 import { Injectable } from '@angular/core';
 import { Pedido } from '../models/pedido.model';
+import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
-  private readonly PEDIDOS_KEY = 'pedidos';
+  private pedidos: Pedido[] = [];
 
-  constructor() { }
-
-  // Obtener todos los pedidos del localStorage
-  getPedidos(): Pedido[] {
-    const pedidosString = localStorage.getItem(this.PEDIDOS_KEY);
-    return pedidosString ? JSON.parse(pedidosString) : [];
+  constructor(private authService: AuthService) {
+    this.cargarPedidos();
   }
 
-  // Guardar un nuevo pedido
-  guardarPedido(pedido: Pedido): Pedido {
-    const pedidos = this.getPedidos();
-    
-    // Generar un ID único (puedes usar una lógica más robusta si es necesario)
-    pedido.id = this.generarId(pedidos);
-    
-    // Establecer la fecha actual si no se proporciona
-    if (!pedido.fecha) {
-      pedido.fecha = new Date().toISOString().split('T')[0];
+  private cargarPedidos(): void {
+    // Obtener el usuario actual
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.pedidos = [];
+      return;
     }
     
-    // Añadir el nuevo pedido a la lista
-    pedidos.push(pedido);
+    // Usar una clave específica para cada usuario
+    const userKey = `pedidos_${currentUser.email}`;
+    const pedidosGuardados = localStorage.getItem(userKey);
     
-    // Guardar la lista actualizada en localStorage
-    localStorage.setItem(this.PEDIDOS_KEY, JSON.stringify(pedidos));
-    
-    return pedido;
+    if (pedidosGuardados) {
+      try {
+        this.pedidos = JSON.parse(pedidosGuardados);
+        console.log('Pedidos cargados desde localStorage:', this.pedidos);
+      } catch (error) {
+        console.error('Error al parsear pedidos:', error);
+        this.pedidos = [];
+      }
+    } else {
+      this.pedidos = [];
+    }
   }
 
-  // Obtener un pedido específico por ID
+  private guardarEnLocalStorage(): void {
+    // Obtener el usuario actual
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+    
+    // Usar una clave específica para cada usuario
+    const userKey = `pedidos_${currentUser.email}`;
+    localStorage.setItem(userKey, JSON.stringify(this.pedidos));
+  }
+
+  getPedidos(): Pedido[] {
+    // Recargar los pedidos desde localStorage por si han cambiado
+    this.cargarPedidos();
+    return this.pedidos;
+  }
+
   getPedidoPorId(id: number): Pedido | undefined {
-    const pedidos = this.getPedidos();
-    return pedidos.find(p => p.id === id);
+    return this.pedidos.find(p => p.id === id);
   }
 
-  // Actualizar un pedido existente
-  actualizarPedido(pedido: Pedido): boolean {
-    const pedidos = this.getPedidos();
-    const index = pedidos.findIndex(p => p.id === pedido.id);
+  guardarPedido(pedido: Pedido): void {
+    // Verificar si ya existe un pedido con el mismo ID
+    const index = this.pedidos.findIndex(p => p.id === pedido.id);
     
     if (index !== -1) {
-      pedidos[index] = pedido;
-      localStorage.setItem(this.PEDIDOS_KEY, JSON.stringify(pedidos));
-      return true;
+      // Actualizar el pedido existente
+      this.pedidos[index] = pedido;
+    } else {
+      // Añadir el nuevo pedido
+      this.pedidos.push(pedido);
     }
     
-    return false;
+    // Guardar en localStorage
+    this.guardarEnLocalStorage();
+    console.log('Pedidos actualizados:', this.pedidos);
   }
 
-  // Eliminar un pedido
-  eliminarPedido(id: number): boolean {
-    const pedidos = this.getPedidos();
-    const nuevaLista = pedidos.filter(p => p.id !== id);
-    
-    if (nuevaLista.length !== pedidos.length) {
-      localStorage.setItem(this.PEDIDOS_KEY, JSON.stringify(nuevaLista));
-      return true;
-    }
-    
-    return false;
-  }
-
-  // Generar un ID único para el nuevo pedido
-  private generarId(pedidos: Pedido[]): number {
-    if (pedidos.length === 0) {
-      return 1;
-    }
-    
-    // Encontrar el ID más alto y añadir 1
-    const maxId = Math.max(...pedidos.map(p => p.id));
-    return maxId + 1;
+  eliminarPedido(id: number): void {
+    this.pedidos = this.pedidos.filter(p => p.id !== id);
+    this.guardarEnLocalStorage();
   }
 }
