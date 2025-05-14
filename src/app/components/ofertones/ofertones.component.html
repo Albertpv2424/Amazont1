@@ -4,8 +4,21 @@
   <div *ngIf="ofertas.length > 0" class="carrusel">
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
-      <div *ngFor="let oferta of visibleOffers">
-        <app-producto [producto]="oferta"></app-producto>
+      <div *ngFor="let oferta of visibleOffers" class="oferta-card">
+        <img [src]="'assets/' + oferta.imagen" alt="{{ oferta.nombre }}" class="oferta-img">
+        <h3>{{ oferta.nombre }}</h3>
+        <div class="preus">
+          <span class="preu-original" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio">
+            {{ oferta.precio | currency:'EUR':'symbol':'1.2-2' }}
+          </span>
+          <span class="preu-oferta">
+            {{ oferta.precio_oferta | currency:'EUR':'symbol':'1.2-2' }}
+          </span>
+          <span class="descompte" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio">
+            -{{ ((1 - oferta.precio_oferta / oferta.precio) * 100) | number:'1.0-0' }}%
+          </span>
+        </div>
+        <button class="btn-afegir">Afegir al carret</button>
       </div>
     </div>
     <button class="flecha derecha" (click)="next()"> → </button>

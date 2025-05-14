@@ -73,20 +73,30 @@ export class OfertonesComponent implements OnInit {
   }
 
   updateVisibleOffers(): void {
-    this.visibleOffers = this.ofertas.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
+    // Si hi ha menys ofertes que itemsPerPage, mostra totes
+    if (this.ofertas.length <= this.itemsPerPage) {
+      this.visibleOffers = this.ofertas.slice();
+      return;
+    }
+    // Si el currentIndex + itemsPerPage sobrepassa el final, agafa del final i del principi
+    if (this.currentIndex + this.itemsPerPage > this.ofertas.length) {
+      const endSlice = this.ofertas.slice(this.currentIndex);
+      const startSlice = this.ofertas.slice(0, (this.currentIndex + this.itemsPerPage) % this.ofertas.length);
+      this.visibleOffers = endSlice.concat(startSlice);
+    } else {
+      this.visibleOffers = this.ofertas.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
+    }
   }
 
   next(): void {
-    if (this.currentIndex + this.itemsPerPage < this.ofertas.length) {
-      this.currentIndex += this.itemsPerPage;
-      this.updateVisibleOffers();
-    }
+    if (this.ofertas.length === 0) return;
+    this.currentIndex = (this.currentIndex + this.itemsPerPage) % this.ofertas.length;
+    this.updateVisibleOffers();
   }
 
   previous(): void {
-    if (this.currentIndex - this.itemsPerPage >= 0) {
-      this.currentIndex -= this.itemsPerPage;
-      this.updateVisibleOffers();
-    }
+    if (this.ofertas.length === 0) return;
+    this.currentIndex = (this.currentIndex - this.itemsPerPage + this.ofertas.length) % this.ofertas.length;
+    this.updateVisibleOffers();
   }
 }

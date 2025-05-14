@@ -49,7 +49,7 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-        $category = Category::with('products')->findOrFail($id);
+        $category = Category::with('productos')->findOrFail($id);
         return response()->json([
             'status' => 'éxito',
             'categoria' => $category

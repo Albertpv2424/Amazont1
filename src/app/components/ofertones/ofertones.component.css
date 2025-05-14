@@ -44,13 +44,12 @@ h1:after {
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem 0;
-  scrollbar-width: thin;
-  scrollbar-color: #e47911 #f0f0f0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
   -webkit-overflow-scrolling: touch;
 }
-
 .ofertas::-webkit-scrollbar {
-  height: 8px;
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .ofertas::-webkit-scrollbar-track {
@@ -165,4 +164,102 @@ app-producto:hover {
 
 .dark-mode .no-ofertas p {
   color: #ddd;
+}
+
+.preu-original {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 8px;
+}
+.preu-oferta {
+  color: #e53935;
+  font-weight: bold;
+  margin-right: 8px;
+}
+.descompte {
+  color: #388e3c;
+  font-weight: bold;
+}
+
+.oferta-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(44, 62, 80, 0.08), 0 1.5px 4px rgba(44, 62, 80, 0.10);
+  padding: 1.5rem 1rem 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 270px;
+  max-width: 320px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.oferta-card:hover {
+  box-shadow: 0 6px 18px rgba(44, 62, 80, 0.16), 0 3px 8px rgba(44, 62, 80, 0.18);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.oferta-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.06);
+}
+
+.oferta-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.7rem 0;
+  text-align: center;
+  color: #232f3e;
+}
+
+.preus {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.btn-afegir {
+  background-color: #f0ad4e;
+  color: #232f3e;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: auto;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-afegir:hover {
+  background-color: #e47911;
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.dark-mode .oferta-card {
+  background: #232f3e;
+  color: #fff;
+}
+
+.dark-mode .oferta-card h3 {
+  color: #fff;
+}
+
+.dark-mode .btn-afegir {
+  background-color: #ff9f43;
+  color: #232f3e;
+}
+
+.dark-mode .btn-afegir:hover {
+  background-color: #e47911;
+  color: #fff;
 }
