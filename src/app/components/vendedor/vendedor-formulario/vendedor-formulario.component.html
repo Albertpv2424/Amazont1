@@ -70,14 +70,7 @@
       <small>Mantenga presionada la tecla Ctrl para seleccionar múltiples categorías</small>
     </div>
 
-    <div class="form-group">
-      <label for="imagen">Imagen del Producto</label>
-      <input type="file" id="imagen" (change)="onImageChange($event)" accept="image/*">
-
-      <div *ngIf="imagenPreview" class="image-preview">
-        <img [src]="imagenPreview" alt="Vista previa">
-      </div>
-    </div>
+    
 
     <div class="form-actions">
       <button type="button" class="btn-cancel" routerLink="/vendedor/productos">Cancelar</button>
