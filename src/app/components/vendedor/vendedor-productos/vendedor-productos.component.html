@@ -1,7 +1,6 @@
 <div class="productos-container">
   <div class="header">
     <h1>Els Meus Productes</h1>
-    <button class="btn-crear" [routerLink]="['/vendedor/productos/crear']">Crear Nou Producte</button>
   </div>
 
   <div *ngIf="error" class="error-message">
@@ -39,8 +38,7 @@
           <td>{{ producto.categoria }}</td>
           <td class="acciones">
             <button class="btn-editar" (click)="abrirModalEditar(producto)">Editar</button>
-            <button class="btn-eliminar" (click)="producto.id !== undefined && eliminarProducto(producto.id)">Eliminar</button>
-          </td>
+            <button (click)="eliminarProducto(producto.id || producto.id_prod)" class="btn-eliminar">Eliminar</button>          </td>
         </tr>
       </tbody>
     </table>

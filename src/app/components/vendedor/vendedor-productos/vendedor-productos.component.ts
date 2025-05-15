@@ -121,8 +121,8 @@ export class VendedorProductosComponent implements OnInit {
       this.vendedorService.eliminarProducto(id).subscribe({
         next: () => {
           console.log('Producte eliminat correctament');
-          // Eliminem el producte de la llista
-          this.productos = this.productos.filter(p => p.id !== id);
+          // Eliminem el producte de la llista, tenint en compte tant id com id_prod
+          this.productos = this.productos.filter(p => (p.id !== id && p.id_prod !== id));
           this.isLoading = false;
         },
         error: (err) => {
