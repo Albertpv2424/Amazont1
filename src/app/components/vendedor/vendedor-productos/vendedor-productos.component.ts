@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { VendedorService } from '../../../services/vendedor.service';
 import { Producto } from '../../../interfaces/producto.interface';
+import { ProductosService } from '../../../services/productos.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-vendedor-productos',
@@ -16,7 +18,10 @@ export class VendedorProductosComponent implements OnInit {
   isLoading = true;
   error = '';
 
-  constructor(private vendedorService: VendedorService) {}
+  constructor(
+    private vendedorService: VendedorService,
+    private productosService: ProductosService
+  ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -25,8 +30,28 @@ export class VendedorProductosComponent implements OnInit {
   cargarProductos(): void {
     this.isLoading = true;
     this.vendedorService.getProductos().subscribe({
-      next: (data: Producto[]) => {
-        this.productos = data;
+      next: (response: any) => {
+        console.log('Resposta del servidor:', response);
+        
+        // Comprovem diferents possibles estructures de la resposta
+        if (Array.isArray(response)) {
+          // Si la resposta és directament un array
+          this.productos = response;
+        } else if (response.productos && Array.isArray(response.productos)) {
+          // Si la resposta té una propietat 'productos' que és un array
+          this.productos = response.productos;
+        } else if (response.data && Array.isArray(response.data)) {
+          // Si la resposta té una propietat 'data' que és un array
+          this.productos = response.data;
+        } else if (response.productos && response.productos.data && Array.isArray(response.productos.data)) {
+          // Si la resposta té una estructura anidada com 'productos.data'
+          this.productos = response.productos.data;
+        } else {
+          // Si no podem trobar un array vàlid, inicialitzem amb un array buit
+          console.error('Format de resposta no reconegut:', response);
+          this.productos = [];
+        }
+        
         this.isLoading = false;
       },
       error: (err: Error) => {
