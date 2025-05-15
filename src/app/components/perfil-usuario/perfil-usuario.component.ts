@@ -6,12 +6,13 @@ import { AuthService } from '../../services/auth.service';
 import { PedidoService } from '../../services/pedido.service';
 import { Pedido } from '../../models/pedido.model';
 import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-perfil-usuario',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './perfil-usuario.component.html',
   styleUrls: ['./perfil-usuario.component.css']
 })
@@ -37,13 +38,13 @@ export class PerfilUsuarioComponent implements OnInit {
 
   metodosPago: any[] = [];
   pedidos: any[] = [];
-  http: any;
 
   constructor(
     private fb: FormBuilder,
     private themeService: ThemeService,
-    private authService: AuthService, // Add AuthService
-    private pedidoService: PedidoService
+    private authService: AuthService,
+    private pedidoService: PedidoService,
+    private http: HttpClient  // Add this line
   ) {}
 
   ngOnInit(): void {
@@ -230,29 +231,40 @@ export class PerfilUsuarioComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     if (this.perfilForm.valid) {
-      // Get current user
-      const currentUser = this.authService.getCurrentUser();
-      
-      if (currentUser) {
-        // Update user data
-        const updatedUser = {
-          ...currentUser,
-          nombre: this.perfilForm.value.nombre,
-          email: this.perfilForm.value.email,
-          telefono: this.perfilForm.value.telefono,
-          ciudad: this.perfilForm.value.ciudad,
-          pais: this.perfilForm.value.pais
-        };
+        const currentUser = this.authService.getCurrentUser();
         
-        // Update the user in AuthService
-        this.authService.updateCurrentUser(updatedUser);
-        
-        // Show success message
-        alert('Perfil actualizado correctamente');
-        this.submitted = false;
-      }
+        if (currentUser) {
+            const token = localStorage.getItem('auth_token');
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            // Correct request body structure
+            const requestBody = {
+                ciudad: this.perfilForm.value.ciudad,
+                pais: this.perfilForm.value.pais,
+                telefono: this.perfilForm.value.telefono,
+            };
+            
+            // Add error details logging
+            this.http.put('http://localhost:8000/api/user/shipping-address', requestBody, { headers }).subscribe({
+                next: (response: any) => {
+                    alert('Perfil actualizado correctamente');
+                    const updatedUser = {
+                        ...currentUser,
+                        ...requestBody
+                    };
+                    this.authService.updateCurrentUser(updatedUser);
+                },
+                error: (err: any) => {
+                    console.error('Error details:', err.error.errors); // Log validation errors
+                    alert('Error al actualizar el perfil: ' + (err.error.errors || err.message));
+                }
+            });
+        }
     }
-  }
+}
 
   mostrarFormularioMetodoPago(): void {
     this.mostrarFormMetodoPago = true;

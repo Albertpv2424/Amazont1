@@ -137,12 +137,12 @@ class UserController extends Controller
     public function updateShippingAddress(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'shipping_address' => 'required|string',
-            'ciudad' => 'required|string',
-            'codigo_postal' => 'required|string',
-            'provincia' => 'required|string',
-            'pais' => 'required|string',
-            'telefono' => 'required|string',
+            'shipping_address' => 'sometimes|string',
+            'ciudad' => 'sometimes|string',
+            'codigo_postal' => 'sometimes|string',
+            'provincia' => 'sometimes|string',
+            'pais' => 'sometimes|string',
+            'telefono' => 'sometimes|string',
         ]);
 
         if ($validator->fails()) {
@@ -153,18 +153,33 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
-        $user->update([
-            'shipping_address' => $request->shipping_address,
-            'ciudad' => $request->ciudad,
-            'codigo_postal' => $request->codigo_postal,
-            'provincia' => $request->provincia,
-            'pais' => $request->pais,
-            'telefono' => $request->telefono,
-        ]);
+        $dataToUpdate = [];
+
+        // Només actualitzem els camps que s'han enviat
+        if ($request->has('shipping_address')) {
+            $dataToUpdate['shipping_address'] = $request->shipping_address;
+        }
+        if ($request->has('ciudad')) {
+            $dataToUpdate['ciudad'] = $request->ciudad;
+        }
+        if ($request->has('codigo_postal')) {
+            $dataToUpdate['codigo_postal'] = $request->codigo_postal;
+        }
+        if ($request->has('provincia')) {
+            $dataToUpdate['provincia'] = $request->provincia;
+        }
+        if ($request->has('pais')) {
+            $dataToUpdate['pais'] = $request->pais;
+        }
+        if ($request->has('telefono')) {
+            $dataToUpdate['telefono'] = $request->telefono;
+        }
+
+        $user->update($dataToUpdate);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Adreça d\'enviament actualitzada correctament',
+            'message' => 'Informació actualitzada correctament',
             'user' => $user
         ]);
     }

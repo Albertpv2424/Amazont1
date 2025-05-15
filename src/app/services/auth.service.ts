@@ -62,21 +62,25 @@ export class AuthService {
   }
 
   // Add this method if it doesn't exist or fix it if it's incorrectly implemented
-  updateCurrentUser(user: Usuario): void {
-    // Update in localStorage
-    localStorage.setItem('currentUser', JSON.stringify(user));
+  updateCurrentUser(userData: any): Observable<any> {
+    // Actualitzar l'usuari a localStorage
+    localStorage.setItem('current_user', JSON.stringify(userData));
     
-    // Update in the BehaviorSubject
-    this.currentUserSubject.next(user);
-    
-    // Also update in the users array
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const index = users.findIndex((u: Usuario) => u.email === user.email);
-    
-    if (index !== -1) {
-      users[index] = { ...users[index], ...user };
-      localStorage.setItem('users', JSON.stringify(users));
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+      
+      // Correcció: Canviar la URL i estructura de dades
+      return this.http.put('http://localhost:8000/api/user/shipping-address', { 
+        ciudad: userData.ciudad,
+        pais: userData.pais,
+        telefono: userData.telefono
+      }, { headers });
     }
+    return of(null); // Retornar observable buit si no hi ha token
   }
   getAuthHeaders() {
     const token = this.getToken();
