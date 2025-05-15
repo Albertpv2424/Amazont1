@@ -28,9 +28,21 @@ export class ProductoComponent {
     }
   }
 
-  agregarAlCarrito(event: Event) {
-    event.stopPropagation(); // Prevent navigation to product detail
-    this.carritoService.agregarProducto(this.producto);
-    console.log('Producto añadido al carrito:', this.producto);
+  agregarAlCarrito() {
+    if (this.producto?.id) {  // Verificación adicional de null
+      this.carritoService.addToCart(this.producto.id, 1).subscribe({
+        next: () => {
+          console.log('Producto añadido al carrito');
+        },
+        error: (error) => {
+          console.error('Error al añadir al carrito:', error);
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    } else {
+      console.error('El producto no tiene ID definido');
+    }
   }
 }

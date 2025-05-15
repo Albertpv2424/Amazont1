@@ -74,9 +74,13 @@ export class ProductosService {
   }
 
   // Get current stock for a product
-  getStock(productoId: number): number {
-    const producto = this.productos.find(p => p.id === productoId);
-    return producto?.stock ?? 0;
+  getStock(productoId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/products/${productoId}/stock`).pipe(
+      catchError(error => {
+        console.error('Error obtenint estoc', error);
+        return of(0);
+      })
+    );
   }
 
   // Existing methods

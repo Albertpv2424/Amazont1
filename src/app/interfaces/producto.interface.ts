@@ -12,4 +12,5 @@ export interface Producto {
   esNuevo?: boolean;
   envioGratis?: boolean;
   fechaLanzamiento?: Date;
+  stock: number; 
 }

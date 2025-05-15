@@ -25,6 +25,7 @@ export class OfertonesComponent implements OnInit {
   isLoggedIn = false;
   userName = '';
   cantidadCarrito: number = 0; // Add cart quantity
+  router: any;
 
   constructor(
     private productosService: ProductosService,
@@ -98,5 +99,27 @@ export class OfertonesComponent implements OnInit {
     if (this.ofertas.length === 0) return;
     this.currentIndex = (this.currentIndex - this.itemsPerPage + this.ofertas.length) % this.ofertas.length;
     this.updateVisibleOffers();
+  }
+
+  afegirAlCarrito(producto: ProductoCategoria) {
+    console.log('Producte seleccionat:', producto); // Afegit per depuració
+    console.log('Producte ID:', producto.id_prod); // Afegit per depuració
+    const no = producto.id_prod;
+    if (producto ) { 
+      this.carritoService.addToCart(Number(no), 1).subscribe({
+        next: () => {
+          console.log('Producte afegit correctament');
+          this.carritoService.obtenerCantidadTotal();
+        },
+        error: (error) => {
+          console.error('Error detallat:', error.error.errors);
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    } else {
+      console.error('Producte sense ID:', producto);
+    }
   }
 }

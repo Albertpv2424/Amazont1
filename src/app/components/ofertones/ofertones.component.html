@@ -18,7 +18,7 @@
             -{{ ((1 - oferta.precio_oferta / oferta.precio) * 100) | number:'1.0-0' }}%
           </span>
         </div>
-        <button class="btn-afegir">Afegir al carret</button>
+        <button class="btn-afegir" (click)="afegirAlCarrito(oferta)">Afegir al carret</button>
       </div>
     </div>
     <button class="flecha derecha" (click)="next()"> → </button>

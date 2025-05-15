@@ -32,8 +32,11 @@
             <div class="item-precio">{{ producto.precio | currency:'EUR' }}</div>
             <div class="item-cantidad">
               <button class="btn-cantidad" (click)="decrementarCantidad(producto)">-</button>
-              <input type="number" [value]="producto.cantidad" min="1" 
-                     (change)="actualizarCantidad(producto, $any($event.target).value)">
+              <input type="number" 
+                     [min]="1"
+                     [(ngModel)]="producto.cantidad"
+                     (input)="actualizarCantidad(producto, $any($event.target).value)"
+                     (keydown)="$event.key === '-' && $event.preventDefault()">
               <button class="btn-cantidad" (click)="incrementarCantidad(producto)">+</button>
             </div>
             <div class="item-total">{{ (producto.precio || 0) * producto.cantidad | currency:'EUR' }}</div>
@@ -69,19 +72,7 @@
 </div>
 
 
-@if (mostrarPopupStockMaximo) {
-  <div class="popup-overlay" (click)="cerrarPopupStockMaximo()">
-    <div class="popup-container" (click)="$event.stopPropagation()">
-      <div class="popup-icon">⚠️</div>
-      <h2 class="popup-title">Stock máximo alcanzado</h2>
-      <p class="popup-message">
-        Lo sentimos, no puedes añadir más unidades de "{{ productoLimiteStock?.nombre }}". 
-        Has alcanzado el stock máximo disponible ({{ productoLimiteStock?.cantidad }} unidades).
-      </p>
-      <button class="popup-button" (click)="cerrarPopupStockMaximo()">Entendido</button>
-    </div>
-  </div>
-}
+
 
 @if (mostrarPopupLogin) {
   <div class="popup-overlay" (click)="cerrarPopupLogin()">

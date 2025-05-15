@@ -44,7 +44,7 @@ export class ProductoDetalleComponent implements OnInit {
   }
 
   anadirAlCarrito() {
-    this.carritoService.agregarProducto(this.producto, this.cantidad);
+    this.carritoService.addToCart(this.producto, this.cantidad);
     console.log('Producto añadido al carrito:', this.producto);
   }
 

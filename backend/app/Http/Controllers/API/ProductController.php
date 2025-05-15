@@ -164,4 +164,14 @@ class ProductController extends Controller
             'productos' => $productos
         ]);
     }
+
+    public function getStock($id)
+    {
+        $product = Product::findOrFail($id);
+        return response()->json([
+           'status' => 'éxito',
+            'stock' => $product->stock
+        ]);
+    }
+
 }

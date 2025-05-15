@@ -110,7 +110,7 @@ export class CategoriaDetalleComponent implements OnInit {
 
   anadirAlCarrito(producto: ProductoCategoria): void {
     // Añadir el producto al carrito con cantidad 1
-    const resultado = this.carritoService.agregarProducto(producto, 1);
+    const resultado = this.carritoService.addToCart(producto.id, 1);
     if (resultado) {
       console.log('Producto añadido al carrito:', producto.nombre);
       // Aquí puedes mostrar una notificación si lo deseas

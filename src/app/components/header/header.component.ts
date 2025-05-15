@@ -53,10 +53,7 @@ export class HeaderComponent implements OnInit {
       }
     });
     
-    // Subscribe to cart changes
-    this.carritoService.getCarrito().subscribe(items => {
-      this.cantidadCarrito = this.carritoService.obtenerCantidadTotal();
-    });
+    
   }
 
   toggleBackground() {
@@ -150,7 +147,30 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/perfil-usuario']);
   }
   navegarAlCarrito(): void {
-    this.router.navigate(['/carrito']);
+    if (this.authService.isLoggedIn()) {
+      const token = localStorage.getItem('auth_token');
+      const headers = { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+      
+      this.carritoService.obtenirCarretBackend(headers).subscribe({
+        next: (response) => {
+          console.log('Carret obtingut:', response);
+          this.router.navigate(['/carrito']);
+        },
+        error: (error) => {
+          console.error('Error obtenint el carret:', error);
+          // Handle unauthorized error
+          if (error.status === 401) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   navegarAjustes(): void {

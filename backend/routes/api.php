@@ -19,8 +19,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/categorias', [CategoryController::class, 'index']);
 Route::get('/categorias/{id}', [CategoryController::class, 'show']);
 Route::get('/categorias/nombre/{name}', [CategoryController::class, 'showByName']);
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}', [ProductController::class, 'show']);
+    Route::get('/{id}/stock', [ProductController::class, 'getStock']); // Add this line
+    Route::post('/', [ProductController::class, 'store']);
+    Route::put('/{id}', [ProductController::class, 'update']);
+    Route::delete('/{id}', [ProductController::class, 'destroy']);
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/seller/products', [ProductController::class, 'sellerProducts']);
+});
 
 Route::get('/products/reviews/{id}', [ReviewController::class, 'getProductReviews']);
 Route::get('/products/ratings/{id}', [ReviewController::class, 'getProductRatings']);

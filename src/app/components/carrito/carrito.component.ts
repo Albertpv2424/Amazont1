@@ -58,17 +58,20 @@ export class CarritoComponent implements OnInit {
         next: (response: any) => {
           console.log('API Response:', response);
           if (response?.status === 'success' && response.cart) {
-            // Comprova si cart.items és un array
-            const items = Array.isArray(response.cart.items) ? response.cart.items : [];
+            // Corregir l'accés a cart_items en lloc de items
+            const items = Array.isArray(response.cart.cart_items) ? response.cart.cart_items : [];
             this.productosCarrito = items.map((item: any) => ({
-              id: item.id,
-              nombre: item.nombre || 'Producto desconocido',
-              precio: item.precio || 0,
-              cantidad: item.cantidad || 1,
-              imagen: item.imagen ? 'assets/' + item.imagen : 'assets/default.png',
-              envioGratis: item.envio_gratis || false
+                id: item.product_id || item.id,
+                nombre: item.product?.nombre || item.nombre || 'Producte desconegut',
+                precio: parseFloat(item.price) || parseFloat(item.precio) || 0,
+                cantidad: item.quantity || item.cantidad || 1,
+                imagen: item.product?.imagen ? 'assets/' + item.product.imagen : 'assets/default.png',
+                envioGratis: item.free_shipping || item.envio_gratis || false
             }));
-            console.log('Productos cargados:', this.productosCarrito);
+            // Actualitzar el carret local al servei
+            this.carritoService['carritoItems'] = this.productosCarrito;
+            this.carritoService.actualizarCarrito();
+            console.log('Productes mapejats:', this.productosCarrito);
           } else {
             console.error('Respuesta del API no válida');
             this.productosCarrito = [];
@@ -97,6 +100,10 @@ export class CarritoComponent implements OnInit {
       }
       this.actualizarTotales();
     }
+    this.carritoService.getCarrito().subscribe(items => {
+        this.productosCarrito = items;
+        this.actualizarTotales(); // <-- recalcula totals cada vegada que canvia el carret
+    });
   }
 
   actualizarTotales(): void {
@@ -105,15 +112,14 @@ export class CarritoComponent implements OnInit {
     this.total = this.subtotal + this.envio;
   }
 
-  actualizarCantidad(producto: ProductoCarrito, event: any): void {
+  actualizarCantidad(producto: ProductoCarrito, cantidad: number): void {
     if (producto.id) {
-      const cantidad = typeof event === 'object'
-        ? parseInt(event.target?.value || '1', 10)
-        : parseInt(event || '1', 10);
-      this.carritoService.actualizarCantidad(producto.id, cantidad);
-      this.actualizarTotales();
+        // Add type assertion and null check
+        cantidad = Math.max(1, Math.min(cantidad, producto.stock ?? 99));
+        this.carritoService.actualizarCantidad(producto.id!, cantidad); // Non-null assertion
+        this.actualizarTotales();
     }
-  }
+}
 
   eliminarProducto(producto: ProductoCarrito): void {
     if (producto.id) {
@@ -124,22 +130,29 @@ export class CarritoComponent implements OnInit {
 
   incrementarCantidad(producto: ProductoCarrito): void {
     if (producto.id) {
-      const stockDisponible = this.productosService.getStock(producto.id);
-      if (producto.cantidad >= stockDisponible) {
-        this.productoLimiteStock = producto;
-        this.mostrarPopupStockMaximo = true;
-        return;
-      }
-      this.carritoService.actualizarCantidad(producto.id, producto.cantidad + 1);
-      this.actualizarTotales();
+      this.productosService.getStock(producto.id).subscribe(stock => {
+        if (producto.cantidad >= stock) {
+          this.productoLimiteStock = producto;
+            this.mostrarPopupStockMaximo = true;
+        } else {
+          this.carritoService.actualizarCantidad(producto.id!, producto.cantidad + 1);
+          this.actualizarTotales();
+        }
+      });
     }
   }
 
   decrementarCantidad(producto: ProductoCarrito): void {
-    if (producto.id && producto.cantidad > 1) {
-      this.carritoService.actualizarCantidad(producto.id, producto.cantidad - 1);
+      if (producto.id) {
+        const nuevaCantidad = producto.cantidad - 1;
+        if (nuevaCantidad >= 1) {
+          this.carritoService.actualizarCantidad(producto.id, nuevaCantidad);
+        } else {
+          this.eliminarProducto(producto); // Eliminar producto si llega a 0
+        }
+        this.actualizarTotales();
+      }
       this.actualizarTotales();
-    }
   }
 
   cerrarPopupStockMaximo(): void {
@@ -196,6 +209,22 @@ export class CarritoComponent implements OnInit {
       queryParams: {
         success: true,
         total: this.total
+      }
+    });
+  }
+
+  loadCart() {
+    this.carritoService.getCartFromBackend().subscribe({
+      next: (response) => {
+        this.productosCarrito = response.cart.cart_items;
+        this.actualizarTotales();
+      },
+      error: (error) => {
+        console.error('Error loading cart:', error);
+        if(error.status === 401) {
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        }
       }
     });
   }
