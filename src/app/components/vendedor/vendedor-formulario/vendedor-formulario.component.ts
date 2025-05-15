@@ -89,10 +89,7 @@ export class VendedorFormularioComponent implements OnInit {
           descripcion: producto.descripcion,
           precio: producto.precio,
           stock: producto.stock,
-          en_oferta: producto.en_oferta,
-          precio_oferta: producto.precio_oferta,
           imagen: producto.imagen,
-          categorias: producto.categorias?.map((cat: any) => cat.id_cat) || []
         });
 
         // Set image preview if available

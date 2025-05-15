@@ -14,16 +14,24 @@ import { VendedorFormularioComponent } from './components/vendedor/vendedor-form
 // Update the imports to use the correct names
 import { AuthGuard } from './guards/auth.guard';
 import { VendedorGuard } from './guards/vendedor.guard';
+import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
+import { CategoriasComponent } from './components/categorias/categorias.component';
+import { CategoriaDetalleComponent } from './components/categoria-detalle/categoria-detalle.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
+  { path: 'recuperar-password', component: RecuperarPasswordComponent },
   { path: 'producto/:id', component: ProductoDetalleComponent },
+  { path: 'categorias', component: CategoriasComponent },
+  { path: 'categoria/:nombre', component: CategoriaDetalleComponent },
+  { path: 'categoria/:nombre/:id', component: ProductoDetalleComponent },
   { path: 'carrito', component: CarritoComponent },
-  { path: 'perfil', component: PerfilUsuarioComponent, canActivate: [AuthGuard] },
-  { path: 'proceso-pago', component: ProcesoPagoComponent, canActivate: [AuthGuard] },
-  { path: 'confirmacion-compra', component: ConfirmacionCompraComponent, canActivate: [AuthGuard] },
+  { path: 'proceso-pago', component: ProcesoPagoComponent },
+  { path: 'confirmacion-compra', component: ConfirmacionCompraComponent },
+  {path: 'perfil-usuario', component: PerfilUsuarioComponent},
+  { path: '**', redirectTo: '' },
 
   {
     path: 'vendedor',
