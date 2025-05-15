@@ -108,22 +108,9 @@ export class PerfilUsuarioComponent implements OnInit {
       validators: this.passwordMatchValidator
     });
     this.cargarPedidos();
-    this.crearPedidoFals(); // Afegir aquesta línea per crear un pedido fals
   }
 
-  crearPedidoFals(): void {
-    const pedidoFals = {
-      id: Date.now(),
-      fecha: new Date().toISOString(),
-      total: 100.00,
-      productos: [
-        { nombre: 'Producte Fals 1', cantidad: 1, precio: 50.00 },
-        { nombre: 'Producte Fals 2', cantidad: 2, precio: 25.00 }
-      ]
-    };
-    this.pedidos.push(pedidoFals);
-    console.log('Pedido fals creat:', pedidoFals);
-  }
+
 
   get p() { 
     return this.pagoForm.controls; 
