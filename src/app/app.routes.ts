@@ -10,23 +10,19 @@ import { CarritoComponent } from './components/carrito/carrito.component';
 import { ConfirmacionCompraComponent } from './components/confirmacion-compra/confirmacion-compra.component';
 import { ProcesoPagoComponent } from './components/proceso-pago/proceso-pago.component';
 import { PerfilUsuarioComponent } from './components/perfil-usuario/perfil-usuario.component';
-import { VendedorComponent } from './components/vendedor/vendedor.component';
-import { AuthGuard } from './guards/auth.guard';
-import { VendedorGuard } from './guards/vendedor.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [VendedorGuard] },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'recuperar-password', component: RecuperarPasswordComponent },
-  { path: 'producto/:id', component: ProductoDetalleComponent, canActivate: [VendedorGuard] },
-  { path: 'categorias', component: CategoriasComponent, canActivate: [VendedorGuard] },
-  { path: 'categoria/:nombre', component: CategoriaDetalleComponent, canActivate: [VendedorGuard] },
-  { path: 'categoria/:nombre/:id', component: ProductoDetalleComponent, canActivate: [VendedorGuard] },
-  { path: 'carrito', component: CarritoComponent, canActivate: [VendedorGuard] },
-  { path: 'proceso-pago', component: ProcesoPagoComponent, canActivate: [VendedorGuard] },
-  { path: 'confirmacion-compra', component: ConfirmacionCompraComponent, canActivate: [VendedorGuard] },
-  { path: 'perfil-usuario', component: PerfilUsuarioComponent, canActivate: [AuthGuard, VendedorGuard] },
-  { path: 'vendedor', component: VendedorComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: 'vendedor' }
+  { path: 'producto/:id', component: ProductoDetalleComponent },
+  { path: 'categorias', component: CategoriasComponent },
+  { path: 'categoria/:nombre', component: CategoriaDetalleComponent },
+  { path: 'categoria/:nombre/:id', component: ProductoDetalleComponent },
+  { path: 'carrito', component: CarritoComponent },
+  { path: 'proceso-pago', component: ProcesoPagoComponent },
+  { path: 'confirmacion-compra', component: ConfirmacionCompraComponent },
+  {path: 'perfil-usuario', component: PerfilUsuarioComponent},
+  { path: '**', redirectTo: '' }
 ];

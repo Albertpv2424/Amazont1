@@ -49,7 +49,7 @@ export class CarritoComponent implements OnInit {
 
     if (this.authService.isLoggedIn()) {
       const token = localStorage.getItem('auth_token');
-      const headers = {
+      const headers = { 
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       };

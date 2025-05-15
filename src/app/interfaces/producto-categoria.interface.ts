@@ -5,7 +5,7 @@ export interface Opinion {
 }
 
 export interface ProductoCategoria {
-  id_prod: number | string; // Changed from a function to a property that can be number or string
+  id_prod(arg0: string, id_prod: any): unknown;
   oferta: unknown;
   id: number;
   nombre: string;
@@ -18,7 +18,7 @@ export interface ProductoCategoria {
   envioGratis: boolean;
   fechaLanzamiento: Date;
   descuento?: string;
-  stock: number;
+  stock: number; // Changed from optional to required
   opiniones: Opinion[];
   precio_oferta: number | null;
   en_oferta: boolean;
