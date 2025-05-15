@@ -139,7 +139,7 @@
                 }
               </div>
               
-              <button type="button" class="btn-nuevo-metodo" (click)="mostrarNuevoMetodoPago()">
+              <button type="button" class="btn-nuevo-metodo" (click)="usarOtroMetodoPago()">
                 Usar otro método de pago
               </button>
             </div>
@@ -325,24 +325,16 @@
               </p>
             </div>
             <!-- En la sección de resumen -->
-            <div *ngIf="nuevoMetodoPago || p['metodoPagoId'].value === 0">
-              <p>
-                {{ p['tipo'].value === 'credit_card' ? 'Tarjeta de crédito' : 
-                   p['tipo'].value === 'paypal' ? 'PayPal' : 'Transferencia bancaria' }}
-              </p>
-              <p *ngIf="p['tipo'].value === 'credit_card'">
-                **** {{ p['numeroTarjeta'].value?.substring(p['numeroTarjeta'].value.length - 4) }}
-              </p>
-              <p *ngIf="p['tipo'].value === 'paypal'">
-                {{ p['correoPaypal'].value }}
-              </p>
-              <p *ngIf="p['tipo'].value === 'bank_transfer'">
-                {{ p['entidadBancaria'].value }} - {{ p['numeroCuenta'].value }}
-              </p>
-            </div>
+            <div *ngIf="pasoActual === 3" class="metodo-pago-info">
+              <p><strong>Mètode de pagament seleccionat:</strong> {{getDescripcionMetodoPago()}}</p>
+              <p><strong>Tipus de mètode:</strong> {{getTipoMetodoPago()}}</p>
+              </div>
           </div>
         </div>
         
+<!-- Al pas 3, afegeix aquesta secció on vulguis mostrar l'ID -->
+
+
         <div class="resumen-seccion">
           <h3>Productos</h3>
           <div class="resumen-productos">

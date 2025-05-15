@@ -50,6 +50,7 @@ export class ProcesoPagoComponent implements OnInit {
   cargandoMetodosPago = true;
   errorCarga = '';
   pasoActual = 1; // 1: Dirección, 2: Método de pago, 3: Resumen
+  metodoPagoSeleccionado: MetodoPago | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +79,20 @@ export class ProcesoPagoComponent implements OnInit {
     
     // Cargar métodos de pago del usuario
     this.cargarMetodosPago();
+    
+    // Cargar datos del perfil del usuario para la dirección
+    this.cargarDireccionUsuario();
+    
+    // Cargar método de pago seleccionado del localStorage si existe
+    const metodoPagoGuardado = localStorage.getItem('metodoPagoSeleccionado');
+    if (metodoPagoGuardado) {
+      try {
+        this.metodoPagoSeleccionado = JSON.parse(metodoPagoGuardado);
+        console.log('Método de pago cargado desde localStorage:', this.metodoPagoSeleccionado);
+      } catch (error) {
+        console.error('Error al parsear método de pago desde localStorage:', error);
+      }
+    }
   }
 
   inicializarFormularios(): void {
@@ -103,43 +118,61 @@ export class ProcesoPagoComponent implements OnInit {
   }
 
   cargarMetodosPago(): void {
-    this.cargandoMetodosPago = true;
-    this.errorCarga = '';
-    
-    // Obtener el usuario actual
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) {
-      this.metodosPago = [];
-      this.cargandoMetodosPago = false;
-      this.nuevoMetodoPago = true;
-      return;
-    }
-    
-    // Utilizar la clave específica del usuario
-    const userKey = `metodosPago_${currentUser.email}`;
-    const metodosGuardados = localStorage.getItem(userKey);
-    
-    console.log('Métodos guardados en localStorage:', metodosGuardados);
-    
-    if (metodosGuardados) {
-      try {
-        this.metodosPago = JSON.parse(metodosGuardados);
-        console.log('Métodos de pago cargados:', this.metodosPago);
-      } catch (error) {
-        console.error('Error al parsear métodos de pago:', error);
+      // Obtenir el token d'autenticació
+  const token = localStorage.getItem('auth_token');
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+  
+  // Mostrar indicador de càrrega
+  this.cargandoMetodosPago = true;
+  this.errorCarga = '';
+  
+  // Fer la petició al backend per obtenir els mètodes de pagament
+  this.http.get('http://localhost:8000/api/payment-methods', { headers }).subscribe({
+    next: (response: any) => {
+      console.log('Mètodes de pagament carregats des de l\'API:', response);
+      
+      if (response.status === 'success' && response.payment_methods) {
+        // Transformar els mètodes de pagament al format que utilitza el component
+        this.metodosPago = response.payment_methods.map((pm: any) => ({
+          id: pm.id,
+          tipo: pm.tipo,
+          numero: pm.tipo === 'credit_card' ? this.ocultarNumeroTarjeta(pm.num_tarjeta || '') : undefined,
+          titular: pm.nombre,
+          fechaExpiracion: pm.fecha_caducidad,
+          correoPaypal: pm.email_paypal,
+          numeroCuenta: pm.iban,
+          entidadBancaria: pm.entidad_bancaria,
+          numeroCompleto: pm.num_tarjeta
+        }));
+        
+        // Mostrar els mètodes de pagament
+        this.nuevoMetodoPago = this.metodosPago.length === 0;
+        console.log('Mètodes de pagament transformats:', this.metodosPago);
+      } else {
         this.metodosPago = [];
+        this.nuevoMetodoPago = true;
       }
-    } else {
+      
+      this.cargandoMetodosPago = false;
+    },
+    error: (error) => {
+      console.error('Error al carregar mètodes de pagament des de l\'API:', error);
+      this.errorCarga = 'Error al carregar mètodes de pagament';
       this.metodosPago = [];
-    }
-    
-    this.cargandoMetodosPago = false;
-    
-    // Si no hay métodos de pago, mostrar el formulario para añadir uno nuevo
-    if (this.metodosPago.length === 0) {
       this.nuevoMetodoPago = true;
+      this.cargandoMetodosPago = false;
+      
+      // Si hi ha un error d'autenticació, redirigir a la pàgina de login
+      if (error.status === 401) {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
     }
-  }
+  });
+}
 
   get f() { return this.direccionForm.controls; }
   get p() { return this.pagoForm.controls; }
@@ -186,10 +219,38 @@ export class ProcesoPagoComponent implements OnInit {
               this.pagoForm.get('cvv')?.invalid) {
             return;
           }
+          
+          // Guardar el método de pago seleccionado (tarjeta)
+          this.metodoPagoSeleccionado = {
+            tipo: 'credit_card',
+            numero: this.ocultarNumeroTarjeta(this.p['numeroTarjeta'].value),
+            titular: this.p['titular'].value,
+            fechaExpiracion: this.p['fechaExpiracion'].value,
+            numeroCompleto: this.p['numeroTarjeta'].value
+          };
+          
+          // Guardar el método de pago si está marcada la opción
+          if (this.p['guardarMetodo'].value) {
+            this.guardarMetodoPago();
+          }
+          
+          // Guardar el método de pago seleccionado en localStorage para el paso 3
+          localStorage.setItem('metodoPagoSeleccionado', JSON.stringify(this.metodoPagoSeleccionado));
         }
         if (this.p['tipo'].value === 'paypal') {
           if (!this.p['correoPaypal'].value || this.pagoForm.get('correoPaypal')?.invalid) {
             return;
+          }
+          
+          // Guardar el método de pago seleccionado (PayPal)
+          this.metodoPagoSeleccionado = {
+            tipo: 'paypal',
+            correoPaypal: this.p['correoPaypal'].value
+          };
+          
+          // Guardar el método de pago si está marcada la opción
+          if (this.p['guardarMetodo'].value) {
+            this.guardarMetodoPago();
           }
         }
         if (this.p['tipo'].value === 'bank_transfer') {
@@ -197,8 +258,34 @@ export class ProcesoPagoComponent implements OnInit {
               !this.p['entidadBancaria'].value) {
             return;
           }
+          
+          // Guardar el método de pago seleccionado (transferencia)
+          this.metodoPagoSeleccionado = {
+            tipo: 'bank_transfer',
+            numeroCuenta: this.p['numeroCuenta'].value,
+            entidadBancaria: this.p['entidadBancaria'].value
+          };
+          
+          // Guardar el método de pago si está marcada la opción
+          if (this.p['guardarMetodo'].value) {
+            this.guardarMetodoPago();
+          }
+          
+          // Guardar el ID del método de pago seleccionado
+          localStorage.setItem('metodoPagoId', this.metodoPagoSeleccionado.id?.toString() || '0');
         }
-      } else if (!this.p['metodoPagoId'].value && this.metodosPago.length > 0) {
+      } else if (this.p['metodoPagoId'].value) {
+        // Si ha seleccionado un método de pago existente
+        const metodoPagoId = this.p['metodoPagoId'].value;
+        this.metodoPagoSeleccionado = this.metodosPago.find(m => m.id === metodoPagoId) || null;
+        
+        // Guardar el método de pago seleccionado en localStorage para el paso 3
+        if (this.metodoPagoSeleccionado) {
+          localStorage.setItem('metodoPagoSeleccionado', JSON.stringify(this.metodoPagoSeleccionado));
+          // Guardar el ID del método de pago seleccionado
+          localStorage.setItem('metodoPagoId', metodoPagoId.toString());
+        }
+      } else if (this.metodosPago.length > 0) {
         return;
       }
       
@@ -339,5 +426,99 @@ export class ProcesoPagoComponent implements OnInit {
       this.pagoForm.get('numeroCuenta')?.setValue(metodo.numeroCuenta);
       this.pagoForm.get('entidadBancaria')?.setValue(metodo.entidadBancaria);
     }
+    
+    // Guardar el método seleccionado
+    this.metodoPagoSeleccionado = metodo;
   }
+
+
+
+  cargarDireccionUsuario(): void {
+    // Obtenir l'usuari actual
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      return;
+    }
+    
+    // Obtenir el token d'autenticació
+    const token = localStorage.getItem('auth_token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    
+    // Fer la petició al backend per obtenir el perfil complet
+    this.http.get('http://localhost:8000/api/user', { headers }).subscribe({
+      next: (response: any) => {
+        console.log('Perfil d\'usuari carregat:', response);
+        
+        if (response.status === 'success' && response.user) {
+          const user = response.user;
+          
+          // Emplenar el formulari amb les dades de l'usuari
+          this.direccionForm.patchValue({
+            calle: user.direccion || '',
+            ciudad: user.ciudad || '',
+            codigoPostal: user.codigo_postal || '',
+            pais: user.pais || 'España'
+          });
+          
+          console.log('Formulari de direcció emplenat amb dades del perfil');
+        }
+      },
+      error: (error) => {
+        console.error('Error al carregar el perfil d\'usuari:', error);
+      }
+    });
+  }
+
+  // Método para obtener el texto descriptivo del método de pago seleccionado
+  getDescripcionMetodoPago(): string {
+    if (!this.metodoPagoSeleccionado) {
+      return 'No seleccionado';
+    }
+    
+    switch (this.metodoPagoSeleccionado.tipo) {
+      case 'credit_card':
+        return `Targeta ${this.metodoPagoSeleccionado.numero || ''} - ${this.metodoPagoSeleccionado.titular || ''}`;
+      case 'paypal':
+        return `PayPal - ${this.metodoPagoSeleccionado.correoPaypal || ''}`;
+      case 'bank_transfer':
+        return `Transferència bancària - ${this.metodoPagoSeleccionado.entidadBancaria || ''} - ${this.metodoPagoSeleccionado.numeroCuenta || ''}`;
+      default:
+        return 'Mètode de pagament desconegut';
+    }
+  }
+
+
+// Afegim un mètode per obtenir l'ID del mètode de pagament seleccionat
+getMetodoPagoId(): string {
+  const metodoPagoId = localStorage.getItem('metodoPagoId');
+  return metodoPagoId || 'No seleccionat';
+}
+
+
+// Afegim un mètode per obtenir el tipus de mètode de pagament
+getTipoMetodoPago(): string {
+  if (!this.metodoPagoSeleccionado) {
+    return 'No seleccionat';
+  }
+  
+  switch (this.metodoPagoSeleccionado.tipo) {
+    case 'credit_card':
+      return 'Targeta de crèdit';
+    case 'paypal':
+      return 'PayPal';
+    case 'bank_transfer':
+      return 'Transferència bancària';
+    default:
+      return 'Mètode de pagament desconegut';
+  }
+}
+
+
+// Afegim un nou mètode per gestionar el clic al botó "Usar otro método de pago"
+usarOtroMetodoPago(): void {
+this.router.navigate(['/perfil-usuario']);
+}
 }
