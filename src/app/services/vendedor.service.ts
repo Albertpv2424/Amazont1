@@ -66,14 +66,14 @@ export class VendedorService {
     );
   }
 
-  // Actualizar un producto existente
-  actualizarProducto(id: number, producto: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/productos/${id}`, producto, {
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
+// En el archivo vendedor.service.ts
+actualizarProducto(id: number, producto: Producto): Observable<Producto> {
+  return this.http.put<Producto>(`${this.apiUrl}/productos/${id}`, producto, {
+    headers: this.getHeaders()
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
 
   // Eliminar un producto
   eliminarProducto(id: number): Observable<any> {

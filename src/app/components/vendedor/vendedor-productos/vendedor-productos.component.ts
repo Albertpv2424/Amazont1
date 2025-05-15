@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { VendedorService } from '../../../services/vendedor.service';
 import { Producto } from '../../../interfaces/producto.interface';
 import { ProductosService } from '../../../services/productos.service';
@@ -9,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-vendedor-productos',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './vendedor-productos.component.html',
   styleUrl: './vendedor-productos.component.css'
 })
@@ -17,6 +18,10 @@ export class VendedorProductosComponent implements OnInit {
   productos: Producto[] = [];
   isLoading = true;
   error = '';
+  
+  // Variables para el modal
+  mostrarModal = false;
+  productoEditando: Producto | null = null;
 
   constructor(
     private vendedorService: VendedorService,
@@ -79,5 +84,42 @@ export class VendedorProductosComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Métodos para el modal
+  abrirModalEditar(producto: Producto): void {
+    // Creamos una copia del producto para no modificar el original directamente
+    this.productoEditando = { ...producto };
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+    this.productoEditando = null;
+  }
+
+  guardarCambios(): void {
+    if (!this.productoEditando || this.productoEditando.id === undefined) {
+      console.error('Error: Producto no válido para editar');
+      return;
+    }
+  
+    console.log('Enviando producto para actualizar:', this.productoEditando);
+    
+    this.vendedorService.actualizarProducto(this.productoEditando.id, this.productoEditando).subscribe({
+      next: (productoActualizado) => {
+        console.log('Producto actualizado correctamente:', productoActualizado);
+        // Actualizamos el producto en la lista
+        const index = this.productos.findIndex(p => p.id === this.productoEditando!.id);
+        if (index !== -1) {
+          this.productos[index] = productoActualizado;
+        }
+        this.cerrarModal();
+      },
+      error: (err: Error) => {
+        console.error('Error al actualizar el producto:', err);
+        alert('Error al actualizar el producto. Por favor, inténtelo de nuevo.');
+      }
+    });
   }
 }

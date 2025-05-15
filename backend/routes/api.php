@@ -62,18 +62,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::get('/orders', [OrderController::class, 'index']);
-    
+    Route::put('/productos/{id}', [ProductController::class, 'update']);
+
     // Rutes d'administració
     Route::post('/categorias', [CategoryController::class, 'store']);
     Route::put('/categorias/{id}', [CategoryController::class, 'update']);
     Route::delete('/categorias/{id}', [CategoryController::class, 'destroy']);
     
     // Rutas protegidas para vendedores
-    Route::middleware(['auth:sanctum', 'check.seller'])->group(function () {
-    // Productos
-    Route::post('/productos', [ProductController::class, 'store']);
-    Route::put('/productos/{id}', [ProductController::class, 'update']);
-    Route::delete('/productos/{id}', [ProductController::class, 'destroy']);
+    Route::middleware(['auth:sanctum', 'check.seller'])->group(function () { 
+    // Productos 
+    Route::post('/productos', [ProductController::class, 'store']); 
+    Route::put('/productos/{id}', [ProductController::class, 'update']); 
+    Route::delete('/productos/{id}', [ProductController::class, 'destroy']); 
     Route::get('/seller/productos', [ProductController::class, 'sellerProducts']);
     });
     Route::get('/productos', [ProductController::class, 'index']);

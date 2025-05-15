@@ -132,7 +132,13 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $producto->update($request->all());
+        // Només actualitzem els camps que s'han enviat en la petició
+        $fieldsToUpdate = $request->only([
+            'nombre', 'descricion', 'precio', 'stock', 
+            'rebajas', 'precio_rebajado', 'categoria_id'
+        ]);
+        
+        $producto->update($fieldsToUpdate);
 
         return response()->json([
             'status' => 'éxito',
