@@ -109,7 +109,7 @@ export class CarritoService {
   }
 
   getCartFromBackend(): Observable<any> {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('access_token'); // Changed from auth_token
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'

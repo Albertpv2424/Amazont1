@@ -157,11 +157,47 @@ class ProductController extends Controller
     public function sellerProducts(Request $request)
     {
         $user = $request->user();
-        $productos = Product::where('vendedor_id', $user->id)->get();
-
+        $productos = Product::where('user_id', $user->id)->get();
+        
         return response()->json([
-            'status' => 'éxito',
+            'status' => 'success',
             'productos' => $productos
+        ]);
+    }
+
+    public function sellerStatistics(Request $request)
+    {
+        $user = $request->user();
+        
+        // Aquí implementarías la lógica para obtener estadísticas reales
+        // Por ahora, devolvemos datos de ejemplo
+        $estadisticas = [
+            'ventasTotales' => 1500.00,
+            'productosVendidos' => 25,
+            'pedidosCompletados' => 10,
+            'valoracionMedia' => 4.5,
+            'productosPopulares' => [
+                [
+                    'nombre' => 'Producto 1',
+                    'unidades' => 10,
+                    'ingresos' => 500.00
+                ],
+                [
+                    'nombre' => 'Producto 2',
+                    'unidades' => 8,
+                    'ingresos' => 400.00
+                ],
+                [
+                    'nombre' => 'Producto 3',
+                    'unidades' => 7,
+                    'ingresos' => 350.00
+                ]
+            ]
+        ];
+        
+        return response()->json([
+            'status' => 'success',
+            'estadisticas' => $estadisticas
         ]);
     }
 

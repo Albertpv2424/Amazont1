@@ -17,21 +17,21 @@ import { CarritoService } from '../../services/carrito.service';
 export class HeaderComponent implements OnInit {
   @Input() isDarkMode: boolean = false;
   @Output() backgroundToggled = new EventEmitter<void>();
-  
+
   isLoggedIn = false;
   userName: string = '';
   searchTerm: string = '';
   filteredProducts: any[] = [];
   showSuggestions: boolean = false;
-  
+
   categorias: Categoria[] = [
     { nombre: 'Tecnología', imagen: 'assets/tecnologia.png' },
     { nombre: 'Deportes', imagen: 'assets/deportes.png' },
     { nombre: 'Cocina', imagen: 'assets/cocina.png' }
   ];
-  
+
   cantidadCarrito: number = 0;
-  
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -52,8 +52,8 @@ export class HeaderComponent implements OnInit {
         this.userName = '';
       }
     });
-    
-    
+
+
   }
 
   toggleBackground() {
@@ -72,11 +72,11 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-  
+
   navegarACategoria(categoria: string) {
     this.router.navigate(['/categoria', categoria]);
   }
-  
+
   navegarACategorias() {
     this.router.navigate(['/categorias']);
   }
@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit {
   onCategoryChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const value = selectElement.value;
-    
+
     if (value) {
       this.navegarACategoria(value);
     } else {
@@ -98,15 +98,15 @@ export class HeaderComponent implements OnInit {
     if (this.searchTerm && this.searchTerm.trim().length > 1) {
       const term = this.searchTerm.trim().toLowerCase();
       this.filteredProducts = this.productosService.getAllProductos()
-        .filter(producto => 
+        .filter(producto =>
           producto.nombre.toLowerCase().includes(term) ||
           (producto.descripcion && producto.descripcion.toLowerCase().includes(term))
         )
         .slice(0, 10); // Limit to 10 results
-      
+
       console.log('Filtered products:', this.filteredProducts.length);
       this.showSuggestions = this.filteredProducts.length > 0;
-      
+
       // Remove the code that tries to append to body as it's causing issues
       // Instead, let Angular handle the rendering in the template
     } else {
@@ -128,8 +128,8 @@ export class HeaderComponent implements OnInit {
       const term = this.searchTerm.trim();
       console.log('Buscando:', term);
       // Navigate to the search results page with the search term as a query parameter
-      this.router.navigate(['/busqueda'], { 
-        queryParams: { q: term } 
+      this.router.navigate(['/busqueda'], {
+        queryParams: { q: term }
       });
       // Hide suggestions after search
       this.showSuggestions = false;
@@ -148,12 +148,12 @@ export class HeaderComponent implements OnInit {
   }
   navegarAlCarrito(): void {
     if (this.authService.isLoggedIn()) {
-      const token = localStorage.getItem('auth_token');
-      const headers = { 
+      const token = this.authService.getToken(); // Use the getter method instead
+      const headers = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       };
-      
+
       this.carritoService.obtenirCarretBackend(headers).subscribe({
         next: (response) => {
           console.log('Carret obtingut:', response);

@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   showPassword = false;
   loginError = false;
+  errorMessage = ''; // Add this property for error messages
 
   constructor(
     private fb: FormBuilder,
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  // Rename login() to onSubmit() to match the template
   onSubmit(): void {
     this.submitted = true;
     this.loginError = false;
@@ -49,26 +51,37 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
-      
-      this.authService.login(email, password).subscribe({ 
-        next: (response) => { 
-          console.log('Resposta login:', response); // Afegim log per veure la resposta
-          // Guarda el token rebut 
-          if (response && response.access_token) { 
-            localStorage.setItem('auth_token', response.access_token);
-            this.authService.saveToken(response.access_token);
-            console.log('Token guardat:', response.access_token.substring(0, 10) + '...'); 
-          } 
-          this.router.navigate(['/']); 
-        }, 
-        error: (error) => { 
+
+      this.authService.login(email, password).subscribe({
+        next: (response) => {
+          console.log('Resposta login:', response);
+
+          // Remove this redundant code - AuthService already handles token storage
+          // if (response && response.access_token) {
+          //   localStorage.setItem('auth_token', response.access_token);
+          //   this.authService.saveToken(response.access_token);
+          //   console.log('Token guardat:', response.access_token.substring(0, 10) + '...');
+          // }
+
+          // Check user role and redirect accordingly
+          const user = this.authService.getCurrentUser();
+          console.log('User role:', user?.rol);
+
+          if (user && user.rol && user.rol.toLowerCase() === 'vendedor') {
+            console.log('Redirecting to vendor dashboard');
+            this.router.navigate(['/vendedor']);
+          } else {
+            console.log('Redirecting to home page');
+            this.router.navigate(['/']);
+          }
+        },
+        error: (error) => {
           console.error('Error de login:', error);
-          this.loginError = true; 
-        } 
-      }); 
+          this.loginError = true;
+        }
+      });
     }
   }
-
 
   // Helper methods for form validation
   get f() { return this.loginForm.controls; }

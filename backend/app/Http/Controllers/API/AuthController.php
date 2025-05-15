@@ -73,20 +73,48 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Array dels credencials per autenticar l'usuari.
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->contraseña
-        ];
+        // Get the user first to check if they exist
+        $user = User::where('email', $request->email)->first();
 
-        if (!Auth::attempt($credentials)) {
+        if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid login credentials'
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        // Check if the password is hashed with Bcrypt
+        $isBcrypt = str_starts_with($user->contraseña, '$2y$');
+
+        // If it's not Bcrypt, we need to handle it differently
+        if (!$isBcrypt) {
+            // Direct comparison for non-hashed passwords (temporary solution)
+            if ($request->contraseña !== $user->contraseña) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid login credentials'
+                ], 401);
+            }
+
+            // Update the password to use Bcrypt for future logins
+            $user->contraseña = Hash::make($request->contraseña);
+            $user->save();
+        } else {
+            // For Bcrypt passwords, use the normal Auth attempt
+            $credentials = [
+                'email' => $request->email,
+                'password' => $request->contraseña
+            ];
+
+            if (!Auth::attempt($credentials)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid login credentials'
+                ], 401);
+            }
+        }
+
+        // At this point, authentication is successful
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
