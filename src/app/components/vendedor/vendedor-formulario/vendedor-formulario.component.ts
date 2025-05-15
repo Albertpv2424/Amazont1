@@ -70,7 +70,15 @@ export class VendedorFormularioComponent implements OnInit {
   cargarCategorias(): void {
     this.vendedorService.getCategorias().subscribe({
       next: (data) => {
-        this.categorias = data;
+        console.log('Datos de categorías recibidos:', data);
+        // Verificar si data es un objeto con una propiedad que contiene el array
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          // Buscar una propiedad que podría contener el array de categorías
+          const posibleArray = Object.values(data).find(val => Array.isArray(val));
+          this.categorias = Array.isArray(posibleArray) ? posibleArray : [];
+        } else {
+          this.categorias = Array.isArray(data) ? data : [];
+        }
       },
       error: (err) => {
         console.error('Error al cargar categorías:', err);
