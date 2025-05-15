@@ -59,7 +59,7 @@ export class VendedorService {
 
   // Crear un nuevo producto
   crearProducto(producto: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/vendedor/productos`, producto, {
+    return this.http.post(`${this.apiUrl}/productos`, producto, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
@@ -68,7 +68,7 @@ export class VendedorService {
 
   // Actualizar un producto existente
   actualizarProducto(id: number, producto: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/vendedor/productos/${id}`, producto, {
+    return this.http.put(`${this.apiUrl}/productos/${id}`, producto, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
@@ -77,7 +77,7 @@ export class VendedorService {
 
   // Eliminar un producto
   eliminarProducto(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/vendedor/productos/${id}`, {
+    return this.http.delete(`${this.apiUrl}/productos/${id}`, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
