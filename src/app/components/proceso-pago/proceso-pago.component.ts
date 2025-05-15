@@ -300,27 +300,50 @@ export class ProcesoPagoComponent implements OnInit {
   }
 
   confirmarCompra(): void {
-    // Guardar nuevo método de pago si es necesario
-    if (this.nuevoMetodoPago && this.p['guardarMetodo'].value) {
-      this.guardarMetodoPago();
+    // Obtenir l'ID del mètode de pagament seleccionat
+    const metodoPagoId = localStorage.getItem('metodoPagoId');
+    
+    if (!metodoPagoId) {
+      console.error('No s\'ha seleccionat cap mètode de pagament');
+      return;
     }
     
-    // Guardar el total antes de vaciar el carrito
-    const totalCompra = this.total;
+    // Obtenir el token d'autenticació
+    const token = localStorage.getItem('auth_token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
     
-    // Hacer una copia de los productos para reducir stock
-    const productosParaReducirStock = [...this.productosCarrito];
+    // Preparar les dades per a la petició
+    const checkoutData = {
+      payment_method_id: parseInt(metodoPagoId)
+    };
     
-    // Vaciar el carrito en localStorage y en el servicio
-    localStorage.removeItem('carrito');
-    this.carritoService.vaciarCarrito();
-    
-    // Navegar a la página de confirmación
-    this.router.navigate(['/confirmacion-compra'], { 
-      queryParams: { 
-        success: true,
-        total: totalCompra
-      } 
+    // Fer la petició al backend per finalitzar la compra
+    this.http.post('http://localhost:8000/api/cart/checkout', checkoutData, { headers }).subscribe({
+      next: (response: any) => {
+        console.log('Compra confirmada:', response);
+        
+        // Guardar el total abans de buidar el carret
+        const totalCompra = this.total;
+        
+        // Buidar el carret a localStorage i al servei
+        localStorage.removeItem('carrito');
+        this.carritoService.vaciarCarrito();
+        
+        // Navegar a la pàgina de confirmació
+        this.router.navigate(['/confirmacion-compra'], { 
+          queryParams: { 
+            success: true,
+            total: totalCompra
+          } 
+        });
+      },
+      error: (error) => {
+        console.error('Error al confirmar la compra:', error);
+        alert('Hi ha hagut un error al confirmar la compra. Si us plau, torna-ho a provar més tard.');
+      }
     });
   }
 
