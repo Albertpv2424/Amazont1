@@ -1,5 +1,6 @@
 // src/app/interfaces/producto.interface.ts
 export interface Producto {
+  id_prod: any;
   id?: number;  // Update these properties
   imagen: string;
   titulo?: string;

@@ -66,23 +66,6 @@ export class VendedorService {
     );
   }
 
-// En el archivo vendedor.service.ts
-actualizarProducto(id: number, producto: Producto): Observable<Producto> {
-  return this.http.put<Producto>(`${this.apiUrl}/productos/${id}`, producto, {
-    headers: this.getHeaders()
-  }).pipe(
-    catchError(this.handleError)
-  );
-}
-
-  // Eliminar un producto
-  eliminarProducto(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/productos/${id}`, {
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
 
   // Obtener todas las categorías disponibles
   getCategorias(): Observable<any[]> {
@@ -136,5 +119,43 @@ actualizarProducto(id: number, producto: Producto): Observable<Producto> {
     }
 
     return throwError(() => new Error(errorMessage));
+  }
+
+  // Actualizar un producto existente
+  actualizarProducto(id: number, producto: any): Observable<any> {
+    const token = this.authService.getToken();
+
+    if (token) {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+      
+      // Preparar los datos para enviar
+      const datosProducto = {
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        stock: producto.stock
+        // Añadir otros campos según sea necesario
+      };
+      
+      return this.http.put<any>(`${this.apiUrl}/productos/${id}`, datosProducto, {
+        headers: headers
+      }).pipe(
+        catchError(this.handleError)
+      );
+    }
+
+    return throwError(() => new Error('No hi ha token d\'autenticació disponible'));
+  }
+
+  // Eliminar un producto
+  eliminarProducto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/productos/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

@@ -67,24 +67,7 @@ export class VendedorProductosComponent implements OnInit {
     });
   }
 
-  eliminarProducto(id: number | undefined): void {
-    if (id === undefined) {
-      console.error('Error: ID del producto no definido');
-      return;
-    }
-    
-    if (confirm('Estàs segur que vols eliminar aquest producte?')) {
-      this.vendedorService.eliminarProducto(id).subscribe({
-        next: () => {
-          this.productos = this.productos.filter(p => p.id !== id);
-        },
-        error: (err: Error) => {
-          console.error('Error al eliminar el producto:', err);
-          alert('Error al eliminar el producto. Por favor, inténtelo de nuevo.');
-        }
-      });
-    }
-  }
+ 
 
   // Métodos para el modal
   abrirModalEditar(producto: Producto): void {
@@ -99,27 +82,55 @@ export class VendedorProductosComponent implements OnInit {
   }
 
   guardarCambios(): void {
-    if (!this.productoEditando || this.productoEditando.id === undefined) {
-      console.error('Error: Producto no válido para editar');
+    console.log('Producte a editar:', this.productoEditando);
+    
+    // Verificar si tenemos id_prod en lugar de id
+    const productoId = this.productoEditando?.id || this.productoEditando?.id_prod;
+    console.log('ID del producte:', productoId);
+    
+    if (!this.productoEditando || !productoId) {
+      console.error('No hi ha cap producte per editar o falta l\'ID');
       return;
     }
-  
-    console.log('Enviando producto para actualizar:', this.productoEditando);
-    
-    this.vendedorService.actualizarProducto(this.productoEditando.id, this.productoEditando).subscribe({
-      next: (productoActualizado) => {
-        console.log('Producto actualizado correctamente:', productoActualizado);
-        // Actualizamos el producto en la lista
-        const index = this.productos.findIndex(p => p.id === this.productoEditando!.id);
+
+    this.isLoading = true;
+    this.vendedorService.actualizarProducto(productoId, this.productoEditando).subscribe({
+      next: (response) => {
+        console.log('Producte actualitzat correctament:', response);
+        
+        // Actualitzem el producte a la llista
+        const index = this.productos.findIndex(p => (p.id === productoId || p.id_prod === productoId));
         if (index !== -1) {
-          this.productos[index] = productoActualizado;
+          this.productos[index] = { ...this.productoEditando! } as Producto;
         }
+        
         this.cerrarModal();
+        this.isLoading = false;
       },
-      error: (err: Error) => {
-        console.error('Error al actualizar el producto:', err);
-        alert('Error al actualizar el producto. Por favor, inténtelo de nuevo.');
+      error: (err) => {
+        console.error('Error al actualitzar el producte:', err);
+        this.error = 'Error al actualitzar el producte. Si us plau, intenta-ho de nou més tard.';
+        this.isLoading = false;
       }
     });
+  }
+
+  eliminarProducto(id: number): void {
+    if (confirm('Estàs segur que vols eliminar aquest producte? Aquesta acció no es pot desfer.')) {
+      this.isLoading = true;
+      this.vendedorService.eliminarProducto(id).subscribe({
+        next: () => {
+          console.log('Producte eliminat correctament');
+          // Eliminem el producte de la llista
+          this.productos = this.productos.filter(p => p.id !== id);
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error al eliminar el producte:', err);
+          this.error = 'Error al eliminar el producte. Si us plau, intenta-ho de nou més tard.';
+          this.isLoading = false;
+        }
+      });
+    }
   }
 }
