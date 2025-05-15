@@ -31,6 +31,15 @@ export const routes: Routes = [
   { path: 'proceso-pago', component: ProcesoPagoComponent },
   { path: 'confirmacion-compra', component: ConfirmacionCompraComponent },
   {path: 'perfil-usuario', component: PerfilUsuarioComponent},
+  { path: 'vendedor', component: VendedorComponent,
+    children: [
+      { path: '', redirectTo: 'estadisticas', pathMatch: 'full' },
+      { path: 'estadisticas', component: VendedorEstadisticasComponent },
+      { path: 'productos', component: VendedorProductosComponent },
+      { path: 'formulario', component: VendedorFormularioComponent },
+      { path: 'formulario/:id', component: VendedorFormularioComponent }
+    ]
+  },
   { path: '**', redirectTo: '' },
 
   {

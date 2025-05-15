@@ -41,7 +41,7 @@ export class VendedorService {
 
   // Obtener todos los productos del vendedor
   getProductos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.apiUrl}/vendedor/productos`, {
+    return this.http.get<Producto[]>(`${this.apiUrl}/productos`, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)

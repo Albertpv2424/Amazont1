@@ -52,14 +52,15 @@ export class LoginComponent implements OnInit {
       
       this.authService.login(email, password).subscribe({ 
         next: (response) => { 
-          console.log('Resposta login:', response); // Afegim log per veure la resposta
+          console.log('Resposta login:', response);
           // Guarda el token rebut 
           if (response && response.access_token) { 
             localStorage.setItem('auth_token', response.access_token);
             this.authService.saveToken(response.access_token);
             console.log('Token guardat:', response.access_token.substring(0, 10) + '...'); 
-          } 
-          this.router.navigate(['/']); 
+          }
+          // Eliminamos la redirección manual para que el servicio de autenticación la maneje
+          // this.router.navigate(['/']); 
         }, 
         error: (error) => { 
           console.error('Error de login:', error);

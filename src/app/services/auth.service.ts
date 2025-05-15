@@ -34,14 +34,29 @@ export class AuthService {
     return this.http.post('http://localhost:8000/api/login', { email, contraseña: password }).pipe(
       tap((response: any) => {
         // Guarda el token si existe
-        if (response.access_token) {
+        if (response && response.access_token) { 
+          localStorage.setItem('access_token', response.access_token);
           this.saveToken(response.access_token);
+          console.log('Token guardat:', response.access_token.substring(0, 10) + '...'); 
         }
         // Guarda el usuario en localStorage y actualiza el estado
         if (response.user) {
           localStorage.setItem('currentUser', JSON.stringify(response.user));
           this.currentUserSubject.next(response.user);
           this.loggedInSubject.next(true);
+          
+          // Log para depuración
+          console.log('Usuario logueado:', response.user);
+          console.log('Rol del usuario:', response.user.rol);
+          
+          // Redirigir según el rol del usuario
+          if (response.user.rol && response.user.rol.toLowerCase() === 'vendedor') {
+            console.log('Redirigiendo a /vendedor');
+            this.router.navigate(['/vendedor']);
+          } else {
+            console.log('Redirigiendo a /');
+            this.router.navigate(['/']);
+          }
         }
       })
     );
@@ -58,7 +73,26 @@ export class AuthService {
 
   register(user: Usuario): Observable<any> {
     // Envia una petició POST al backend per registrar l'usuari
-    return this.http.post('http://localhost:8000/api/register', user);
+    return this.http.post('http://localhost:8000/api/register', user).pipe(
+      tap((response: any) => {
+        // Si el registro es exitoso y devuelve un token y datos de usuario
+        if (response.access_token) {
+          this.saveToken(response.access_token);
+        }
+        if (response.user) {
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
+          this.currentUserSubject.next(response.user);
+          this.loggedInSubject.next(true);
+          
+          // Redirigir según el rol del usuario
+          if (response.user.rol && response.user.rol.toLowerCase() === 'vendedor') {
+            this.router.navigate(['/vendedor']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        }
+      })
+    );
   }
 
   // Add this method if it doesn't exist or fix it if it's incorrectly implemented
@@ -117,7 +151,6 @@ export class AuthService {
     );
   }
   
-  
   removeToken() {
     localStorage.removeItem('access_token');
   }
@@ -128,5 +161,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.loggedInSubject.value;
+  }
+  
+  isVendedor(): boolean {
+    const user = this.getCurrentUser();
+    return user?.rol?.toLowerCase() === 'vendedor';
   }
 }

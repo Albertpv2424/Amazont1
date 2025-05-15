@@ -1,7 +1,7 @@
 <div class="productos-container">
   <div class="header">
-    <h1>Mis Productos</h1>
-    <a routerLink="/vendedor/formulario" class="btn-add">Añadir Nuevo Producto</a>
+    <h1>Els Meus Productes</h1>
+    <button class="btn-crear" [routerLink]="['/vendedor/productos/crear']">Crear Nou Producte</button>
   </div>
 
   <div *ngIf="error" class="error-message">
@@ -9,29 +9,40 @@
   </div>
 
   <div *ngIf="isLoading" class="loading">
-    Cargando productos...
+    Carregant productes...
   </div>
 
-  <div *ngIf="!isLoading && !error && productos.length === 0" class="empty-state">
-    <p>No tienes productos registrados.</p>
-    <a routerLink="/vendedor/formulario" class="btn-add">Añadir tu primer producto</a>
+  <div *ngIf="!isLoading && !error && productos.length === 0" class="no-productos">
+    No tens cap producte. Comença creant-ne un!
   </div>
 
-  <div *ngIf="!isLoading && !error && productos.length > 0" class="productos-grid">
-    <div class="producto-card" *ngFor="let producto of productos">
-      <div class="producto-imagen">
-        <img [src]="producto.imagen || 'assets/placeholder-product.png'" [alt]="producto.nombre">
-      </div>
-      <div class="producto-info">
-        <h3>{{ producto.nombre }}</h3>
-        <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
-        <p class="stock">Stock: {{ producto.stock }}</p>
-        <p *ngIf="producto.descuento" class="descuento">Descuento: {{ producto.descuento }}</p>
-      </div>
-      <div class="producto-acciones">
-        <a [routerLink]="['/vendedor/formulario', producto.id]" class="btn-edit">Editar</a>
-        <button (click)="eliminarProducto(producto.id!)" class="btn-delete">Eliminar</button>
-      </div>
-    </div>
+  <div *ngIf="!isLoading && !error && productos.length > 0" class="productos-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Imatge</th>
+          <th>Nom</th>
+          <th>Preu</th>
+          <th>Stock</th>
+          <th>Categoria</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of productos">
+          <td>
+            <img [src]="producto.imagen || 'assets/images/no-image.png'" alt="{{ producto.nombre }}" class="producto-imagen">
+          </td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.precio | currency:'EUR' }}</td>
+          <td>{{ producto.stock || 'No disponible' }}</td>
+          <td>{{ producto.categoria }}</td>
+          <td class="acciones">
+            <button class="btn-editar" [routerLink]="['/vendedor/productos/editar', producto.id]">Editar</button>
+            <button class="btn-eliminar" (click)="producto.id !== undefined && eliminarProducto(producto.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
