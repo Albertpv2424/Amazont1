@@ -24,7 +24,7 @@ class AuthController extends Controller
             'ciudad' => 'nullable|string',
             'codigo_postal' => 'nullable|string',
             'pais' => 'nullable|string',
-            'rol' => 'nullable|string|in:admin,Cliente,vendedor', // Update with correct role values
+            'rol' => 'nullable|string|in:admin,Cliente,Vendedor', // Update with correct role values
         ]);
 
         if ($validator->fails()) {
