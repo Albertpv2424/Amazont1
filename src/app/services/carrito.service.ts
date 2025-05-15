@@ -90,8 +90,37 @@ export class CarritoService {
  
 
   eliminarProducto(id: number): void {
-    this.carritoItems = this.carritoItems.filter(item => item.id !== id);
-    this.actualizarCarrito();
+    // Si l'usuari està autenticat, fem la crida al backend
+    if (this.authService.isLoggedIn()) {
+      const token = localStorage.getItem('auth_token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+      
+      // Fem la petició al backend per eliminar l'ítem
+      this.http.delete(`${this.apiUrl}/cart/item/${id}`, { headers }).subscribe({
+        next: (response: any) => {
+          console.log('Producte eliminat correctament:', response);
+          // Eliminar el producte del carret local
+          this.carritoItems = this.carritoItems.filter(item => item.id !== id);
+          this.carritoSubject.next(this.carritoItems);
+          localStorage.setItem('carrito', JSON.stringify(this.carritoItems));
+        },
+        error: (error) => {
+          console.error('Error al eliminar el producte:', error);
+          // Tot i l'error, eliminem localment per mantenir la coherència
+          this.carritoItems = this.carritoItems.filter(item => item.id !== id);
+          this.carritoSubject.next(this.carritoItems);
+          localStorage.setItem('carrito', JSON.stringify(this.carritoItems));
+        }
+      });
+    } else {
+      // Si no està autenticat, només eliminem del carret local
+      this.carritoItems = this.carritoItems.filter(item => item.id !== id);
+      this.carritoSubject.next(this.carritoItems);
+      localStorage.setItem('carrito', JSON.stringify(this.carritoItems));
+    }
   }
 
   actualizarCarrito(): void {
@@ -104,8 +133,36 @@ export class CarritoService {
   }
 
   vaciarCarrito(): void {
-    this.carritoItems = [];
-    this.actualizarCarrito();
+    // Si l'usuari està autenticat, fem la crida al backend
+    if (this.authService.isLoggedIn()) {
+      const token = localStorage.getItem('auth_token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+      
+      this.http.delete(`${this.apiUrl}/cart/clear`, { headers }).subscribe({
+        next: (response: any) => {
+          console.log('Carret buidat correctament:', response);
+          // Buidar el carret local
+          this.carritoItems = [];
+          this.carritoSubject.next(this.carritoItems);
+          localStorage.removeItem('carrito');
+        },
+        error: (error) => {
+          console.error('Error al buidar el carret:', error);
+          // Tot i l'error, buidem el carret local per mantenir la coherència
+          this.carritoItems = [];
+          this.carritoSubject.next(this.carritoItems);
+          localStorage.removeItem('carrito');
+        }
+      });
+    } else {
+      // Si no està autenticat, només buidem el carret local
+      this.carritoItems = [];
+      this.carritoSubject.next(this.carritoItems);
+      localStorage.removeItem('carrito');
+    }
   }
 
   getCartFromBackend(): Observable<any> {

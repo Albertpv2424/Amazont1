@@ -163,7 +163,7 @@ export class CarritoComponent implements OnInit {
   vaciarCarrito(): void {
     console.log('Vaciando carrito desde el componente...');
     this.carritoService.vaciarCarrito();
-    this.productosCarrito = [];
+
     this.actualizarTotales();
     console.log('Carrito vaciado, productos en la vista:', this.productosCarrito.length);
   }

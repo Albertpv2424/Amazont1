@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
+
 interface DireccionEnvio {
   calle: string;
   ciudad: string;
@@ -60,7 +61,7 @@ export class ProcesoPagoComponent implements OnInit {
     private carritoService: CarritoService,
     private authService: AuthService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Inicializar formularios
@@ -544,4 +545,23 @@ getTipoMetodoPago(): string {
 usarOtroMetodoPago(): void {
 this.router.navigate(['/perfil-usuario']);
 }
+
+
+eliminarProducto(producto: ProductoCarrito): void {
+  if (producto.id) {
+    this.carritoService.eliminarProducto(producto.id);
+    // Actualitzar els productes del carret i els totals
+    this.carritoService.getCarrito().subscribe(productos => {
+      this.productosCarrito = productos;
+      this.actualizarTotales();
+    });
+  }
+}
+
+  vaciarCarrito(): void {
+    console.log('Vaciando carrito desde el componente de proceso de pago...');
+    this.carritoService.vaciarCarrito();
+    this.productosCarrito = [];
+    this.actualizarTotales();
+  }
 }
