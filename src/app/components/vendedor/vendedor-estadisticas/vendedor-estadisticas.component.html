@@ -1,0 +1,55 @@
+<div class="estadisticas-container">
+  <h1>Estadísticas de Ventas</h1>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    Cargando estadísticas...
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="estadisticas-content">
+    <div class="stats-overview">
+      <div class="stat-card">
+        <h3>Ventas Totales</h3>
+        <p class="stat-value">{{ estadisticas.ventasTotales | currency:'EUR' }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Productos Vendidos</h3>
+        <p class="stat-value">{{ estadisticas.productosVendidos }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Pedidos Completados</h3>
+        <p class="stat-value">{{ estadisticas.pedidosCompletados }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Valoración Media</h3>
+        <p class="stat-value">{{ estadisticas.valoracionMedia }}/5</p>
+      </div>
+    </div>
+
+    <div class="popular-products">
+      <h2>Productos Más Populares</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Unidades Vendidas</th>
+            <th>Ingresos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of estadisticas.productosPopulares">
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.unidades }}</td>
+            <td>{{ producto.ingresos | currency:'EUR' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

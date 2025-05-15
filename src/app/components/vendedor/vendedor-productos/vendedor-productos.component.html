@@ -1,0 +1,37 @@
+<div class="productos-container">
+  <div class="header">
+    <h1>Mis Productos</h1>
+    <a routerLink="/vendedor/formulario" class="btn-add">Añadir Nuevo Producto</a>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    Cargando productos...
+  </div>
+
+  <div *ngIf="!isLoading && !error && productos.length === 0" class="empty-state">
+    <p>No tienes productos registrados.</p>
+    <a routerLink="/vendedor/formulario" class="btn-add">Añadir tu primer producto</a>
+  </div>
+
+  <div *ngIf="!isLoading && !error && productos.length > 0" class="productos-grid">
+    <div class="producto-card" *ngFor="let producto of productos">
+      <div class="producto-imagen">
+        <img [src]="producto.imagen || 'assets/placeholder-product.png'" [alt]="producto.nombre">
+      </div>
+      <div class="producto-info">
+        <h3>{{ producto.nombre }}</h3>
+        <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
+        <p class="stock">Stock: {{ producto.stock }}</p>
+        <p *ngIf="producto.descuento" class="descuento">Descuento: {{ producto.descuento }}</p>
+      </div>
+      <div class="producto-acciones">
+        <a [routerLink]="['/vendedor/formulario', producto.id]" class="btn-edit">Editar</a>
+        <button (click)="eliminarProducto(producto.id!)" class="btn-delete">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

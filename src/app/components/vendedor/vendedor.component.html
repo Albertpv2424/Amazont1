@@ -1,0 +1,21 @@
+<div class="vendedor-container">
+  <div *ngIf="!isVendedor" class="error-message">
+    <h2>Acceso Denegado</h2>
+    <p>Esta sección está reservada para vendedores. Si desea convertirse en vendedor, contacte con el administrador.</p>
+  </div>
+
+  <div *ngIf="isVendedor" class="vendedor-dashboard">
+    <div class="sidebar">
+      <h2>Panel de Vendedor</h2>
+      <nav>
+        <a routerLink="/vendedor/estadisticas" routerLinkActive="active">Estadísticas</a>
+        <a routerLink="/vendedor/productos" routerLinkActive="active">Mis Productos</a>
+        <a routerLink="/vendedor/formulario" routerLinkActive="active">Añadir Producto</a>
+      </nav>
+    </div>
+    
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
