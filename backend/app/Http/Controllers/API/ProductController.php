@@ -215,5 +215,6 @@ class ProductController extends Controller
             'stock' => $product->stock
         ]);
     }
+    
 
 }

@@ -362,3 +362,14 @@ div.dark-mode {
     grid-column: 1;
   }
 }
+
+.opinion .fecha {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.dark-mode .opinion .fecha {
+  color: #aaa;
+}

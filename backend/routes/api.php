@@ -57,7 +57,6 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Add the missing route for payment-methods
     Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
-    
     // Comandes
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
@@ -81,6 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Protected review/rating actions
     Route::post('/reviews', [ReviewController::class, 'storeReview']);
+    Route::get('/reviews/{id}', [ReviewController::class,'getProductReviews']);
     Route::post('/ratings', [ReviewController::class, 'storeRating']);
 });
 

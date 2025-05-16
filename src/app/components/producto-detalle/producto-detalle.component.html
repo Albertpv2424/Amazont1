@@ -49,12 +49,18 @@
       
       <div class="opiniones">
         <h2>Opiniones de clientes</h2>
-        @for (opinion of producto.opiniones; track opinion) {
-          <div class="opinion">
-            <p class="usuario">{{ opinion.usuario }}</p>
-            <p class="valoracion">Valoración: {{ opinion.valoracion }} ⭐</p>
-            <p>{{ opinion.comentario }}</p>
-          </div>
+        @if (reviews && reviews.length > 0) {
+          @for (review of reviews; track review.id) {
+            <div class="opinion">
+              <p class="usuario">{{ review.user?.nombre || 'Usuario' }}</p>
+              <p class="titulo"><strong>{{ review.titulo }}</strong></p>
+              <p class="valoracion">Valoración: {{ review.rating || 5 }} ⭐</p>
+              <p>{{ review.comentario }}</p>
+              <p class="fecha">{{ review.created_at | date:'dd/MM/yyyy' }}</p>
+            </div>
+          }
+        } @else {
+          <p>No hay opiniones para este producto todavía.</p>
         }
       </div>
     </div>
