@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductosService } from '../../services/productos.service';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
 import { CarritoService } from '../../services/carrito.service';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-producto-detalle',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './producto-detalle.component.html',
   styleUrls: ['./producto-detalle.component.css']
 })
@@ -21,12 +22,23 @@ export class ProductoDetalleComponent implements OnInit {
   mostrarPopup: boolean = false;
   reviews: any[] = [];
   
+  // Nuevas propiedades para el formulario de reseña
+  nuevaResena = {
+    titulo: '',
+    comentario: '',
+    puntuacion: 5
+  };
+  mostrarFormularioResena: boolean = false;
+  mensajeExito: string = '';
+  mensajeError: string = '';
+  
   constructor(
     private route: ActivatedRoute,
     private productosService: ProductosService,
     private themeService: ThemeService,
     private carritoService: CarritoService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
   
   ngOnInit(): void {
@@ -124,5 +136,64 @@ export class ProductoDetalleComponent implements OnInit {
   
   cerrarPopup() {
     this.mostrarPopup = false;
+  }
+  
+  // Nuevos métodos para gestionar reseñas
+  toggleFormularioResena(): void {
+    this.mostrarFormularioResena = !this.mostrarFormularioResena;
+    this.mensajeExito = '';
+    this.mensajeError = '';
+    this.nuevaResena = {
+      titulo: '',
+      comentario: '',
+      puntuacion: 5
+    };
+  }
+  
+  enviarResena(): void {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+    
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    
+    // Combinamos los datos de reseña y puntuación en una sola solicitud
+    const resenaData = {
+      producto_id: this.producto.id_prod || this.producto.id,
+      titulo: this.nuevaResena.titulo,
+      comentario: this.nuevaResena.comentario,
+      puntuacion: this.nuevaResena.puntuacion // Incluimos la puntuación en la misma solicitud
+    };
+    
+    // Enviamos una única solicitud con todos los datos
+    this.http.post('http://127.0.0.1:8000/api/reviews', resenaData, { headers }).subscribe({
+      next: (response: any) => {
+        console.log('Reseña y puntuación enviadas correctamente:', response);
+        this.mensajeExito = 'Tu reseña ha sido publicada correctamente.';
+        
+        // Recargamos las reseñas después de un breve tiempo
+        setTimeout(() => {
+          this.cargarResenas(this.producto.id_prod || this.producto.id);
+          this.toggleFormularioResena();
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Error al enviar la reseña:', error);
+        
+        if (error.status === 401) {
+          this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+        } else if (error.status === 409) {
+          this.mensajeError = 'Ya has publicado una reseña para este producto.';
+        } else {
+          this.mensajeError = 'Hubo un problema al enviar tu reseña. Por favor, inténtalo de nuevo.';
+        }
+      }
+    });
   }
 }
