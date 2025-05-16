@@ -440,37 +440,58 @@ export class PerfilUsuarioComponent implements OnInit {
       const currentUser = this.authService.getCurrentUser();
       if (!currentUser) return;
       
-      // Obtenir els usuaris del localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userIndex = users.findIndex((u: any) => u.email === currentUser.email);
+      // Obtenir el token d'autenticació
+      const token = localStorage.getItem('auth_token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
       
-      if (userIndex === -1) {
-        this.passwordError = 'No s\'ha trobat l\'usuari al sistema';
-        return;
-      }
+      // Preparar les dades per a la petició amb els noms correctes
+      const passwordData = {
+        current_password: this.passwordForm.value.currentPassword,
+        contraseña: this.passwordForm.value.newPassword,
+        contraseña_confirmation: this.passwordForm.value.confirmPassword
+      };
       
-      // Verificar la contrasenya actual
-      if (users[userIndex].password !== this.passwordForm.value.currentPassword) {
-        this.passwordError = 'La contrasenya actual no és correcta';
-        return;
-      }
-      
-      // Actualitzar la contrasenya
-      users[userIndex].password = this.passwordForm.value.newPassword;
-      localStorage.setItem('users', JSON.stringify(users));
-      
-      // Actualitzar l'usuari actual
-      const updatedUser = { ...currentUser, password: this.passwordForm.value.newPassword };
-      this.authService.updateCurrentUser(updatedUser);
-      
-      this.passwordSuccess = 'Contrasenya actualitzada correctament';
-      this.passwordSubmitted = false;
-      this.passwordForm.reset();
-      
-      // Ocultar el formulari després d'uns segons
-      setTimeout(() => {
-        this.ocultarFormularioPassword();
-      }, 3000);
+      // Fer la petició al backend
+      this.http.put('http://localhost:8000/api/user', passwordData, { headers }).subscribe({
+        next: (response: any) => {
+          console.log('Contrasenya actualitzada:', response);
+          
+          this.passwordSuccess = 'Contrasenya actualitzada correctament';
+          this.passwordSubmitted = false;
+          this.passwordForm.reset();
+          
+          // Ocultar el formulari després d'uns segons
+          setTimeout(() => {
+            this.ocultarFormularioPassword();
+          }, 3000);
+        },
+        error: (error) => {
+          console.error('Error al actualitzar la contrasenya:', error);
+          
+          if (error.status === 422) {
+            // Error de validació
+            if (error.error && error.error.errors) {
+              if (error.error.errors.current_password) {
+                this.passwordError = 'La contrasenya actual no és correcta';
+              } else if (error.error.errors.password) {
+                this.passwordError = error.error.errors.password[0];
+              } else {
+                this.passwordError = 'Error de validació';
+              }
+            } else {
+              this.passwordError = 'Error de validació';
+            }
+          } else if (error.status === 401) {
+            this.passwordError = 'No estàs autoritzat. Si us plau, torna a iniciar sessió';
+            this.authService.logout();
+          } else {
+            this.passwordError = 'Error al actualitzar la contrasenya. Si us plau, torna-ho a provar més tard';
+          }
+        }
+      });
     }
   }
 

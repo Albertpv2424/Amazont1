@@ -33,7 +33,6 @@ class UserController extends Controller
     {
         // Validació de les dades d'entrada
         $validator = Validator::make($request->all(), [
-            'email' => 'required_with:contraseña,contrasena|string|email|unique:users,email,' . Auth::id(),
             'direccion' => 'nullable|string|max:255',
             'current_password' => 'required_with:contraseña,contrasena|string',
             'contraseña' => 'nullable|string|min:8|confirmed',
