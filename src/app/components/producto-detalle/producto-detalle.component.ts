@@ -44,10 +44,34 @@ export class ProductoDetalleComponent implements OnInit {
   }
 
   anadirAlCarrito() {
-    this.carritoService.addToCart(this.producto, this.cantidad);
-    console.log('Producto añadido al carrito:', this.producto);
+    console.log('Producto seleccionado:', this.producto); // Añadido para depuración
+    console.log('Producto ID:', this.producto.id_prod); // Añadido para depuración
+    const id = this.producto.id_prod || this.producto.id;
+    
+    if (id) { 
+      this.carritoService.addToCart(Number(id), this.cantidad).subscribe({
+        next: () => {
+          console.log('Producto añadido correctamente');
+          this.carritoService.obtenerCantidadTotal();
+          this.mostrarPopup = true; // Mostrar confirmación
+          setTimeout(() => {
+            this.mostrarPopup = false;
+          }, 2000); // Ocultar después de 2 segundos
+        },
+        error: (error) => {
+          console.error('Error detallado:', error.error?.errors || error);
+          // Redirigir a login si no está autenticado
+          if (error.status === 401) {
+            // Aquí necesitarías inyectar el Router en el constructor
+            // this.router.navigate(['/login']);
+          }
+        }
+      });
+    } else {
+      console.error('Producto sin ID:', this.producto);
+    }
   }
-
+  
   incrementarCantidad() {
     // Verificar si ya alcanzó el stock máximo
     if (this.cantidad < this.producto.stock) {

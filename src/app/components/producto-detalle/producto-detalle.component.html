@@ -3,7 +3,7 @@
     <div class="producto-detalle">
       <div class="producto-imagenes">
         <div class="imagen-principal">
-          <img [src]="producto.imagen" alt="{{ producto.nombre }}">
+          <img [src]="'assets/' + producto.imagen" alt="{{ producto.nombre }}">
         </div>
         <div class="galeria-imagenes">
           @for (imagen of producto.galeriaImagenes; track imagen) {

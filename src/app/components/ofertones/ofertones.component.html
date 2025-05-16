@@ -5,8 +5,8 @@
     <button class="flecha izquierda" (click)="previous()">←</button>
     <div class="ofertas">
       <div *ngFor="let oferta of visibleOffers" class="oferta-card">
-        <img [src]="'assets/' + oferta.imagen" alt="{{ oferta.nombre }}" class="oferta-img">
-        <h3>{{ oferta.nombre }}</h3>
+        <img [src]="'assets/' + oferta.imagen" alt="{{ oferta.nombre }}" class="oferta-img" (click)="navegarAProducto(oferta)" style="cursor: pointer;">
+        <h3 (click)="navegarAProducto(oferta)" style="cursor: pointer;">{{ oferta.nombre }}</h3>
         <div class="preus">
           <span class="preu-original" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio">
             {{ oferta.precio | currency:'EUR':'symbol':'1.2-2' }}

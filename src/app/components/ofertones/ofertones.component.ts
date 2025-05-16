@@ -7,6 +7,8 @@ import { ProductoComponent } from '../producto/producto.component';
 import { AuthService } from '../../services/auth.service';
 import { CarritoService } from '../../services/carrito.service'; // Add this import
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router'; // Afegim el Router per poder navegar
+
 
 @Component({
   selector: 'app-ofertones',
@@ -25,14 +27,14 @@ export class OfertonesComponent implements OnInit {
   isLoggedIn = false;
   userName = '';
   cantidadCarrito: number = 0; // Add cart quantity
-  router: any;
-
+  
   constructor(
     private productosService: ProductosService,
     private themeService: ThemeService,
     private authService: AuthService,
     private carritoService: CarritoService,
-    private http: HttpClient // Add HttpClient here
+    private http: HttpClient,
+    private router: Router // Afegim el Router per poder navegar
   ) {}
 
   ngOnInit(): void {
@@ -121,6 +123,17 @@ export class OfertonesComponent implements OnInit {
           }
         }
       });
+    } else {
+      console.error('Producte sense ID:', producto);
+    }
+  }
+  
+  // Afegim un nou mètode per navegar al detall del producte
+  navegarAProducto(producto: ProductoCategoria) {
+    console.log('Navegant a producte:', producto);
+    console.log('ID del producte:', producto.id_prod);
+    if (producto && producto.id_prod) {
+      this.router.navigate(['/producto', producto.id_prod]);
     } else {
       console.error('Producte sense ID:', producto);
     }

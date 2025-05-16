@@ -108,21 +108,35 @@ export class CategoriaDetalleComponent implements OnInit {
     return filtrats;
   }
 
-  anadirAlCarrito(producto: ProductoCategoria): void {
-    // Añadir el producto al carrito con cantidad 1
-    const resultado = this.carritoService.addToCart(producto.id, 1);
-    if (resultado) {
-      console.log('Producto añadido al carrito:', producto.nombre);
-      // Aquí puedes mostrar una notificación si lo deseas
+  anadirAlCarrito(producto: ProductoCategoria) {
+    console.log('Producte seleccionat:', producto); // Afegit per depuració
+    console.log('Producte ID:', producto.id_prod); // Afegit per depuració
+    const no = producto.id_prod;
+    if (producto) { 
+      this.carritoService.addToCart(Number(no), 1).subscribe({
+        next: () => {
+          console.log('Producte afegit correctament');
+          this.carritoService.obtenerCantidadTotal();
+        },
+        error: (error) => {
+          console.error('Error detallat:', error.error.errors);
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
     } else {
-      console.error('No se pudo añadir el producto al carrito');
-      // Aquí puedes mostrar un mensaje de error si lo deseas
+      console.error('Producte sense ID:', producto);
     }
   }
 
   navegarAProducto(producto: ProductoCategoria) {
-    if (producto && producto.id) {
-      this.router.navigate(['/producto', producto.id]);
+    console.log('Navegant a producte:', producto); // Afegit per depuració
+    console.log('ID del producte:', producto.id_prod); // Afegit per depuració
+    if (producto && producto.id_prod) {
+      this.router.navigate(['/producto', producto.id_prod]);
+    } else {
+      console.error('Producte sense ID:', producto);
     }
   }
 }
