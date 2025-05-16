@@ -15,13 +15,14 @@ class Product extends Model
     
     protected $fillable = [
         'nombre',
-        'descripcion',  // Corregido de 'descricion' a 'description'
-        'precio',        // Corregido de 'precio' a 'price'
+        'descripcion',  
+        'precio',        
         'stock',
-        'categoria_id',  // Corregido de 'categoria_id' a 'category_id'
+        'categoria_id',  
         'imagen',
-        'on_sale',      // Corregido de 'rebajas' a 'on_sale'
-        'sale_price'    // Corregido de 'precio_rebajado' a 'sale_price'
+        'on_sale',      
+        'sale_price',
+        'user_id'       // Afegim aquest camp
     ];
 
     public function category()

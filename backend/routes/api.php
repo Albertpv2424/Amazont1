@@ -23,21 +23,12 @@ Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
     Route::get('/{id}', [ProductController::class, 'show']);
     Route::get('/{id}/stock', [ProductController::class, 'getStock']); // Add this line
-    Route::post('/', [ProductController::class, 'store']);
-    Route::put('/{id}', [ProductController::class, 'update']);
-    Route::delete('/{id}', [ProductController::class, 'destroy']);
+    // Eliminar aquestes rutes públiques per crear/actualitzar/eliminar productes
+    // Route::post('/', [ProductController::class, 'store']);
+    // Route::put('/{id}', [ProductController::class, 'update']);
+    // Route::delete('/{id}', [ProductController::class, 'destroy']);
 });
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/seller/products', [ProductController::class, 'sellerProducts']);
-});
-
-Route::get('/products/reviews/{id}', [ReviewController::class, 'getProductReviews']);
-Route::get('/products/ratings/{id}', [ReviewController::class, 'getProductRatings']);
-Route::get('/reviews', [ReviewController::class, 'getAllReviews']); 
-Route::get('/ratings', [ReviewController::class, 'getAllRatings']); 
-
-// Rutes protegides (requereixen autenticació)
 Route::middleware('auth:sanctum')->group(function () {
     // Autenticació
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -75,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/productos/{id}', [ProductController::class, 'update']); 
     Route::delete('/productos/{id}', [ProductController::class, 'destroy']); 
     Route::get('/seller/productos', [ProductController::class, 'sellerProducts']);
+    Route::get('/seller/prods/', [ProductController::class,'getownproducts']);
     });
     Route::get('/productos', [ProductController::class, 'index']);
     

@@ -29,7 +29,8 @@ export class VendedorProductosComponent implements OnInit {
   constructor(
     private vendedorService: VendedorService,
     private productosService: ProductosService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private http: HttpClient  // Properly inject HttpClient here
   ) {}
 
   // Añade estas propiedades y métodos al componente
@@ -121,7 +122,15 @@ export class VendedorProductosComponent implements OnInit {
     this.isLoading = true;
     this.error = '';
 
-    this.vendedorService.getProductos().subscribe({
+    // Obtener el token de autenticación
+    const token = localStorage.getItem('auth_token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+
+    // Usar la nueva ruta de API para vendedores
+    this.http.get('http://127.0.0.1:8000/api/seller/prods', { headers }).subscribe({
       next: (response: any) => {
         console.log('Respuesta del servidor:', response);
 
@@ -148,7 +157,7 @@ export class VendedorProductosComponent implements OnInit {
         console.log('Productos cargados:', this.productos.length);
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al cargar productos:', error);
         this.error = 'Error al cargar los productos. Por favor, inténtalo de nuevo más tarde.';
         this.isLoading = false;

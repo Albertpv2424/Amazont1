@@ -81,19 +81,35 @@ class ProductController extends Controller
             'categorias' => 'required|array|min:1',
             'categorias.*' => 'exists:categorias,id_cat',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'errores' => $validator->errors()
             ], 422);
         }
-
+    
         DB::beginTransaction();
         try {
-            $producto = Product::create($request->except('categorias'));
+            // Crear un array amb les dades del producte
+            $productData = $request->except('categorias');
+            
+            // Obtenir l'usuari autenticat i assignar el seu ID
+            $user = auth()->user();
+            
+            if ($user) {
+                $productData['user_id'] = $user->id;
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'mensaje' => 'No s\'ha pogut identificar l\'usuari. Assegureu-vos d\'estar autenticat.'
+                ], 401);
+            }
+            
+            // Crear el producte amb les dades actualitzades
+            $producto = Product::create($productData);
             $producto->categorias()->sync($request->categorias);
-
+    
             DB::commit();
             return response()->json([
                 'status' => 'éxito',
@@ -114,6 +130,14 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $producto = Product::findOrFail($id);
+        
+        // Verificar que el usuario actual es el propietario del producto
+        if ($request->user()->id !== $producto->user_id && $request->user()->rol !== 'admin') {
+            return response()->json([
+                'status' => 'error',
+                'mensaje' => 'No tienes permiso para editar este producto'
+            ], 403);
+        }
 
         $validator = Validator::make($request->all(), [
             'nombre' => 'sometimes|required|string|max:255',
@@ -148,9 +172,18 @@ class ProductController extends Controller
     }
 
     // Eliminar un producto específico.
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $producto = Product::findOrFail($id);
+        
+        // Verificar que el usuario actual es el propietario del producto
+        if ($request->user()->id !== $producto->user_id && $request->user()->rol !== 'admin') {
+            return response()->json([
+                'status' => 'error',
+                'mensaje' => 'No tienes permiso para eliminar este producto'
+            ], 403);
+        }
+        
         $producto->delete();
 
         return response()->json([
@@ -163,7 +196,7 @@ class ProductController extends Controller
     public function sellerProducts(Request $request)
     {
         $user = $request->user();
-        $productos = Product::where('user_id', $user->id)->get();
+        $productos = Product::where('user_id', $user->id)->with('categorias')->get();
         
         return response()->json([
             'status' => 'success',
@@ -216,5 +249,14 @@ class ProductController extends Controller
         ]);
     }
     
+    public function getownproducts(Request $request)
+    {
+        $user = $request->user();
+        $productos = Product::where('user_id', $user->id)->with('categorias')->get();
 
+        return response()->json([
+           'status' =>'success',
+            'productos' => $productos
+        ]);
+    }
 }
