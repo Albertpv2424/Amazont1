@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { VendedorService } from '../../../services/vendedor.service';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-vendedor-formulario',
@@ -20,8 +21,10 @@ export class VendedorFormularioComponent implements OnInit {
   isSubmitting = false;
   error = '';
   imagenPreview: string | null = null;
+  isDarkMode = false;
 
   constructor(
+    private themeService: ThemeService,
     private fb: FormBuilder,
     private vendedorService: VendedorService,
     private route: ActivatedRoute,
@@ -31,7 +34,7 @@ export class VendedorFormularioComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.cargarCategorias();
-  
+    
 
     // Check if we're editing an existing product
     this.route.params.subscribe(params => {
@@ -40,6 +43,10 @@ export class VendedorFormularioComponent implements OnInit {
         this.isEditing = true;
         this.cargarProducto(this.productoId);
       }
+    });
+
+    this.themeService.darkMode$.subscribe(isDarkMode => {
+      this.isDarkMode = isDarkMode;
     });
   }
 

@@ -1,3 +1,4 @@
+/* Estilos para modo claro (light mode) */
 .productos-container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -7,11 +8,6 @@
   font-family: 'Arial', sans-serif;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.dark-mode {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
 }
 
 .header {
@@ -42,14 +38,6 @@
   border-radius: 2px;
 }
 
-.dark-mode .header h1 {
-  color: #ffffff;
-}
-
-.dark-mode .header h1:after {
-  background-color: #ff9800;
-}
-
 .btn-agregar {
   background-color: #f0ad4e;
   color: #333;
@@ -73,16 +61,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.dark-mode .btn-agregar {
-  background-color: #ff9f43;
-  color: #232f3e;
-}
-
-.dark-mode .btn-agregar:hover {
-  background-color: #f39c38;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
 .loading {
   display: flex;
   flex-direction: column;
@@ -101,11 +79,6 @@
   margin-bottom: 10px;
 }
 
-.dark-mode .spinner {
-  border-left-color: #ff9f43;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-}
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -122,21 +95,10 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.dark-mode .no-productos {
-  background-color: #242c34;
-  color: #f0f0f0;
-  border: 1px solid #3a6fa5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
 .no-productos i {
   font-size: 48px;
   color: #f0ad4e;
   margin-bottom: 15px;
-}
-
-.dark-mode .no-productos i {
-  color: #ff9f43;
 }
 
 /* Improved table styles */
@@ -148,21 +110,10 @@
   background-color: #fff;
 }
 
-.dark-mode .productos-list {
-  background-color: #242c34;
-  color: #f0f0f0;
-  border: 1px solid #3a6fa5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-}
-
-.dark-mode table {
-  background-color: #242c34;
 }
 
 th, td {
@@ -171,27 +122,14 @@ th, td {
   border-bottom: 1px solid #eee;
 }
 
-.dark-mode th, .dark-mode td {
-  border-bottom: 1px solid #3a6fa5;
-}
-
 th {
   background-color: #f8f9fa;
   font-weight: 600;
   color: #232f3e;
 }
 
-.dark-mode th {
-  background-color: #242c34;
-  color: #ffffff;
-}
-
 tr:hover {
   background-color: #f5f5f5;
-}
-
-.dark-mode tr:hover {
-  background-color: #37475a;
 }
 
 /* Column widths */
@@ -228,7 +166,7 @@ tr:hover {
   margin: 0 auto;
 }
 
-/* Añade estos estilos para los botones de acción */
+/* Botones de acción */
 .botones-accion {
   display: flex;
   justify-content: center;
@@ -268,15 +206,6 @@ tr:hover {
   transform: translateY(-2px);
 }
 
-.dark-mode .btn-editar {
-  background-color: #ff9f43;
-  color: #232f3e;
-}
-
-.dark-mode .btn-editar:hover {
-  background-color: #f39c38;
-}
-
 /* Modal styles */
 .modal-overlay {
   position: fixed;
@@ -301,13 +230,6 @@ tr:hover {
   overflow-y: auto;
 }
 
-.dark-mode .modal-container {
-  background-color: #242c34;
-  color: #f0f0f0;
-  border: 1px solid #3a6fa5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -316,18 +238,10 @@ tr:hover {
   border-bottom: 1px solid #eee;
 }
 
-.dark-mode .modal-header {
-  border-bottom: 1px solid #3a6fa5;
-}
-
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
   color: #232f3e;
-}
-
-.dark-mode .modal-header h2 {
-  color: #ffffff;
 }
 
 .btn-cerrar {
@@ -338,44 +252,67 @@ tr:hover {
   color: #666;
 }
 
-.dark-mode .btn-cerrar {
-  color: #ddd;
-}
-
 .modal-body {
   padding: 20px;
 }
 
-/* Form layout */
+/* Estilos para el modo oscuro del modal */
+.dark-mode .modal-container {
+  background-color: #242c34;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .modal-header {
+  border-bottom: 1px solid #3a6fa5;
+}
+
+.dark-mode .modal-header h2 {
+  color: #ffffff;
+}
+
+.dark-mode .btn-cerrar {
+  color: #f0f0f0;
+}
+
+.dark-mode .btn-cerrar:hover {
+  color: #ff9f43;
+}
+
+.dark-mode .form-control {
+  background-color: #37475a;
+  border-color: #3a6fa5;
+  color: #f0f0f0;
+}
+
+.dark-mode .form-control:focus {
+  border-color: #ff9f43;
+}
+
+.dark-mode .modal-body {
+  color: #f0f0f0;
+}
+
+/* Estilos para el formulario del modal */
 .form-layout {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   margin-bottom: 20px;
 }
 
 .imagen-preview-container {
-  flex: 1;
-  max-width: 300px;
-}
-
-.form-fields {
-  flex: 2;
+  flex: 0 0 250px;
 }
 
 .imagen-preview {
   width: 100%;
-  height: 200px;
-  border-radius: 4px;
-  overflow: hidden;
+  height: 250px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
+  justify-content: center;
+  overflow: hidden;
   background-color: #f9f9f9;
-}
-
-.dark-mode .imagen-preview {
-  background-color: #242c34;
 }
 
 .preview-img {
@@ -384,164 +321,195 @@ tr:hover {
   object-fit: contain;
 }
 
-/* Estils adaptats del formulari de venedor */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-row {
-  display: flex;
-  gap: 20px;
-}
-
-.form-row .form-group {
+.form-fields {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-label {
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   font-weight: 600;
   color: #333;
-  font-size: 14px;
 }
 
-input[type="text"],
-input[type="number"],
-textarea,
-select {
+.form-control {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
   transition: border-color 0.3s;
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
-textarea:focus,
-select:focus {
+.form-control:focus {
   border-color: #f0c14b;
   outline: none;
   box-shadow: 0 0 5px rgba(240, 193, 75, 0.3);
 }
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-select[multiple] {
-  height: 120px;
-}
-
-.checkbox-group {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-group input {
-  margin-right: 10px;
-  width: auto;
-}
-
-.checkbox-group label {
-  margin-bottom: 0;
-  cursor: pointer;
-}
-
-.error-text {
-  color: #d00;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-small {
-  display: block;
-  color: #666;
-  margin-top: 5px;
-  font-size: 12px;
-}
-
-/* Estils per a mode fosc */
-.dark-mode label {
-  color: #ddd;
-}
-
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
-}
-
-.dark-mode small {
-  color: #aaa;
-}
-
-.dark-mode .form-control {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
-}
-
 textarea.form-control {
   resize: vertical;
-}
-
-.file-input {
-  width: 100%;
-  padding: 8px 0;
+  min-height: 80px;
 }
 
 .form-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 15px;
   margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
 }
 
 .btn-cancelar, .btn-guardar {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 15px;
-  border: none;
+  padding: 10px 20px;
   border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-cancelar {
-  background-color: #e0e0e0;
+  background-color: #f5f5f5;
   color: #333;
-}
-
-.btn-cancelar:hover {
-  background-color: #d0d0d0;
-  transform: translateY(-2px);
+  border: 1px solid #ddd;
 }
 
 .btn-guardar {
-  background-color: #f0ad4e;
-  color: #333;
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+}
+
+.btn-cancelar:hover {
+  background-color: #e5e5e5;
 }
 
 .btn-guardar:hover {
-  background-color: #ec971f;
+  background-color: #e6b33c;
   transform: translateY(-2px);
 }
 
-.dark-mode .btn-cancelar {
-  background-color: #4d5b6c;
+/* Estilos para modo oscuro */
+.dark-mode.productos-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .header h1 {
   color: #ffffff;
 }
 
+.dark-mode .header h1:after {
+  background-color: #ff9800;
+}
+
+.dark-mode .btn-agregar {
+  background-color: #ff9800;
+  color: #232f3e;
+}
+
+.dark-mode .btn-agregar:hover {
+  background-color: #e68a00;
+}
+
+.dark-mode .spinner {
+  border-left-color: #ff9800;
+}
+
+.dark-mode .no-productos {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .no-productos i {
+  color: #ff9800;
+}
+
+.dark-mode .productos-list {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode table {
+  background-color: #2d2d2d;
+}
+
+.dark-mode th {
+  background-color: #37475a;
+  color: #ffffff;
+}
+
+.dark-mode td {
+  border-bottom: 1px solid #3d3d3d;
+  color: #f0f0f0;
+}
+
+.dark-mode tr:hover {
+  background-color: #37475a;
+}
+
+.dark-mode .btn-editar {
+  background-color: #ff9800;
+  color: #232f3e;
+}
+
+.dark-mode .btn-editar:hover {
+  background-color: #e68a00;
+}
+
+.dark-mode .btn-eliminar {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.dark-mode .btn-eliminar:hover {
+  background-color: #c82333;
+}
+
+.dark-mode .imagen-preview {
+  border-color: #3a6fa5;
+  background-color: #242c34;
+}
+
+.dark-mode .form-group label {
+  color: #f0f0f0;
+}
+
+.dark-mode .form-control {
+  background-color: #37475a;
+  border-color: #3a6fa5;
+  color: #f0f0f0;
+}
+
+.dark-mode .form-control:focus {
+  border-color: #ff9f43;
+  box-shadow: 0 0 5px rgba(255, 159, 67, 0.3);
+}
+
+.dark-mode .form-buttons {
+  border-top-color: #3a6fa5;
+}
+
+.dark-mode .btn-cancelar {
+  background-color: #37475a;
+  color: #f0f0f0;
+  border-color: #3a6fa5;
+}
+
 .dark-mode .btn-cancelar:hover {
-  background-color: #5a6a7d;
+  background-color: #2c3b4a;
 }
 
 .dark-mode .btn-guardar {
@@ -551,16 +519,6 @@ textarea.form-control {
 
 .dark-mode .btn-guardar:hover {
   background-color: #f39c38;
-}
-
-/* Error message */
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 .dark-mode .error-message {

@@ -1,4 +1,4 @@
-<div class="form-container">
+<div class="form-container" [ngClass]="{'dark-mode': isDarkMode}">
   <h1>{{ isEditing ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h1>
 
   <div *ngIf="error" class="error-message">

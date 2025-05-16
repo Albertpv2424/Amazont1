@@ -1,20 +1,38 @@
+/* Estilos para modo claro (light mode) */
 .form-container {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Aseguramos que el modo oscuro tenga el mismo color de fondo que otros componentes */
+.dark-mode.form-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #232f3e;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f0c14b;
-  font-size: 24px;
-  font-weight: 500;
+  position: relative;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background-color: #e47911;
+  border-radius: 2px;
 }
 
 .error-message {
@@ -34,6 +52,7 @@ h1 {
 }
 
 .form-group {
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -172,38 +191,6 @@ small {
   font-size: 12px;
 }
 
-/* Estilos para modo oscuro si es necesario */
-:host-context(.dark-mode) .form-container {
-  background-color: #232f3e;
-  color: #fff;
-}
-
-:host-context(.dark-mode) h1 {
-  color: #fff;
-}
-
-:host-context(.dark-mode) label {
-  color: #ddd;
-}
-
-:host-context(.dark-mode) input,
-:host-context(.dark-mode) textarea,
-:host-context(.dark-mode) select {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
-}
-
-:host-context(.dark-mode) .btn-cancel {
-  background-color: #444;
-  color: #fff;
-  border-color: #555;
-}
-
-:host-context(.dark-mode) small {
-  color: #aaa;
-}
-
 .categoria-selector {
   display: flex;
   flex-wrap: wrap;
@@ -242,28 +229,105 @@ small {
   font-weight: normal;
 }
 
-/* Estilo para categorías seleccionadas */
 .categoria-option.selected {
   background-color: #f0f8ff;
   border-color: #f0c14b;
 }
 
-/* Modo oscuro */
-:host-context(.dark-mode) .categoria-selector {
-  background-color: #2a3950;
+/* Estilos para modo oscuro (dark mode) */
+.dark-mode .form-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode h1 {
+  color: #ffffff;
+}
+
+.dark-mode h1:after {
+  background-color: #ff9800;
+}
+
+.dark-mode .error-message {
+  background-color: #721c24;
+  color: #f8d7da;
+  border-color: #721c24;
+}
+
+.dark-mode .loading {
+  color: #aaa;
+}
+
+.dark-mode label {
+  color: #ddd;
+}
+
+.dark-mode input[type="text"],
+.dark-mode input[type="number"],
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+.dark-mode input[type="text"]:focus,
+.dark-mode input[type="number"]:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.3);
+}
+
+.dark-mode .error-text {
+  color: #ff6b6b;
+}
+
+.dark-mode .image-preview {
+  border-color: #555;
+  background-color: #333;
+}
+
+.dark-mode .btn-cancel {
+  background-color: #444;
+  color: #fff;
+  border-color: #555;
+}
+
+.dark-mode .btn-submit {
+  background-color: #f0c14b;
+  color: #1a202c;
+}
+
+.dark-mode .btn-cancel:hover {
+  background-color: #555;
+}
+
+.dark-mode .btn-submit:hover {
+  background-color: #f0c14b;
+}
+
+.dark-mode small {
+  color: #aaa;
+}
+
+.dark-mode .categoria-selector {
+  background-color: #2a2a2a;
   border-color: #3a4a63;
 }
 
-:host-context(.dark-mode) .categoria-option {
-  background-color: #232f3e;
+.dark-mode .categoria-option {
+  background-color: #1a1a1a;
   border-color: #3a4a63;
+  color: #ffffff;
 }
 
-:host-context(.dark-mode) .categoria-option:hover {
+.dark-mode .categoria-option:hover {
   border-color: #f0c14b;
 }
 
-:host-context(.dark-mode) .categoria-option.selected {
+.dark-mode .categoria-option.selected {
   background-color: #344863;
   border-color: #f0c14b;
 }
@@ -280,7 +344,7 @@ small {
 }
 
 .dark-mode .btn-submit {
-  background-color: #48bb78;
+  background-color: #f0c14b;
   color: #1a202c;
 }
 
