@@ -178,4 +178,35 @@ export class VendedorFormularioComponent implements OnInit {
     const control = this.productoForm.get(controlName);
     return control ? control.invalid && control.touched : false;
   }
+
+  // Añadir este método para manejar la selección de categorías
+  toggleCategoria(categoriaId: number): void {
+    const categoriasControl = this.productoForm.get('categorias');
+    if (!categoriasControl) return;
+    
+    const currentValues = categoriasControl.value || [];
+    
+    if (currentValues.includes(categoriaId)) {
+      // Si ya está seleccionada, la quitamos
+      const newValues = currentValues.filter((id: number) => id !== categoriaId);
+      categoriasControl.setValue(newValues);
+    } else {
+      // Si no está seleccionada, la añadimos
+      const newValues = [...currentValues, categoriaId];
+      categoriasControl.setValue(newValues);
+    }
+    
+    // Añadir clase 'selected' al elemento seleccionado
+    setTimeout(() => {
+      const checkboxes = document.querySelectorAll('.categoria-option');
+      checkboxes.forEach(checkbox => {
+        const input = checkbox.querySelector('input') as HTMLInputElement;
+        if (input && input.checked) {
+          checkbox.classList.add('selected');
+        } else {
+          checkbox.classList.remove('selected');
+        }
+      });
+    });
+  }
 }

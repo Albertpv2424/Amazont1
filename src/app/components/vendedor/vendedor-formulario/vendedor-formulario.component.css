@@ -1,5 +1,11 @@
 .form-container {
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 h1 {
@@ -7,6 +13,8 @@ h1 {
   margin-bottom: 30px;
   padding-bottom: 10px;
   border-bottom: 2px solid #f0c14b;
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .error-message {
@@ -15,6 +23,7 @@ h1 {
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
 }
 
 .loading {
@@ -42,6 +51,7 @@ label {
   margin-bottom: 8px;
   font-weight: 600;
   color: #333;
+  font-size: 14px;
 }
 
 input[type="text"],
@@ -53,6 +63,16 @@ select {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #f0c14b;
+  outline: none;
+  box-shadow: 0 0 5px rgba(240, 193, 75, 0.3);
 }
 
 textarea {
@@ -71,10 +91,12 @@ select[multiple] {
 
 .checkbox-group input {
   margin-right: 10px;
+  width: auto;
 }
 
 .checkbox-group label {
   margin-bottom: 0;
+  cursor: pointer;
 }
 
 .error-text {
@@ -109,7 +131,8 @@ select[multiple] {
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.1s;
+  font-size: 14px;
 }
 
 .btn-cancel {
@@ -132,9 +155,14 @@ select[multiple] {
   background-color: #e6b33c;
 }
 
+.btn-submit:active, .btn-cancel:active {
+  transform: scale(0.98);
+}
+
 .btn-submit:disabled {
   background-color: #f0d78a;
   cursor: not-allowed;
+  transform: none;
 }
 
 small {
@@ -142,4 +170,100 @@ small {
   color: #666;
   margin-top: 5px;
   font-size: 12px;
+}
+
+/* Estilos para modo oscuro si es necesario */
+:host-context(.dark-mode) .form-container {
+  background-color: #232f3e;
+  color: #fff;
+}
+
+:host-context(.dark-mode) h1 {
+  color: #fff;
+}
+
+:host-context(.dark-mode) label {
+  color: #ddd;
+}
+
+:host-context(.dark-mode) input,
+:host-context(.dark-mode) textarea,
+:host-context(.dark-mode) select {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+:host-context(.dark-mode) .btn-cancel {
+  background-color: #444;
+  color: #fff;
+  border-color: #555;
+}
+
+:host-context(.dark-mode) small {
+  color: #aaa;
+}
+
+.categoria-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.categoria-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  background-color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.categoria-option:hover {
+  border-color: #f0c14b;
+  box-shadow: 0 0 5px rgba(240, 193, 75, 0.3);
+}
+
+.categoria-option input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.categoria-option label {
+  margin-bottom: 0;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/* Estilo para categorías seleccionadas */
+.categoria-option.selected {
+  background-color: #f0f8ff;
+  border-color: #f0c14b;
+}
+
+/* Modo oscuro */
+:host-context(.dark-mode) .categoria-selector {
+  background-color: #2a3950;
+  border-color: #3a4a63;
+}
+
+:host-context(.dark-mode) .categoria-option {
+  background-color: #232f3e;
+  border-color: #3a4a63;
+}
+
+:host-context(.dark-mode) .categoria-option:hover {
+  border-color: #f0c14b;
+}
+
+:host-context(.dark-mode) .categoria-option.selected {
+  background-color: #344863;
+  border-color: #f0c14b;
 }

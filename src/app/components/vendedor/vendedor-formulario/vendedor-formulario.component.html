@@ -2,11 +2,11 @@
   <h1>{{ isEditing ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h1>
 
   <div *ngIf="error" class="error-message">
-    {{ error }}
+    <i class="fas fa-exclamation-circle"></i> {{ error }}
   </div>
 
   <div *ngIf="isLoading" class="loading">
-    Cargando datos del producto...
+    <i class="fas fa-spinner fa-spin"></i> Cargando datos del producto...
   </div>
 
   <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
@@ -59,22 +59,23 @@
 
     <div class="form-group">
       <label for="categorias">Categorías*</label>
-      <select id="categorias" formControlName="categorias" multiple>
-        <option *ngFor="let categoria of categorias" [value]="categoria.id_cat">
-          {{ categoria.nombre }}
-        </option>
-      </select>
+      <div class="categoria-selector">
+        <div *ngFor="let categoria of categorias" class="categoria-option">
+          <input type="checkbox"
+                 [id]="'cat_' + categoria.id_cat"
+                 [value]="categoria.id_cat"
+                 (change)="toggleCategoria(categoria.id_cat)">
+          <label [for]="'cat_' + categoria.id_cat">{{ categoria.nombre }}</label>
+        </div>
+      </div>
       <div *ngIf="isInvalid('categorias')" class="error-text">
         Debe seleccionar al menos una categoría
       </div>
-      <small>Mantenga presionada la tecla Ctrl para seleccionar múltiples categorías</small>
     </div>
-
-    
 
     <div class="form-actions">
       <button type="button" class="btn-cancel" routerLink="/vendedor/productos">Cancelar</button>
-      <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting || productoForm.invalid">
         {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Producto' : 'Crear Producto') }}
       </button>
     </div>
