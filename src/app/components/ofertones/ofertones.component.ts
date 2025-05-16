@@ -71,6 +71,9 @@ export class OfertonesComponent implements OnInit {
     this.carritoService.getCarrito().subscribe(items => {
       this.cantidadCarrito = this.carritoService.obtenerCantidadTotal();
     });
+    this.themeService.darkMode$.subscribe(isDarkMode => {
+      this.isDarkMode = isDarkMode;
+    })
   }
 
   updateVisibleOffers(): void {
