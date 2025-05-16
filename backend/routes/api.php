@@ -67,7 +67,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/productos/{id}', [ProductController::class, 'destroy']); 
     Route::get('/seller/productos', [ProductController::class, 'sellerProducts']);
     Route::get('/seller/prods/', [ProductController::class,'getownproducts']);
-    });
+    
+    // Añadir esta ruta para las estadísticas
+    Route::get('/seller/estadisticas', [ProductController::class, 'sellerStatistics']);
+});
     Route::get('/productos', [ProductController::class, 'index']);
     
     // Protected review/rating actions

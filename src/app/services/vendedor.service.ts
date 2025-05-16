@@ -32,7 +32,7 @@ export class VendedorService {
 
   // Obtener las estadísticas del vendedor - updated with specific return type
   getEstadisticas(): Observable<EstadisticasResponse> {
-    return this.http.get<EstadisticasResponse>(`${this.apiUrl}/vendedor/estadisticas`, {
+    return this.http.get<EstadisticasResponse>(`${this.apiUrl}/seller/estadisticas`, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)

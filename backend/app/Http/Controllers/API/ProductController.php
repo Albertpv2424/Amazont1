@@ -208,30 +208,72 @@ class ProductController extends Controller
     {
         $user = $request->user();
         
-        // Aquí implementarías la lógica para obtener estadísticas reales
-        // Por ahora, devolvemos datos de ejemplo
-        $estadisticas = [
-            'ventasTotales' => 1500.00,
-            'productosVendidos' => 25,
-            'pedidosCompletados' => 10,
-            'valoracionMedia' => 4.5,
-            'productosPopulares' => [
-                [
-                    'nombre' => 'Producto 1',
-                    'unidades' => 10,
-                    'ingresos' => 500.00
-                ],
-                [
-                    'nombre' => 'Producto 2',
-                    'unidades' => 8,
-                    'ingresos' => 400.00
-                ],
-                [
-                    'nombre' => 'Producto 3',
-                    'unidades' => 7,
-                    'ingresos' => 350.00
-                ]
+        // Obtener productos del vendedor
+        $productos = Product::where('user_id', $user->id)->get();
+        
+        // Calcular estadísticas básicas (ejemplo)
+        $ventasTotales = 1500.00; // Esto debería calcularse con datos reales
+        $productosVendidos = 25;   // Esto debería calcularse con datos reales
+        $pedidosCompletados = 10;  // Esto debería calcularse con datos reales
+        $valoracionMedia = 4.5;    // Esto debería calcularse con datos reales
+        
+        // Productos con stock bajo (menos de 10 unidades)
+        $productosBajoStock = $productos->filter(function($producto) {
+            return $producto->stock < 10;
+        })->map(function($producto) {
+            return [
+                'nombre' => $producto->nombre,
+                'stock' => $producto->stock
+            ];
+        })->values()->toArray();
+        
+        // Productos más populares (ejemplo)
+        $productosPopulares = [
+            [
+                'nombre' => 'Producto 1',
+                'unidades' => 10,
+                'ingresos' => 500.00
+            ],
+            [
+                'nombre' => 'Producto 2',
+                'unidades' => 8,
+                'ingresos' => 400.00
+            ],
+            [
+                'nombre' => 'Producto 3',
+                'unidades' => 7,
+                'ingresos' => 350.00
             ]
+        ];
+        
+        // Categorías más usadas (ejemplo)
+        // En un caso real, esto debería calcularse a partir de las ventas
+        $categoriasMasUsadas = [
+            [
+                'nombre' => 'Electrónica',
+                'totalProductos' => 15,
+                'ventasTotales' => 800.00
+            ],
+            [
+                'nombre' => 'Hogar',
+                'totalProductos' => 8,
+                'ventasTotales' => 450.00
+            ],
+            [
+                'nombre' => 'Deportes',
+                'totalProductos' => 5,
+                'ventasTotales' => 250.00
+            ]
+        ];
+        
+        $estadisticas = [
+            'ventasTotales' => $ventasTotales,
+            'productosVendidos' => $productosVendidos,
+            'pedidosCompletados' => $pedidosCompletados,
+            'valoracionMedia' => $valoracionMedia,
+            'productosPopulares' => $productosPopulares,
+            'productosBajoStock' => $productosBajoStock,
+            'categoriasMasUsadas' => $categoriasMasUsadas
         ];
         
         return response()->json([

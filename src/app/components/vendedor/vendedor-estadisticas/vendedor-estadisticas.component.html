@@ -32,6 +32,56 @@
       </div>
     </div>
 
+    <!-- Sección de gráficos -->
+    <div class="graficos-section">
+      <div class="grafico-container">
+        <h2>Evolución de Ventas</h2>
+        <div class="canvas-container">
+          <canvas #ventasChart></canvas>
+        </div>
+      </div>
+      
+      <div class="grafico-container">
+        <h2>Ventas por Categoría</h2>
+        <div class="canvas-container">
+          <canvas #categoriasChart></canvas>
+        </div>
+      </div>
+      
+      <div class="grafico-container">
+        <h2>Productos Más Vendidos</h2>
+        <div class="canvas-container">
+          <canvas #popularesChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de productos con bajo stock -->
+    <div class="stock-section">
+      <h2>Productos con Stock Bajo</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Stock Actual</th>
+            <th>Nivel Crítico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of estadisticas.productosBajoStock">
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.stock }}</td>
+            <td [ngClass]="{'stock-critico': producto.stock < 5}">
+              <span *ngIf="producto.stock < 5">¡Crítico!</span>
+              <span *ngIf="producto.stock >= 5 && producto.stock < 10">Bajo</span>
+              <span *ngIf="producto.stock >= 10">Normal</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Sección de productos populares (tabla) -->
     <div class="popular-products">
       <h2>Productos Más Populares</h2>
       <table>
@@ -47,6 +97,27 @@
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.unidades }}</td>
             <td>{{ producto.ingresos | currency:'EUR' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Sección de categorías más populares -->
+    <div class="popular-categories">
+      <h2>Categorías Más Populares</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th>Productos</th>
+            <th>Ventas Totales</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let categoria of estadisticas.categoriasMasUsadas">
+            <td>{{ categoria.nombre }}</td>
+            <td>{{ categoria.totalProductos }}</td>
+            <td>{{ categoria.ventasTotales | currency:'EUR' }}</td>
           </tr>
         </tbody>
       </table>
