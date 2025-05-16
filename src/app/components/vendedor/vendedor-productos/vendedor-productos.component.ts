@@ -6,6 +6,8 @@ import { VendedorService } from '../../../services/vendedor.service';
 import { Producto } from '../../../interfaces/producto.interface';
 import { ProductosService } from '../../../services/productos.service';
 import { HttpClient } from '@angular/common/http';
+import { ThemeService } from '../../../services/theme.service';
+
 
 @Component({
   selector: 'app-vendedor-productos',
@@ -18,6 +20,7 @@ export class VendedorProductosComponent implements OnInit {
   productos: Producto[] = [];
   isLoading = true;
   error = '';
+  isDarkMode = false;
 
   // Variables para el modal
   mostrarModal = false;
@@ -25,12 +28,12 @@ export class VendedorProductosComponent implements OnInit {
 
   constructor(
     private vendedorService: VendedorService,
-    private productosService: ProductosService
+    private productosService: ProductosService,
+    private themeService: ThemeService
   ) {}
 
   // Añade estas propiedades y métodos al componente
   // Propiedad para el modo oscuro
-  isDarkMode = false;
 
   // Propiedad para la vista previa de la imagen
   imagenPreview: string | null = null;
@@ -182,14 +185,10 @@ export class VendedorProductosComponent implements OnInit {
     this.cargarProductos();
     this.cargarCategorias();
 
-    // Detectar el modo oscuro
-    const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-    this.isDarkMode = darkModeEnabled;
-
-    // Suscribirse a cambios en el modo oscuro si tienes un servicio para ello
-    // this.themeService.darkMode$.subscribe(isDark => {
-    //   this.isDarkMode = isDark;
-    // });
+    // Subscripció al servei de tema
+    this.themeService.darkMode$.subscribe(
+      isDark => this.isDarkMode = isDark
+    );  
   }
 
   // Añade este método para cargar las categorías

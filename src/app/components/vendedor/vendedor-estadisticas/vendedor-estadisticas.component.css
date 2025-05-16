@@ -1,12 +1,20 @@
 .estadisticas-container {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 h1 {
   color: #232f3e;
   margin-bottom: 30px;
-  border-bottom: 2px solid #f0c14b;
   padding-bottom: 10px;
+  border-bottom: 2px solid #f0c14b;
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .error-message {
@@ -15,6 +23,7 @@ h1 {
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
 }
 
 .loading {
@@ -37,6 +46,12 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card h3 {
@@ -65,6 +80,8 @@ h1 {
   color: #232f3e;
   font-size: 18px;
   margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
 
 table {
@@ -82,4 +99,89 @@ th {
   background-color: #f0f0f0;
   font-weight: 600;
   color: #333;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-action {
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+  font-size: 14px;
+}
+
+.btn-action:hover {
+  background-color: #e6b33c;
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+/* Estils per a mode fosc */
+.dark-mode .estadisticas-container {
+  background-color: #232f3e;
+  color: #fff;
+}
+
+.dark-mode h1 {
+  color: #fff;
+  border-bottom-color: #f0c14b;
+}
+
+.dark-mode .stat-card {
+  background-color: #37475a;
+  color: #fff;
+}
+
+.dark-mode .stat-card h3 {
+  color: #ddd;
+}
+
+.dark-mode .stat-value {
+  color: #f0c14b;
+}
+
+.dark-mode .popular-products {
+  background-color: #37475a;
+  color: #fff;
+}
+
+.dark-mode .popular-products h2 {
+  color: #fff;
+  border-bottom-color: #4a5568;
+}
+
+.dark-mode table {
+  background-color: #37475a;
+}
+
+.dark-mode th {
+  background-color: #2c3b4a;
+  color: #fff;
+}
+
+.dark-mode th, 
+.dark-mode td {
+  border-color: #4a5568;
+}
+
+.dark-mode tr:hover {
+  background-color: #2c3b4a;
+}
+
+.dark-mode .btn-action {
+  background-color: #f0c14b;
+  color: #232f3e;
+}
+
+.dark-mode .btn-action:hover {
+  background-color: #e6b33c;
 }

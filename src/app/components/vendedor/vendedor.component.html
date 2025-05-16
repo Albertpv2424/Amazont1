@@ -1,4 +1,4 @@
-<div class="vendedor-container">
+<div class="vendedor-container" [ngClass]="{'dark-mode': isDarkMode}">
   <div *ngIf="!isVendedor" class="error-message">
     <h2>Acceso Denegado</h2>
     <p>Esta sección está reservada para vendedores. Si desea convertirse en vendedor, contacte con el administrador.</p>

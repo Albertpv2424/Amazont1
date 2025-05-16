@@ -1,8 +1,14 @@
-.vendedor-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+
+
+.categoria-detalle {
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  min-height: 80vh;
+  background-color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
 }
+
 
 .error-message {
   background-color: #f8d7da;
@@ -63,4 +69,44 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.dark-mode  {
+  background-color: #1a1a1a;
+  color: #e2e8f0;
+}
+
+.dark-mode .vendedor-dashboard {
+  background-color: #1a1a1a;
+  color: #e2e8f0;
+}
+
+.dark-mode .sidebar {
+  background-color: #1a202c;
+  border-right: 1px solid #718096;
+}
+
+.dark-mode .sidebar a {
+  color: #e2e8f0;
+}
+
+.dark-mode .sidebar a:hover {
+  background-color: #2d3748;
+}
+
+.dark-mode .sidebar a.active {
+  background-color: #ff9f43;
+  color: #232f3e;
+}
+
+.dark-mode .content {
+  background-color: #242c34;
+  color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .error-message {
+  background-color: #721c24;
+  color: #f8d7da;
 }
