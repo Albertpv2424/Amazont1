@@ -1,6 +1,7 @@
-<div class="productos-container">
+<div class="productos-container" [ngClass]="{'dark-mode': isDarkMode}">
   <div class="header">
     <h1>Els Meus Productes</h1>
+
   </div>
 
   <div *ngIf="error" class="error-message">
@@ -8,43 +9,52 @@
   </div>
 
   <div *ngIf="isLoading" class="loading">
-    Carregant productes...
+    <div class="spinner"></div>
+    <p>Carregant productes...</p>
   </div>
 
   <div *ngIf="!isLoading && !error && productos.length === 0" class="no-productos">
-    No tens cap producte. Comença creant-ne un!
+    <i class="fas fa-box-open"></i>
+    <p>No tens cap producte. Comença creant-ne un!</p>
   </div>
 
   <div *ngIf="!isLoading && !error && productos.length > 0" class="productos-list">
     <table>
       <thead>
         <tr>
-          <th>Imatge</th>
-          <th>Nom</th>
-          <th>Preu</th>
-          <th>Stock</th>
-          <th>Categoria</th>
-          <th>Accions</th>
+          <th class="th-imagen">Imatge</th>
+          <th class="th-nombre">Nom</th>
+          <th class="th-precio">Preu</th>
+          <th class="th-stock">Stock</th>
+          <th class="th-categoria">Categoria</th>
+          <th class="th-acciones">Accions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let producto of productos">
-          <td>
-            <img [src]="producto.imagen || 'assets/images/no-image.png'" alt="{{ producto.nombre }}" class="producto-imagen">
+          <td class="imagen-cell">
+            <img [src]="getImageUrl(producto)" alt="{{ producto.nombre }}" class="producto-imagen">
           </td>
-          <td>{{ producto.nombre }}</td>
-          <td>{{ producto.precio | currency:'EUR' }}</td>
-          <td>{{ producto.stock || 'No disponible' }}</td>
-          <td>{{ producto.categoria }}</td>
-          <td class="acciones">
-            <button class="btn-editar" (click)="abrirModalEditar(producto)">Editar</button>
-            <button (click)="eliminarProducto(producto.id || producto.id_prod)" class="btn-eliminar">Eliminar</button>          </td>
+          <td class="nombre-cell">{{ producto.nombre }}</td>
+          <td class="precio-cell">{{ producto.precio | currency:'EUR' }}</td>
+          <td class="stock-cell">{{ producto.stock || 'No disponible' }}</td>
+          <td class="categoria-cell">{{ getCategoriaProducto(producto) }}</td>
+          <td class="acciones-cell">
+            <div class="botones-accion">
+              <button class="btn-editar" (click)="abrirModalEditar(producto)">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+              <button (click)="eliminarProducto(producto.id || producto.id_prod)" class="btn-eliminar">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Modal de Edición -->
+  <!-- Modal de Edición Mejorado -->
   <div class="modal-overlay" *ngIf="mostrarModal">
     <div class="modal-container">
       <div class="modal-header">
@@ -53,34 +63,61 @@
       </div>
       <div class="modal-body" *ngIf="productoEditando">
         <form (submit)="guardarCambios()">
-          <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" [(ngModel)]="productoEditando.nombre" name="nombre" required>
+          <div class="form-layout">
+            <!-- Columna izquierda para la imagen -->
+            <div class="imagen-preview-container">
+              <div class="imagen-preview">
+                <img [src]="getPreviewImageUrl()" alt="Vista previa del producto" class="preview-img">
+              </div>
+              
+            </div>
+
+            <!-- Columna derecha para los demás campos -->
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" [(ngModel)]="productoEditando.nombre"
+                       name="nombre" required class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="precio">Precio (€):</label>
+                <input type="number" id="precio" [(ngModel)]="productoEditando.precio"
+                       name="precio" step="0.01" required class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" [(ngModel)]="productoEditando.stock"
+                       name="stock" required class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" [(ngModel)]="productoEditando.categoria"
+                        name="categoria" required class="form-control">
+                  <option value="">Selecciona una categoría</option>
+                  <option *ngFor="let categoria of categorias" [value]="categoria.nombre">
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" [(ngModel)]="productoEditando.descripcion"
+                          name="descripcion" rows="3" class="form-control"></textarea>
+              </div>
+            </div>
           </div>
-          
-          <div class="form-group">
-            <label for="precio">Precio (€):</label>
-            <input type="number" id="precio" [(ngModel)]="productoEditando.precio" name="precio" step="0.01" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="stock">Stock:</label>
-            <input type="number" id="stock" [(ngModel)]="productoEditando.stock" name="stock" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="categoria">Categoría:</label>
-            <input type="text" id="categoria" [(ngModel)]="productoEditando.categoria" name="categoria" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="imagen">URL de la imagen:</label>
-            <input type="text" id="imagen" [(ngModel)]="productoEditando.imagen" name="imagen">
-          </div>
-          
+
           <div class="form-buttons">
-            <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
-            <button type="submit" class="btn-guardar">Guardar Cambios</button>
+            <button type="button" class="btn-cancelar" (click)="cerrarModal()">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-guardar">
+              <i class="fas fa-save"></i> Guardar Cambios
+            </button>
           </div>
         </form>
       </div>
