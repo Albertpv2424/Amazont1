@@ -70,7 +70,7 @@
     <div class="tablas-container">
       <div class="tabla-card">
         <h3>Productes Més Populars</h3>
-        <table>
+        <table class="tabla-productos-populares">
           <thead>
             <tr>
               <th>Producte</th>
@@ -80,9 +80,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let producto of estadisticas.productosPopulares">
-              <td>{{ producto.nombre }}</td>
-              <td>{{ producto.unidades }}</td>
-              <td>{{ producto.ingresos | currency:'EUR' }}</td>
+              <td class="nombre-producto">{{ producto.nombre }}</td>
+              <td class="unidades-vendidas">{{ producto.unidades }}</td>
+              <td class="ingresos">{{ producto.ingresos | currency:'EUR' }}</td>
             </tr>
           </tbody>
         </table>
