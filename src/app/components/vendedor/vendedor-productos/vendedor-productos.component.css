@@ -101,7 +101,7 @@
   margin-bottom: 15px;
 }
 
-/* Improved table styles */
+/* Mejoras en la tabla */
 .productos-list {
   overflow-x: auto;
   margin-bottom: 30px;
@@ -114,12 +114,14 @@ table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
+  table-layout: fixed;
 }
 
 th, td {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid #eee;
+  vertical-align: middle;
 }
 
 th {
@@ -132,41 +134,46 @@ tr:hover {
   background-color: #f5f5f5;
 }
 
-/* Column widths */
+/* Ajustes de ancho de columnas */
 .th-imagen, .imagen-cell {
-  width: 100px;
+  width: 80px;
+  text-align: center;
 }
 
 .th-nombre, .nombre-cell {
-  width: 25%;
+  width: 20%;
 }
 
 .th-precio, .precio-cell {
-  width: 15%;
+  width: 12%;
+  text-align: right; /* Alinear precios a la derecha */
 }
 
 .th-stock, .stock-cell {
-  width: 10%;
+  width: 8%;
+  text-align: center; /* Centrar números de stock */
 }
 
 .th-categoria, .categoria-cell {
   width: 15%;
+  text-align: center; /* Alinear categorías al centro */
 }
 
 .th-acciones, .acciones-cell {
-  width: 20%;
+  width: 15%;
   text-align: center;
 }
 
 .producto-imagen {
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 60px;
+  max-height: 60px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
+  border-radius: 4px;
 }
 
-/* Botones de acción */
+/* Mejoras en los botones de acción */
 .botones-accion {
   display: flex;
   justify-content: center;
@@ -176,14 +183,16 @@ tr:hover {
 .btn-editar, .btn-eliminar {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-weight: 500;
-  white-space: nowrap;
+  font-size: 0.9rem;
+  min-width: 80px;
 }
 
 .btn-editar {
@@ -256,151 +265,7 @@ tr:hover {
   padding: 20px;
 }
 
-/* Estilos para el modo oscuro del modal */
-.dark-mode .modal-container {
-  background-color: #242c34;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-.dark-mode .modal-header {
-  border-bottom: 1px solid #3a6fa5;
-}
-
-.dark-mode .modal-header h2 {
-  color: #ffffff;
-}
-
-.dark-mode .btn-cerrar {
-  color: #f0f0f0;
-}
-
-.dark-mode .btn-cerrar:hover {
-  color: #ff9f43;
-}
-
-.dark-mode .form-control {
-  background-color: #37475a;
-  border-color: #3a6fa5;
-  color: #f0f0f0;
-}
-
-.dark-mode .form-control:focus {
-  border-color: #ff9f43;
-}
-
-.dark-mode .modal-body {
-  color: #f0f0f0;
-}
-
-/* Estilos para el formulario del modal */
-.form-layout {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 20px;
-}
-
-.imagen-preview-container {
-  flex: 0 0 250px;
-}
-
-.imagen-preview {
-  width: 100%;
-  height: 250px;
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: #f9f9f9;
-}
-
-.preview-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.form-fields {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-  color: #333;
-}
-
-.form-control {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.3s;
-}
-
-.form-control:focus {
-  border-color: #f0c14b;
-  outline: none;
-  box-shadow: 0 0 5px rgba(240, 193, 75, 0.3);
-}
-
-textarea.form-control {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.form-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
-}
-
-.btn-cancelar, .btn-guardar {
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-cancelar {
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.btn-guardar {
-  background-color: #f0c14b;
-  color: #111;
-  border: none;
-}
-
-.btn-cancelar:hover {
-  background-color: #e5e5e5;
-}
-
-.btn-guardar:hover {
-  background-color: #e6b33c;
-  transform: translateY(-2px);
-}
-
-/* Estilos para modo oscuro */
+/* Estilos para el modo oscuro */
 .dark-mode.productos-container {
   background-color: #1a1a1a;
   color: #f0f0f0;
@@ -412,29 +277,33 @@ textarea.form-control {
 }
 
 .dark-mode .header h1:after {
-  background-color: #ff9800;
+  background-color: #ff9900;
 }
 
 .dark-mode .btn-agregar {
-  background-color: #ff9800;
+  background-color: #ff9900;
   color: #232f3e;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode .btn-agregar:hover {
-  background-color: #e68a00;
+  background-color: #ffad33;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .dark-mode .spinner {
-  border-left-color: #ff9800;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: #ff9900;
 }
 
 .dark-mode .no-productos {
   background-color: #2d2d2d;
+  color: #f0f0f0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode .no-productos i {
-  color: #ff9800;
+  color: #ff9900;
 }
 
 .dark-mode .productos-list {
@@ -478,72 +347,113 @@ textarea.form-control {
   background-color: #c82333;
 }
 
-.dark-mode .imagen-preview {
-  border-color: #3a6fa5;
+.dark-mode .modal-container {
   background-color: #242c34;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-.dark-mode .form-group label {
-  color: #f0f0f0;
+.dark-mode .modal-header {
+  border-bottom: 1px solid #37475a;
 }
 
-.dark-mode .form-control {
-  background-color: #37475a;
-  border-color: #3a6fa5;
-  color: #f0f0f0;
+.dark-mode .modal-header h2 {
+  color: #ffffff;
 }
 
-.dark-mode .form-control:focus {
-  border-color: #ff9f43;
-  box-shadow: 0 0 5px rgba(255, 159, 67, 0.3);
-}
-
-.dark-mode .form-buttons {
-  border-top-color: #3a6fa5;
-}
-
-.dark-mode .btn-cancelar {
-  background-color: #37475a;
-  color: #f0f0f0;
-  border-color: #3a6fa5;
-}
-
-.dark-mode .btn-cancelar:hover {
-  background-color: #2c3b4a;
-}
-
-.dark-mode .btn-guardar {
-  background-color: #ff9f43;
-  color: #232f3e;
-}
-
-.dark-mode .btn-guardar:hover {
-  background-color: #f39c38;
-}
-
-.dark-mode .error-message {
-  background-color: #721c24;
-  color: #f8d7da;
+.dark-mode .btn-cerrar {
+  color: #aaa;
 }
 
 /* Responsive adjustments */
+@media (max-width: 992px) {
+  .productos-container {
+    padding: 1.5rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .btn-agregar {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .form-layout {
+  .productos-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  
+  .header {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
-
-  .imagen-preview-container {
-    max-width: 100%;
+  
+  .header h1 {
+    font-size: 1.8rem;
   }
-
+  
+  .btn-agregar {
+    align-self: flex-start;
+  }
+  
   .acciones-cell {
     display: flex;
     flex-direction: column;
     gap: 5px;
   }
-
+  
+  .botones-accion {
+    flex-direction: column;
+  }
+  
   .btn-editar, .btn-eliminar {
-    margin: 2px 0;
     width: 100%;
+    padding: 8px 5px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+  
+  .th-imagen, .imagen-cell {
+    width: 60px;
+  }
+  
+  .producto-imagen {
+    max-width: 50px;
+    max-height: 50px;
+  }
+  
+  /* Mejora para visualización en móviles */
+  .productos-list {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 600px; /* Asegura que la tabla no se comprima demasiado */
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .btn-agregar {
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  .modal-container {
+    width: 95%;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.3rem;
   }
 }

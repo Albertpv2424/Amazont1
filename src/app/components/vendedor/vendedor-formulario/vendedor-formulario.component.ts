@@ -22,6 +22,7 @@ export class VendedorFormularioComponent implements OnInit {
   error = '';
   imagenPreview: string | null = null;
   isDarkMode = false;
+  metodoImagen: 'archivo' | 'url' = 'archivo'; // Afegim aquesta propietat per controlar el mètode d'imatge
 
   constructor(
     private themeService: ThemeService,
@@ -58,7 +59,7 @@ export class VendedorFormularioComponent implements OnInit {
       stock: ['', [Validators.required, Validators.min(0)]],
       en_oferta: [false],
       precio_oferta: [''],
-      imagen: [''],
+      imagen_url: [''], // Afegim el camp per a la URL de la imatge
       categorias: [[], Validators.required]
     });
 
@@ -137,6 +138,34 @@ export class VendedorFormularioComponent implements OnInit {
     }
   }
 
+  // Mètode per canviar entre pujar arxiu o utilitzar URL
+  cambiarMetodoImagen(metodo: 'archivo' | 'url'): void {
+    this.metodoImagen = metodo;
+    
+    // Netejar el camp que no s'utilitzarà
+    if (metodo === 'archivo') {
+      this.productoForm.get('imagen_url')?.setValue('');
+    } else {
+      this.productoForm.get('imagen')?.setValue('');
+    }
+    
+    // Netejar la vista prèvia si canviem de mètode
+    if (!this.isEditing) {
+      this.imagenPreview = null;
+    }
+  }
+
+  // Mètode per carregar la imatge des d'una URL
+  cargarImagenDesdeUrl(): void {
+    const url = this.productoForm.get('imagen_url')?.value;
+    if (url && url.trim()) {
+      this.imagenPreview = url;
+      this.productoForm.patchValue({
+        imagen: url // Guardem la URL al camp d'imatge per al backend
+      });
+    }
+  }
+
   onSubmit(): void {
     if (this.productoForm.invalid) {
       // Mark all fields as touched to show validation errors
@@ -147,7 +176,33 @@ export class VendedorFormularioComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    const productoData = this.productoForm.value;
+    const productoData = { ...this.productoForm.value };
+    
+    // Si estem utilitzant URL, assegurem-nos que la imatge tingui el valor correcte
+    if (this.metodoImagen === 'url' && productoData.imagen_url) {
+      productoData.imagen = productoData.imagen_url;
+    }
+    
+    // Eliminem el camp imagen_url ja que no el necessitem al backend
+    delete productoData.imagen_url;
+
+    // Asegurarse de que categorias es un array válido
+    if (!Array.isArray(productoData.categorias) || productoData.categorias.length === 0) {
+      productoData.categorias = [];
+    }
+
+    // Convertir valores numéricos
+    if (productoData.precio) {
+      productoData.precio = parseFloat(productoData.precio);
+    }
+    if (productoData.stock) {
+      productoData.stock = parseInt(productoData.stock, 10);
+    }
+    if (productoData.precio_oferta) {
+      productoData.precio_oferta = parseFloat(productoData.precio_oferta);
+    }
+
+    console.log('Datos a enviar:', productoData);
 
     if (this.isEditing && this.productoId) {
       // Update existing product
@@ -159,7 +214,7 @@ export class VendedorFormularioComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al actualizar el producto:', err);
-          this.error = 'Error al actualizar el producto';
+          this.error = 'Error al actualizar el producto: ' + (err.error?.message || err.message || 'Error desconocido');
           this.isSubmitting = false;
         }
       });
@@ -173,7 +228,7 @@ export class VendedorFormularioComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al crear el producto:', err);
-          this.error = 'Error al crear el producto';
+          this.error = 'Error al crear el producto: ' + (err.error?.message || err.message || 'Error desconocido');
           this.isSubmitting = false;
         }
       });

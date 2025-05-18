@@ -58,6 +58,29 @@
     </div>
 
     <div class="form-group">
+      <label>Imagen del Producto</label>
+      <div class="image-method-selector">
+      
+        <div class="method-option" [class.active]="metodoImagen === 'url'" (click)="cambiarMetodoImagen('url')">
+          <i class="fas fa-link"></i> Usar URL
+        </div>
+      </div>
+      
+      <div *ngIf="metodoImagen === 'archivo'" class="upload-container">
+      </div>
+      
+      <div *ngIf="metodoImagen === 'url'" class="url-container">
+        <input type="text" id="imagen_url" formControlName="imagen_url" placeholder="https://ejemplo.com/imagen.jpg">
+        <button type="button" class="btn-preview" (click)="cargarImagenDesdeUrl()">Vista previa</button>
+        <small>Introduce la URL directa de la imagen</small>
+      </div>
+      
+      <div *ngIf="imagenPreview" class="image-preview">
+        <img [src]="imagenPreview" alt="Vista previa">
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="categorias">Categorías*</label>
       <div class="categoria-selector">
         <div *ngFor="let categoria of categorias" class="categoria-option">
