@@ -208,16 +208,30 @@ class ProductController extends Controller
     {
         $user = $request->user();
         
-        // Obtener productos del vendedor
+        // Obtenir productes del venedor
         $productos = Product::where('user_id', $user->id)->get();
         
-        // Calcular estadísticas básicas (ejemplo)
-        $ventasTotales = 1500.00; // Esto debería calcularse con datos reales
-        $productosVendidos = 25;   // Esto debería calcularse con datos reales
-        $pedidosCompletados = 10;  // Esto debería calcularse con datos reales
-        $valoracionMedia = 4.5;    // Esto debería calcularse con datos reales
+        // Obtenir comandes que contenen productes del venedor
+        $productIds = $productos->pluck('id_prod')->toArray();
         
-        // Productos con stock bajo (menos de 10 unidades)
+        // Obtenir ítems de comandes que contenen productes del venedor
+        $orderItems = \App\Models\OrderItem::whereIn('producto_id', $productIds)->get();
+        
+        // Calcular vendes totals
+        $ventasTotales = $orderItems->sum(function($item) {
+            return $item->precio * $item->cantidad;
+        });
+        
+        // Calcular productes venuts
+        $productosVendidos = $orderItems->sum('cantidad');
+        
+        // Calcular comandes completades (comandes úniques)
+        $pedidosCompletados = $orderItems->pluck('pedido_id')->unique()->count();
+        
+        // Calcular valoració mitjana
+        $valoracionMedia = \App\Models\Rating::whereIn('producto_id', $productIds)->avg('puntuacion') ?? 0;
+        
+        // Productes amb estoc baix (menys de 10 unitats)
         $productosBajoStock = $productos->filter(function($producto) {
             return $producto->stock < 10;
         })->map(function($producto) {
@@ -227,44 +241,72 @@ class ProductController extends Controller
             ];
         })->values()->toArray();
         
-        // Productos más populares (ejemplo)
-        $productosPopulares = [
-            [
-                'nombre' => 'Producto 1',
-                'unidades' => 10,
-                'ingresos' => 500.00
-            ],
-            [
-                'nombre' => 'Producto 2',
-                'unidades' => 8,
-                'ingresos' => 400.00
-            ],
-            [
-                'nombre' => 'Producto 3',
-                'unidades' => 7,
-                'ingresos' => 350.00
-            ]
-        ];
+        // Productes més populars
+        $productosPopulares = [];
+        foreach ($productIds as $productId) {
+            $items = $orderItems->where('producto_id', $productId);
+            if ($items->count() > 0) {
+                $producto = Product::find($productId);
+                $unidades = $items->sum('cantidad');
+                $ingresos = $items->sum(function($item) {
+                    return $item->precio * $item->cantidad;
+                });
+                
+                $productosPopulares[] = [
+                    'nombre' => $producto->nombre,
+                    'unidades' => $unidades,
+                    'ingresos' => $ingresos
+                ];
+            }
+        }
         
-        // Categorías más usadas (ejemplo)
-        // En un caso real, esto debería calcularse a partir de las ventas
-        $categoriasMasUsadas = [
-            [
-                'nombre' => 'Electrónica',
-                'totalProductos' => 15,
-                'ventasTotales' => 800.00
-            ],
-            [
-                'nombre' => 'Hogar',
-                'totalProductos' => 8,
-                'ventasTotales' => 450.00
-            ],
-            [
-                'nombre' => 'Deportes',
-                'totalProductos' => 5,
-                'ventasTotales' => 250.00
-            ]
-        ];
+        // Ordenar per unitats venudes (descendent)
+        usort($productosPopulares, function($a, $b) {
+            return $b['unidades'] - $a['unidades'];
+        });
+        
+        // Limitar a 5 productes
+        $productosPopulares = array_slice($productosPopulares, 0, 5);
+        
+        // Categories més utilitzades
+        $categoriasMasUsadas = [];
+        $categoriasCount = [];
+        
+        foreach ($productos as $producto) {
+            foreach ($producto->categorias as $categoria) {
+                $catId = $categoria->id_cat;
+                
+                if (!isset($categoriasCount[$catId])) {
+                    $categoriasCount[$catId] = [
+                        'nombre' => $categoria->nombre,
+                        'totalProductos' => 1,
+                        'ventasTotales' => 0
+                    ];
+                } else {
+                    $categoriasCount[$catId]['totalProductos']++;
+                }
+                
+                // Sumar vendes per categoria
+                $productItems = $orderItems->where('producto_id', $producto->id_prod);
+                $ventasProducto = $productItems->sum(function($item) {
+                    return $item->precio * $item->cantidad;
+                });
+                
+                $categoriasCount[$catId]['ventasTotales'] += $ventasProducto;
+            }
+        }
+        
+        // Convertir a array i ordenar per vendes totals
+        foreach ($categoriasCount as $categoria) {
+            $categoriasMasUsadas[] = $categoria;
+        }
+        
+        usort($categoriasMasUsadas, function($a, $b) {
+            return $b['ventasTotales'] - $a['ventasTotales'];
+        });
+        
+        // Limitar a 5 categories
+        $categoriasMasUsadas = array_slice($categoriasMasUsadas, 0, 5);
         
         $estadisticas = [
             'ventasTotales' => $ventasTotales,

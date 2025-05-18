@@ -68,8 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/seller/productos', [ProductController::class, 'sellerProducts']);
     Route::get('/seller/prods/', [ProductController::class,'getownproducts']);
     
-    // Añadir esta ruta para las estadísticas
-    Route::get('/seller/estadisticas', [ProductController::class, 'sellerStatistics']);
+    // Rutes per a estadístiques del venedor
+    Route::middleware('auth:sanctum')->get('/seller/statistics', [ProductController::class, 'sellerStatistics']);
 });
     Route::get('/productos', [ProductController::class, 'index']);
     

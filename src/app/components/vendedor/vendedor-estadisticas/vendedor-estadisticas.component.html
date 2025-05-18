@@ -1,126 +1,110 @@
 <div class="estadisticas-container">
-  <h1>Estadísticas de Ventas</h1>
-
-  <div *ngIf="error" class="error-message">
-    {{ error }}
+  <h2 class="titulo-seccion">Estadístiques del Venedor</h2>
+  
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregant estadístiques...</p>
   </div>
-
-  <div *ngIf="isLoading" class="loading">
-    Cargando estadísticas...
+  
+  <div *ngIf="error" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button class="btn-retry" (click)="cargarEstadisticasReales()">Tornar a intentar</button>
   </div>
-
+  
   <div *ngIf="!isLoading && !error" class="estadisticas-content">
-    <div class="stats-overview">
-      <div class="stat-card">
-        <h3>Ventas Totales</h3>
-        <p class="stat-value">{{ estadisticas.ventasTotales | currency:'EUR' }}</p>
+    <!-- Resum general -->
+    <div class="resumen-container">
+      <div class="resumen-card">
+        <h3>Vendes Totals</h3>
+        <p class="valor">{{ estadisticas.ventasTotales | currency:'EUR' }}</p>
       </div>
-
-      <div class="stat-card">
-        <h3>Productos Vendidos</h3>
-        <p class="stat-value">{{ estadisticas.productosVendidos }}</p>
+      
+      <div class="resumen-card">
+        <h3>Productes Venuts</h3>
+        <p class="valor">{{ estadisticas.productosVendidos }}</p>
       </div>
-
-      <div class="stat-card">
-        <h3>Pedidos Completados</h3>
-        <p class="stat-value">{{ estadisticas.pedidosCompletados }}</p>
+      
+      <div class="resumen-card">
+        <h3>Comandes Completades</h3>
+        <p class="valor">{{ estadisticas.pedidosCompletados }}</p>
       </div>
-
-      <div class="stat-card">
-        <h3>Valoración Media</h3>
-        <p class="stat-value">{{ estadisticas.valoracionMedia }}/5</p>
+      
+      <div class="resumen-card">
+        <h3>Valoració Mitjana</h3>
+        <p class="valor">{{ estadisticas.valoracionMedia | number:'1.1-1' }} / 5</p>
       </div>
     </div>
-
-    <!-- Sección de gráficos -->
-    <div class="graficos-section">
-      <div class="grafico-container">
-        <h2>Evolución de Ventas</h2>
+    
+    <!-- Gràfics -->
+    <div class="graficos-container">
+      <div class="grafico-card">
+        <h3>Vendes Mensuals</h3>
         <div class="canvas-container">
           <canvas #ventasChart></canvas>
         </div>
       </div>
       
-      <div class="grafico-container">
-        <h2>Ventas por Categoría</h2>
+      <div class="grafico-card">
+        <h3>Vendes per Categoria</h3>
         <div class="canvas-container">
           <canvas #categoriasChart></canvas>
         </div>
       </div>
       
-      <div class="grafico-container">
-        <h2>Productos Más Vendidos</h2>
+      <div class="grafico-card">
+        <h3>Productes Més Populars</h3>
         <div class="canvas-container">
           <canvas #popularesChart></canvas>
         </div>
       </div>
+      
+      <div class="grafico-card">
+        <h3>Productes amb Estoc Baix</h3>
+        <div class="canvas-container">
+          <canvas #stockChart></canvas>
+        </div>
+      </div>
     </div>
-
-    <!-- Sección de productos con bajo stock -->
-    <div class="stock-section">
-      <h2>Productos con Stock Bajo</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Stock Actual</th>
-            <th>Nivel Crítico</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let producto of estadisticas.productosBajoStock">
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.stock }}</td>
-            <td [ngClass]="{'stock-critico': producto.stock < 5}">
-              <span *ngIf="producto.stock < 5">¡Crítico!</span>
-              <span *ngIf="producto.stock >= 5 && producto.stock < 10">Bajo</span>
-              <span *ngIf="producto.stock >= 10">Normal</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Sección de productos populares (tabla) -->
-    <div class="popular-products">
-      <h2>Productos Más Populares</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Unidades Vendidas</th>
-            <th>Ingresos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let producto of estadisticas.productosPopulares">
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.unidades }}</td>
-            <td>{{ producto.ingresos | currency:'EUR' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Sección de categorías más populares -->
-    <div class="popular-categories">
-      <h2>Categorías Más Populares</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Productos</th>
-            <th>Ventas Totales</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let categoria of estadisticas.categoriasMasUsadas">
-            <td>{{ categoria.nombre }}</td>
-            <td>{{ categoria.totalProductos }}</td>
-            <td>{{ categoria.ventasTotales | currency:'EUR' }}</td>
-          </tr>
-        </tbody>
-      </table>
+    
+    <!-- Taules de dades -->
+    <div class="tablas-container">
+      <div class="tabla-card">
+        <h3>Productes Més Populars</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Producte</th>
+              <th>Unitats Venudes</th>
+              <th>Ingressos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of estadisticas.productosPopulares">
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.unidades }}</td>
+              <td>{{ producto.ingresos | currency:'EUR' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="tabla-card">
+        <h3>Productes amb Estoc Baix</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Producte</th>
+              <th>Estoc Disponible</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of estadisticas.productosBajoStock">
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.stock }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

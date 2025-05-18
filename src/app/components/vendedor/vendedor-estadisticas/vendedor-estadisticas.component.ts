@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VendedorService, EstadisticasResponse } from '../../../services/vendedor.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
 
-// Registrar todos los componentes de Chart.js
+// Registrar tots els components de Chart.js
 Chart.register(...registerables);
 
 @Component({
@@ -17,7 +17,8 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
   @ViewChild('ventasChart') ventasChartRef!: ElementRef;
   @ViewChild('categoriasChart') categoriasChartRef!: ElementRef;
   @ViewChild('popularesChart') popularesChartRef!: ElementRef;
-  
+  @ViewChild('stockChart') stockChartRef!: ElementRef;
+
   estadisticas: any = {
     ventasTotales: 0,
     productosVendidos: 0,
@@ -27,39 +28,57 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
     productosBajoStock: [],
     categoriasMasUsadas: []
   };
+  
   isLoading = true;
   error = '';
   
-  // Referencias a los gráficos
+  // Referències als gràfics
   ventasChart: Chart | null = null;
   categoriasChart: Chart | null = null;
   popularesChart: Chart | null = null;
+  stockChart: Chart | null = null;
 
-  constructor(private vendedorService: VendedorService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.cargarEstadisticas();
+    this.cargarEstadisticasReales();
   }
   
   ngAfterViewInit(): void {
-    // Los gráficos se crearán después de cargar los datos
+    // Els gràfics es crearan després de carregar les dades
   }
 
-  cargarEstadisticas(): void {
+  cargarEstadisticasReales(): void {
     this.isLoading = true;
-    this.vendedorService.getEstadisticas().subscribe({
-      next: (data: EstadisticasResponse) => {
-        this.estadisticas = data.estadisticas;
-        this.isLoading = false;
+    
+    // Obtenir el token d'autenticació
+    const token = localStorage.getItem('auth_token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    
+    // Fer la petició al backend per obtenir les estadístiques reals
+    this.http.get('http://localhost:8000/api/seller/statistics', { headers }).subscribe({
+      next: (response: any) => {
+        console.log('Estadístiques rebudes:', response);
         
-        // Una vez cargados los datos, creamos los gráficos
-        setTimeout(() => {
-          this.crearGraficos();
-        }, 100);
+        if (response.status === 'success' && response.estadisticas) {
+          this.estadisticas = response.estadisticas;
+          this.isLoading = false;
+          
+          // Un cop carregades les dades, creem els gràfics
+          setTimeout(() => {
+            this.crearGraficos();
+          }, 100);
+        } else {
+          this.error = 'No s\'han pogut carregar les estadístiques correctament.';
+          this.isLoading = false;
+        }
       },
-      error: (err: Error) => {
-        console.error('Error al cargar estadísticas:', err);
-        this.error = 'Error al cargar las estadísticas. Por favor, inténtelo de nuevo más tarde.';
+      error: (error) => {
+        console.error('Error al carregar estadístiques:', error);
+        this.error = 'Error al carregar les estadístiques. Si us plau, torneu-ho a provar més tard.';
         this.isLoading = false;
       }
     });
@@ -69,19 +88,23 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
     this.crearGraficoVentas();
     this.crearGraficoCategorias();
     this.crearGraficoProductosPopulares();
+    this.crearGraficoStock();
   }
   
   crearGraficoVentas(): void {
     if (this.ventasChartRef && this.ventasChartRef.nativeElement) {
-      // Datos de ejemplo para el gráfico de ventas (últimos 6 meses)
-      const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
+      // Utilitzar dades reals o generar dades basades en les vendes totals
+      const meses = ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny'];
+      
+      // Generar dades de vendes mensuals basades en les vendes totals
+      const ventasTotales = this.estadisticas.ventasTotales || 0;
       const datos = [
-        Math.round(this.estadisticas.ventasTotales * 0.1),
-        Math.round(this.estadisticas.ventasTotales * 0.15),
-        Math.round(this.estadisticas.ventasTotales * 0.12),
-        Math.round(this.estadisticas.ventasTotales * 0.18),
-        Math.round(this.estadisticas.ventasTotales * 0.2),
-        Math.round(this.estadisticas.ventasTotales * 0.25)
+        Math.round(ventasTotales * 0.1),
+        Math.round(ventasTotales * 0.15),
+        Math.round(ventasTotales * 0.12),
+        Math.round(ventasTotales * 0.18),
+        Math.round(ventasTotales * 0.2),
+        Math.round(ventasTotales * 0.25)
       ];
       
       this.ventasChart = new Chart(this.ventasChartRef.nativeElement, {
@@ -89,7 +112,7 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
         data: {
           labels: meses,
           datasets: [{
-            label: 'Ventas Mensuales (€)',
+            label: 'Vendes Mensuals (€)',
             data: datos,
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
@@ -139,7 +162,7 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
             },
             title: {
               display: true,
-              text: 'Ventas por Categoría'
+              text: 'Vendes per Categoria'
             }
           }
         }
@@ -157,7 +180,7 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
         data: {
           labels: productos,
           datasets: [{
-            label: 'Unidades Vendidas',
+            label: 'Unitats Venudes',
             data: unidades,
             backgroundColor: 'rgba(75, 192, 192, 0.7)',
             borderColor: 'rgba(75, 192, 192, 1)',
@@ -171,7 +194,37 @@ export class VendedorEstadisticasComponent implements OnInit, AfterViewInit {
               beginAtZero: true
             }
           },
-          indexAxis: 'y'  // Gráfico de barras horizontal
+          indexAxis: 'y'  // Gràfic de barres horitzontal
+        }
+      });
+    }
+  }
+  
+  crearGraficoStock(): void {
+    if (this.stockChartRef && this.stockChartRef.nativeElement && this.estadisticas.productosBajoStock) {
+      const productos = this.estadisticas.productosBajoStock.map((prod: any) => prod.nombre);
+      const stock = this.estadisticas.productosBajoStock.map((prod: any) => prod.stock);
+      
+      this.stockChart = new Chart(this.stockChartRef.nativeElement, {
+        type: 'bar',
+        data: {
+          labels: productos,
+          datasets: [{
+            label: 'Estoc Disponible',
+            data: stock,
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          indexAxis: 'y'  // Gràfic de barres horitzontal
         }
       });
     }
