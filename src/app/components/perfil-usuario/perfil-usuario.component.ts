@@ -196,7 +196,7 @@ export class PerfilUsuarioComponent implements OnInit {
       } else if (this.metodoPagoForm.value.tipo === 'Transferencia') {
         paymentData.tipo = 'transferencia';
         paymentData.iban = this.metodoPagoForm.value.numeroCuenta;
-        paymentData.bank_name = this.metodoPagoForm.value.entidadBancaria;
+        paymentData.nombre_banco = this.metodoPagoForm.value.entidadBancaria;
       }
       
       // Obtenir el token d'autenticació
