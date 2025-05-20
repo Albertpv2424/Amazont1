@@ -1,31 +1,54 @@
-<header class="header">
+<header class="header" [ngClass]="{'dark-mode': isDarkMode}" role="banner">
   <div class="logo">
-    <a [routerLink]="['/']"><img src="assets/amazont en blanc.png" alt="Logo" /></a>
+    <a [routerLink]="['/']">
+      <img src="assets/amazont en blanc.png" alt="Logo de Amazon't" />
+    </a>
   </div>
 
-  <div class="search-container">
-    <select class="dropdown" (change)="onCategoryChange($event)">
+  <div class="search-container" role="search" aria-label="Buscar productos">
+    <label for="categoria-select" class="visually-hidden">Seleccionar categoría</label>
+    <select 
+      class="dropdown" 
+      id="categoria-select"
+      (change)="onCategoryChange($event)" 
+      aria-label="Seleccionar categoría"
+    >
       <option value="">Todas las categorías</option>
       @for (categoria of categorias; track categoria.nombre) {
         <option [value]="categoria.nombre">{{ categoria.nombre }}</option>
       }
     </select>
+
     <div class="search-input-wrapper">
+      <label for="search-input" class="visually-hidden">Buscar producto</label>
       <input 
         type="text" 
         class="search-input" 
+        id="search-input"
         placeholder="Buscar en Amazon't" 
         [(ngModel)]="searchTerm"
         (input)="onSearchInput()"
         (keyup.enter)="buscarProductos()"
         (blur)="hideSuggestions()"
+        aria-label="Buscar productos"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        role="combobox"
+        [attr.aria-expanded]="showSuggestions && filteredProducts.length > 0"
       />
+
       @if (showSuggestions && filteredProducts.length > 0) {
-        <div class="search-suggestions">
+        <div class="search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda">
           @for (producto of filteredProducts; track producto.id) {
-            <div class="suggestion-item" (mousedown)="selectSuggestion(producto)">
+            <div 
+              class="suggestion-item" 
+              (mousedown)="selectSuggestion(producto)"
+              role="option"
+              tabindex="0"
+              aria-selected="false"
+            >
               <div class="suggestion-icon">
-                <img src="assets/search 1.png" alt="" class="search-icon">
+                <img src="assets/search 1.png" alt="" class="search-icon" aria-hidden="true">
               </div>
               <div class="suggestion-text">{{ producto.nombre }}</div>
             </div>
@@ -33,36 +56,52 @@
         </div>
       }
     </div>
+
     <div class="search-button-container">
-      <button class="search-button" (click)="buscarProductos()">
+      <button 
+        class="search-button" 
+        (click)="buscarProductos()" 
+        aria-label="Buscar"
+      >
         <img src="assets/search 1.png" alt="Buscar" />
       </button>
     </div>
   </div>
 
-  <div class="icons">
-    <!-- User authentication buttons -->
+  <div class="icons" role="navigation" aria-label="Acciones del usuario">
     <div class="auth-buttons">
       <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
-        <a routerLink="/login" class="auth-link">Iniciar sesión</a>
-        <a routerLink="/registro" class="auth-link">Registrarse</a>
+        <a routerLink="/login" class="auth-link" aria-label="Iniciar sesión">Iniciar sesión</a>
+        <a routerLink="/registro" class="auth-link" aria-label="Registrarse">Registrarse</a>
       </ng-container>
       <ng-template #loggedInTemplate>
         <span class="user-greeting">Hola, {{ userName }}</span>
-        <a (click)="logout()" class="auth-link">Cerrar sesión</a>
+        <a (click)="logout()" class="auth-link" aria-label="Cerrar sesión">Cerrar sesión</a>
       </ng-template>
     </div>
-    
-    <!-- Add this somewhere in your header if it's not already there -->
-    <div class="carrito-icon" (click)="navegarAlCarrito()">
+
+    <div class="carrito-icon" (click)="navegarAlCarrito()" role="button" tabindex="0" aria-label="Ir al carrito de compras">
       <img src="assets/cart.png" alt="Carrito de compras">
       @if (cantidadCarrito > 0) {
-        <span class="carrito-badge">{{ cantidadCarrito }}</span>
+        <span class="carrito-badge" aria-live="polite">{{ cantidadCarrito }}</span>
       }
     </div>
-    <img src="assets/settings.png" alt="Ajustes" (click)="navegarAjustes()" style="cursor:pointer;" />
-    <a (click)="toggleBackground()" class="toggle-button">
-      <img [src]="isDarkMode ? 'assets/sol1.png' : 'assets/luna1.png'" alt="Toggle Background" />
+
+    <img 
+      src="assets/settings.png" 
+      alt="Ajustes" 
+      (click)="navegarAjustes()" 
+      style="cursor:pointer;" 
+      role="button" 
+      tabindex="0"
+      aria-label="Ajustes"
+    />
+
+    <a (click)="toggleBackground()" class="toggle-button" role="button" aria-label="Cambiar modo de fondo" tabindex="0">
+      <img 
+        [src]="isDarkMode ? 'assets/sol1.png' : 'assets/luna1.png'" 
+        alt="Cambiar fondo a {{ isDarkMode ? 'claro' : 'oscuro' }}" 
+      />
     </a>
   </div>
 </header>

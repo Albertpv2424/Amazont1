@@ -1,86 +1,122 @@
 <div [ngClass]="{'dark-mode': isDarkMode}">
   @if (producto) {
-    <div class="producto-detalle">
-      <div class="producto-imagenes">
+    <main class="producto-detalle">
+      <section class="producto-imagenes">
         <div class="imagen-principal">
-          <img [src]="'assets/' + producto.imagen" alt="{{ producto.nombre }}">
+          <img [src]="'assets/' + producto.imagen" [alt]="producto.nombre">
         </div>
         <div class="galeria-imagenes">
           @for (imagen of producto.galeriaImagenes; track imagen) {
-            <img [src]="imagen" alt="{{ producto.nombre }}">
+            <img [src]="imagen" [alt]="producto.nombre + ' imagen adicional'">
           }
         </div>
-      </div>
-      
-      <div class="producto-info">
-        <h1>{{ producto.nombre }}</h1>
+      </section>
+
+      <section class="producto-info" aria-labelledby="tituloProducto">
+        <h1 id="tituloProducto">{{ producto.nombre }}</h1>
         <p>{{ producto.descripcion }}</p>
         <p class="precio">{{ producto.precio | currency:'EUR' }}</p>
         <p class="popularidad">Valoración: {{ producto.popularidad }} ⭐</p>
-        
-        <!-- Nuevo indicador de stock -->
-        <div class="stock-info">
+
+        <!-- Indicador de stock -->
+        <div class="stock-info" aria-live="polite">
           @if (producto.stock > 10) {
-            <span class="stock-indicator in-stock"></span>
+            <span class="stock-indicator in-stock" aria-hidden="true"></span>
             <span class="stock-text in-stock-text">En stock ({{ producto.stock }} disponibles)</span>
           } @else if (producto.stock > 0) {
-            <span class="stock-indicator low-stock"></span>
+            <span class="stock-indicator low-stock" aria-hidden="true"></span>
             <span class="stock-text low-stock-text">¡Solo quedan {{ producto.stock }}!</span>
           } @else {
-            <span class="stock-indicator out-of-stock"></span>
+            <span class="stock-indicator out-of-stock" aria-hidden="true"></span>
             <span class="stock-text out-of-stock-text">Agotado</span>
           }
         </div>
-        
+
         <div class="cantidad-control">
-          <label>Cantidad:</label>
-          <div class="cantidad-botones">
-            <button (click)="decrementarCantidad()" [disabled]="cantidad <= 1">-</button>
-            <span>{{ cantidad }}</span>
-            <button (click)="incrementarCantidad()" [disabled]="cantidad >= producto.stock">+</button>
+          <label for="cantidad">Cantidad:</label>
+          <div class="cantidad-botones" role="group" aria-labelledby="cantidad">
+            <button 
+              type="button" 
+              (click)="decrementarCantidad()" 
+              [disabled]="cantidad <= 1"
+              aria-label="Disminuir cantidad">
+              -
+            </button>
+            <span id="cantidad" aria-live="polite">{{ cantidad }}</span>
+            <button 
+              type="button" 
+              (click)="incrementarCantidad()" 
+              [disabled]="cantidad >= producto.stock"
+              aria-label="Aumentar cantidad">
+              +
+            </button>
           </div>
         </div>
 
-        <button class="btn-carrito" (click)="anadirAlCarrito()" [disabled]="producto.stock <= 0">
-          <img src="assets/cart.png" alt="Carrito">
+        <button 
+          class="btn-carrito" 
+          type="button" 
+          (click)="anadirAlCarrito()" 
+          [disabled]="producto.stock <= 0"
+          [attr.aria-label]="'Añadir ' + producto.nombre + ' al carrito'">
+          <img src="assets/cart.png" alt="" aria-hidden="true">
           Añadir al carrito
         </button>
-      </div>
-      
-      <div class="opiniones">
-        <h2>Opiniones de clientes</h2>
-        
-        <!-- Botón para añadir reseña -->
-        <button class="btn-resena" (click)="toggleFormularioResena()">
+      </section>
+
+      <section class="opiniones" aria-labelledby="opinionesTitulo">
+        <h2 id="opinionesTitulo">Opiniones de clientes</h2>
+
+        <button 
+          class="btn-resena" 
+          type="button" 
+          (click)="toggleFormularioResena()" 
+          [attr.aria-expanded]="mostrarFormularioResena">
           {{ mostrarFormularioResena ? 'Cancelar' : 'Escribir una opinión' }}
         </button>
-        
-        <!-- Formulario para añadir reseña -->
+
         @if (mostrarFormularioResena) {
-          <div class="formulario-resena">
-            <h3>Escribe tu opinión</h3>
-            
+          <form class="formulario-resena" (submit)="enviarResena()" aria-describedby="formDescripcion">
+            <h3 id="formDescripcion">Escribe tu opinión</h3>
+
             @if (mensajeExito) {
-              <div class="mensaje-exito">{{ mensajeExito }}</div>
+              <div class="mensaje-exito" aria-live="polite">{{ mensajeExito }}</div>
             }
-            
+
             @if (mensajeError) {
-              <div class="mensaje-error">{{ mensajeError }}</div>
+              <div class="mensaje-error" aria-live="assertive">{{ mensajeError }}</div>
             }
-            
+
             <div class="form-group">
               <label for="titulo">Título:</label>
-              <input type="text" id="titulo" [(ngModel)]="nuevaResena.titulo" required>
+              <input 
+                type="text" 
+                id="titulo" 
+                [(ngModel)]="nuevaResena.titulo" 
+                name="titulo"
+                aria-required="true"
+                required>
             </div>
-            
+
             <div class="form-group">
               <label for="comentario">Comentario:</label>
-              <textarea id="comentario" [(ngModel)]="nuevaResena.comentario" rows="4" required></textarea>
+              <textarea 
+                id="comentario" 
+                [(ngModel)]="nuevaResena.comentario" 
+                name="comentario"
+                rows="4" 
+                aria-required="true"
+                required>
+              </textarea>
             </div>
-            
+
             <div class="form-group">
               <label for="puntuacion">Valoración:</label>
-              <select id="puntuacion" [(ngModel)]="nuevaResena.puntuacion">
+              <select 
+                id="puntuacion" 
+                [(ngModel)]="nuevaResena.puntuacion" 
+                name="puntuacion"
+                aria-required="true">
                 <option value="5">5 estrellas - Excelente</option>
                 <option value="4">4 estrellas - Muy bueno</option>
                 <option value="3">3 estrellas - Bueno</option>
@@ -88,25 +124,25 @@
                 <option value="1">1 estrella - Malo</option>
               </select>
             </div>
-            
-            <button class="btn-enviar-resena" (click)="enviarResena()">Publicar opinión</button>
-          </div>
+
+            <button type="submit" class="btn-enviar-resena">Publicar opinión</button>
+          </form>
         }
-        
+
         @if (reviews && reviews.length > 0) {
           @for (review of reviews; track review.id) {
-            <div class="opinion">
+            <article class="opinion" [attr.aria-labelledby]="'titulo-' + review.id">
               <p class="usuario">{{ review.user?.nombre || 'Usuario' }}</p>
-              <p class="titulo"><strong>{{ review.titulo }}</strong></p>
+              <p id="titulo-{{ review.id }}" class="titulo"><strong>{{ review.titulo }}</strong></p>
               <p class="valoracion">Valoración: {{ review.rating || 5 }} ⭐</p>
               <p>{{ review.comentario }}</p>
               <p class="fecha">{{ review.created_at | date:'dd/MM/yyyy' }}</p>
-            </div>
+            </article>
           }
         } @else {
           <p>No hay opiniones para este producto todavía.</p>
         }
-      </div>
-    </div>
+      </section>
+    </main>
   }
 </div>

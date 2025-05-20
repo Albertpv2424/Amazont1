@@ -1,30 +1,76 @@
-<section class="ofertones" [ngClass]="{'dark-mode': isDarkMode}">
-  <h1>Ofertones del día</h1>
+<section class="ofertones" [ngClass]="{'dark-mode': isDarkMode}" role="region" aria-labelledby="ofertones-titulo">
+  <h1 id="ofertones-titulo">Ofertones del día</h1>
   
-  <div *ngIf="ofertas.length > 0" class="carrusel">
-    <button class="flecha izquierda" (click)="previous()">←</button>
+  <div *ngIf="ofertas.length > 0" class="carrusel" role="group" aria-label="Carrusel de ofertas">
+    <button 
+      class="flecha izquierda" 
+      (click)="previous()" 
+      aria-label="Oferta anterior"
+      type="button"
+    >
+      ←
+    </button>
+    
     <div class="ofertas">
-      <div *ngFor="let oferta of visibleOffers" class="oferta-card">
-        <img [src]="'assets/' + oferta.imagen" alt="{{ oferta.nombre }}" class="oferta-img" (click)="navegarAProducto(oferta)" style="cursor: pointer;">
-        <h3 (click)="navegarAProducto(oferta)" style="cursor: pointer;">{{ oferta.nombre }}</h3>
-        <div class="preus">
-          <span class="preu-original" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio">
+      <div *ngFor="let oferta of visibleOffers" class="oferta-card" role="article" [attr.aria-labelledby]="'oferta-titulo-' + oferta.id">
+        <img 
+          [src]="'assets/' + oferta.imagen" 
+          alt="oferta.nombre" 
+          class="oferta-img" 
+          (click)="navegarAProducto(oferta)" 
+          style="cursor: pointer;" 
+          role="button" 
+          tabindex="0" 
+          [attr.aria-label]="'Ver detalles de ' + oferta.nombre"
+          (keyup.enter)="navegarAProducto(oferta)" 
+          (keyup.space)="navegarAProducto(oferta)"
+        >
+        <h3 
+          [id]="'oferta-titulo-' + oferta.id" 
+          (click)="navegarAProducto(oferta)" 
+          style="cursor: pointer;"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="'Ver detalles de ' + oferta.nombre"
+          (keyup.enter)="navegarAProducto(oferta)" 
+          (keyup.space)="navegarAProducto(oferta)"
+        >
+          {{ oferta.nombre }}
+        </h3>
+        <div class="preus" aria-label="Precios y descuento">
+          <span class="preu-original" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio" aria-label="Precio original">
             {{ oferta.precio | currency:'EUR':'symbol':'1.2-2' }}
           </span>
-          <span class="preu-oferta">
+          <span class="preu-oferta" aria-label="Precio oferta">
             {{ oferta.precio_oferta | currency:'EUR':'symbol':'1.2-2' }}
           </span>
-          <span class="descompte" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio">
+          <span class="descompte" *ngIf="oferta.precio_oferta != null && oferta.precio != null && oferta.precio_oferta < oferta.precio" aria-label="Descuento">
             -{{ ((1 - oferta.precio_oferta / oferta.precio) * 100) | number:'1.0-0' }}%
           </span>
         </div>
-        <button class="btn-afegir" (click)="afegirAlCarrito(oferta)">Afegir al carret</button>
+        
+        <button 
+          class="btn-afegir" 
+          (click)="afegirAlCarrito(oferta)" 
+          [attr.aria-label]="'Afegir ' + oferta.nombre + ' al carret'"
+          type="button"
+        >
+          Afegir al carret
+        </button>
       </div>
     </div>
-    <button class="flecha derecha" (click)="next()"> → </button>
+    
+    <button 
+      class="flecha derecha" 
+      (click)="next()" 
+      aria-label="Oferta següent"
+      type="button"
+    >
+      →
+    </button>
   </div>
   
-  <div *ngIf="ofertas.length === 0" class="no-ofertas">
+  <div *ngIf="ofertas.length === 0" class="no-ofertas" role="alert" aria-live="polite">
     <p>No hi ha ofertes disponibles en aquest moment.</p>
   </div>
 </section>

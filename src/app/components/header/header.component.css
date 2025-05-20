@@ -288,6 +288,13 @@
 }
 
 /* Add these styles to your existing CSS */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
 
 .search-input-wrapper {
   position: relative;
@@ -304,6 +311,8 @@
   font-size: 1rem;
   height: 100%;
   outline: none;
+  outline: 2px solid #febd69;
+  outline-offset: 2px;
 }
 .search-suggestions {
   position: fixed; /* Change from absolute to fixed */
