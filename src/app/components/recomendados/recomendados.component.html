@@ -1,21 +1,20 @@
-<section class="recomendados" [ngClass]="{'dark-mode': isDarkMode}">
-  <h2>Recomendados del día</h2>
-  <div class="recomendaciones">
-    <div class="recomendado">
-      <img src="assets/belleza.png" alt="Belleza" />
+<section class="recomendados" [ngClass]="{'dark-mode': isDarkMode}" role="region" aria-labelledby="recomendados-titulo">
+  <h2 id="recomendados-titulo">Recomendados del día</h2>
+  <div class="recomendaciones" role="list">
+    <div class="recomendado" role="listitem">
+      <img src="assets/belleza.png" alt="Productos de belleza recomendados" />
     </div>
-    <div class="recomendado">
-      <img src="assets/regalos.png" alt="Regalos" />
+    <div class="recomendado" role="listitem">
+      <img src="assets/regalos.png" alt="Ideas de regalos para ocasiones especiales" />
     </div>
-    <div class="recomendado">
-      <img src="assets/regalos2.png" alt="Regalos" />
+    <div class="recomendado" role="listitem">
+      <img src="assets/regalos2.png" alt="Regalos para celebraciones" />
     </div>
-    <div class="recomendado">
-      <img src="assets/regalos3.png" alt="Regalos" />
+    <div class="recomendado" role="listitem">
+      <img src="assets/regalos3.png" alt="Regalos personalizados" />
     </div>
   </div>
   <p>Belleza y Regalos para tus seres queridos</p>
-  <div class="hola">
-
+  <div class="hola" aria-hidden="true">
   </div>
 </section>

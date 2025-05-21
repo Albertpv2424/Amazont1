@@ -1,20 +1,20 @@
-<div class="vendedor-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <div *ngIf="!isVendedor" class="error-message">
-    <h2>Acceso Denegado</h2>
+<div class="vendedor-container" [ngClass]="{'dark-mode': isDarkMode}" role="main">
+  <div *ngIf="!isVendedor" class="error-message" aria-live="assertive">
+    <h2 id="acceso-denegado">Acceso Denegado</h2>
     <p>Esta sección está reservada para vendedores. Si desea convertirse en vendedor, contacte con el administrador.</p>
   </div>
 
   <div *ngIf="isVendedor" class="vendedor-dashboard">
-    <div class="sidebar">
-      <h2>Panel de Vendedor</h2>
-      <nav>
-        <a routerLink="/vendedor/estadisticas" routerLinkActive="active">Estadísticas</a>
-        <a routerLink="/vendedor/productos" routerLinkActive="active">Mis Productos</a>
-        <a routerLink="/vendedor/formulario" routerLinkActive="active">Añadir Producto</a>
+    <div class="sidebar" role="navigation" aria-label="Panel de navegación del vendedor">
+      <h2 id="panel-vendedor">Panel de Vendedor</h2>
+      <nav aria-labelledby="panel-vendedor">
+        <a routerLink="/vendedor/estadisticas" routerLinkActive="active" tabindex="0" aria-current="page">Estadísticas</a>
+        <a routerLink="/vendedor/productos" routerLinkActive="active" tabindex="0">Mis Productos</a>
+        <a routerLink="/vendedor/formulario" routerLinkActive="active" tabindex="0">Añadir Producto</a>
       </nav>
     </div>
     
-    <div class="content">
+    <div class="content" role="region" aria-label="Contenido principal del panel de vendedor">
       <router-outlet></router-outlet>
     </div>
   </div>

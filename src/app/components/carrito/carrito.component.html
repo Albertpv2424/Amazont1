@@ -1,26 +1,26 @@
-<div class="carrito-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <h1>Mi Carrito de Compras</h1>
+<div class="carrito-container" [ngClass]="{'dark-mode': isDarkMode}" role="main">
+  <h1 id="carrito-titulo">Mi Carrito de Compras</h1>
 
   @if (productosCarrito.length === 0) {
-    <div class="carrito-vacio">
+    <div class="carrito-vacio" aria-live="polite">
       <h2>Tu carrito está vacío</h2>
       <p>Parece que aún no has añadido productos a tu carrito.</p>
-      <button class="btn-continuar" (click)="continuarComprando()">Continuar comprando</button>
+      <button class="btn-continuar" (click)="continuarComprando()" aria-label="Continuar comprando">Continuar comprando</button>
     </div>
   } @else {
-    <div class="carrito-contenido">
-      <div class="carrito-items">
-        <div class="carrito-header">
-          <span class="header-producto">Producto</span>
-          <span class="header-precio">Precio</span>
-          <span class="header-cantidad">Cantidad</span>
-          <span class="header-total">Total</span>
-          <span class="header-acciones">Acciones</span>
+    <div class="carrito-contenido" aria-labelledby="carrito-titulo">
+      <div class="carrito-items" role="table" aria-label="Productos en el carrito">
+        <div class="carrito-header" role="row">
+          <span class="header-producto" role="columnheader">Producto</span>
+          <span class="header-precio" role="columnheader">Precio</span>
+          <span class="header-cantidad" role="columnheader">Cantidad</span>
+          <span class="header-total" role="columnheader">Total</span>
+          <span class="header-acciones" role="columnheader">Acciones</span>
         </div>
 
         @for (producto of productosCarrito; track producto.id) {
-          <div class="carrito-item">
-            <div class="item-producto">
+          <div class="carrito-item" role="row">
+            <div class="item-producto" role="cell">
               <img [src]="producto.imagen" [alt]="producto.nombre">
               <div class="item-detalles">
                 <h3>{{ producto.nombre }}</h3>
@@ -29,15 +29,20 @@
                 }
               </div>
             </div>
-            <div class="item-precio">{{ producto.precio | currency:'EUR' }}</div>
-            <div class="item-cantidad">
-              <button class="btn-cantidad" (click)="decrementarCantidad(producto)">-</button>
+            <div class="item-precio" role="cell">{{ producto.precio | currency:'EUR' }}</div>
+            <div class="item-cantidad" role="cell">
+              <button class="btn-cantidad" (click)="decrementarCantidad(producto)" 
+                      [attr.aria-label]="'Disminuir cantidad de ' + producto.nombre">-</button>
               <input type="number" 
                      [min]="1"
                      [(ngModel)]="producto.cantidad"
                      (input)="actualizarCantidad(producto, $any($event.target).value)"
-                     (keydown)="$event.key === '-' && $event.preventDefault()">
-              <button class="btn-cantidad" (click)="incrementarCantidad(producto)">+</button>
+                     (keydown)="$event.key === '-' && $event.preventDefault()"
+                     [attr.aria-label]="'Cantidad de ' + producto.nombre"
+                     [attr.aria-valuemin]="1"
+                     [attr.aria-valuenow]="producto.cantidad">
+              <button class="btn-cantidad" (click)="incrementarCantidad(producto)"
+                      [attr.aria-label]="'Aumentar cantidad de ' + producto.nombre">+</button>
             </div>
             <div class="item-total">{{ (producto.precio || 0) * producto.cantidad | currency:'EUR' }}</div>
             <div class="item-acciones">

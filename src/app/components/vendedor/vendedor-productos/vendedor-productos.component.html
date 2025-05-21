@@ -1,39 +1,39 @@
-<div class="productos-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <div class="header">
-    <h1>Els Meus Productes</h1>
+<div class="productos-container" [ngClass]="{'dark-mode': isDarkMode}" role="main">
+  <header class="header">
+    <h1 id="titulo-productos">Els Meus Productes</h1>
+  </header>
 
-  </div>
-
-  <div *ngIf="error" class="error-message">
+  <div *ngIf="error" class="error-message" role="alert" aria-live="assertive">
     {{ error }}
   </div>
 
-  <div *ngIf="isLoading" class="loading">
-    <div class="spinner"></div>
+  <div *ngIf="isLoading" class="loading" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
     <p>Carregant productes...</p>
   </div>
 
-  <div *ngIf="!isLoading && !error && productos.length === 0" class="no-productos">
-    <i class="fas fa-box-open"></i>
+  <div *ngIf="!isLoading && !error && productos.length === 0" class="no-productos" aria-live="polite">
+    <i class="fas fa-box-open" aria-hidden="true"></i>
     <p>No tens cap producte. Comença creant-ne un!</p>
   </div>
 
   <div *ngIf="!isLoading && !error && productos.length > 0" class="productos-list">
-    <table>
+    <table aria-labelledby="titulo-productos">
+      <caption class="sr-only">Llista de productes</caption>
       <thead>
         <tr>
-          <th class="th-imagen">Imatge</th>
-          <th class="th-nombre">Nom</th>
-          <th class="th-precio">Preu</th>
-          <th class="th-stock">Stock</th>
-          <th class="th-categoria">Categoria</th>
-          <th class="th-acciones">Accions</th>
+          <th class="th-imagen" scope="col">Imatge</th>
+          <th class="th-nombre" scope="col">Nom</th>
+          <th class="th-precio" scope="col">Preu</th>
+          <th class="th-stock" scope="col">Estoc</th>
+          <th class="th-categoria" scope="col">Categoria</th>
+          <th class="th-acciones" scope="col">Accions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let producto of productos">
           <td class="imagen-cell">
-            <img [src]="getImageUrl(producto)" alt="{{ producto.nombre }}" class="producto-imagen">
+            <img [src]="getImageUrl(producto)" [alt]="producto.nombre" class="producto-imagen">
           </td>
           <td class="nombre-cell">{{ producto.nombre }}</td>
           <td class="precio-cell">{{ producto.precio | currency:'EUR' }}</td>
@@ -54,49 +54,49 @@
     </table>
   </div>
 
-  <!-- Modal de Edición Mejorado -->
-  <div class="modal-overlay" *ngIf="mostrarModal">
+  <!-- Modal d'Edició Millorat -->
+  <div class="modal-overlay" *ngIf="mostrarModal" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
     <div class="modal-container">
       <div class="modal-header">
-        <h2>Editar Producto</h2>
-        <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+        <h2 id="modal-titulo">Editar Producte</h2>
+        <button class="btn-cerrar" (click)="cerrarModal()" aria-label="Tancar modal">×</button>
       </div>
       <div class="modal-body" *ngIf="productoEditando">
         <form (submit)="guardarCambios()">
           <div class="form-layout">
-            <!-- Columna izquierda para la imagen -->
+            <!-- Columna esquerra per a la imatge -->
             <div class="imagen-preview-container">
               <div class="imagen-preview">
-                <img [src]="getPreviewImageUrl()" alt="Vista previa del producto" class="preview-img">
+                <img [src]="getPreviewImageUrl()" alt="Vista prèvia del producte" class="preview-img">
               </div>
               
             </div>
 
-            <!-- Columna derecha para los demás campos -->
+            <!-- Columna dreta per als altres camps -->
             <div class="form-fields">
               <div class="form-group">
-                <label for="nombre">Nombre:</label>
+                <label for="nombre">Nom:</label>
                 <input type="text" id="nombre" [(ngModel)]="productoEditando.nombre"
                        name="nombre" required class="form-control">
               </div>
 
               <div class="form-group">
-                <label for="precio">Precio (€):</label>
+                <label for="precio">Preu (€):</label>
                 <input type="number" id="precio" [(ngModel)]="productoEditando.precio"
                        name="precio" step="0.01" required class="form-control">
               </div>
 
               <div class="form-group">
-                <label for="stock">Stock:</label>
+                <label for="stock">Estoc:</label>
                 <input type="number" id="stock" [(ngModel)]="productoEditando.stock"
                        name="stock" required class="form-control">
               </div>
 
               <div class="form-group">
-                <label for="categoria">Categoría:</label>
+                <label for="categoria">Categoria:</label>
                 <select id="categoria" [(ngModel)]="productoEditando.categoria"
                         name="categoria" required class="form-control">
-                  <option value="">Selecciona una categoría</option>
+                  <option value="">Selecciona una categoria</option>
                   <option *ngFor="let categoria of categorias" [value]="categoria.nombre">
                     {{ categoria.nombre }}
                   </option>
@@ -104,7 +104,7 @@
               </div>
 
               <div class="form-group">
-                <label for="descripcion">Descripción:</label>
+                <label for="descripcion">Descripció:</label>
                 <textarea id="descripcion" [(ngModel)]="productoEditando.descripcion"
                           name="descripcion" rows="3" class="form-control"></textarea>
               </div>
@@ -113,10 +113,10 @@
 
           <div class="form-buttons">
             <button type="button" class="btn-cancelar" (click)="cerrarModal()">
-              <i class="fas fa-times"></i> Cancelar
+              <i class="fas fa-times"></i> Cancel·lar
             </button>
             <button type="submit" class="btn-guardar">
-              <i class="fas fa-save"></i> Guardar Cambios
+              <i class="fas fa-save"></i> Guardar Canvis
             </button>
           </div>
         </form>

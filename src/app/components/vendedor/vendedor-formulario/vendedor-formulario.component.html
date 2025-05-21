@@ -1,64 +1,70 @@
-<div class="form-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <h1>{{ isEditing ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h1>
+<div class="form-container" [ngClass]="{'dark-mode': isDarkMode}" role="main">
+  <h1 id="form-titulo">{{ isEditing ? 'Editar Producte' : 'Afegir Nou Producte' }}</h1>
 
-  <div *ngIf="error" class="error-message">
-    <i class="fas fa-exclamation-circle"></i> {{ error }}
+  <div *ngIf="error" class="error-message" role="alert" aria-live="assertive">
+    <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ error }}
   </div>
 
-  <div *ngIf="isLoading" class="loading">
-    <i class="fas fa-spinner fa-spin"></i> Cargando datos del producto...
+  <div *ngIf="isLoading" class="loading" aria-live="polite">
+    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Carregant dades del producte...
   </div>
 
-  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading" aria-labelledby="form-titulo">
     <div class="form-group">
-      <label for="nombre">Nombre del Producto*</label>
-      <input type="text" id="nombre" formControlName="nombre" placeholder="Nombre del producto">
-      <div *ngIf="isInvalid('nombre')" class="error-text">
-        El nombre es obligatorio y debe tener al menos 3 caracteres
+      <label for="nombre" id="label-nombre">Nom del Producte*</label>
+      <input type="text" id="nombre" formControlName="nombre" placeholder="Nom del producte" 
+             aria-labelledby="label-nombre" aria-required="true" 
+             [attr.aria-invalid]="isInvalid('nombre')" 
+             [attr.aria-describedby]="isInvalid('nombre') ? 'nombre-error' : null">
+      <div *ngIf="isInvalid('nombre')" class="error-text" id="nombre-error" role="alert">
+        El nom és obligatori i ha de tenir almenys 3 caràcters
       </div>
     </div>
 
     <div class="form-group">
-      <label for="descripcion">Descripción*</label>
-      <textarea id="descripcion" formControlName="descripcion" rows="4" placeholder="Descripción detallada del producto"></textarea>
-      <div *ngIf="isInvalid('descripcion')" class="error-text">
-        La descripción es obligatoria
+      <label for="descripcion" id="label-descripcion">Descripció*</label>
+      <textarea id="descripcion" formControlName="descripcion" rows="4" placeholder="Descripció detallada del producte" 
+                aria-labelledby="label-descripcion" aria-required="true" 
+                [attr.aria-invalid]="isInvalid('descripcion')" 
+                [attr.aria-describedby]="isInvalid('descripcion') ? 'descripcion-error' : null"></textarea>
+      <div *ngIf="isInvalid('descripcion')" class="error-text" id="descripcion-error" role="alert">
+        La descripció és obligatòria
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label for="precio">Precio (€)*</label>
+        <label for="precio">Preu (€)*</label>
         <input type="number" id="precio" formControlName="precio" step="0.01" min="0.01" placeholder="0.00">
         <div *ngIf="isInvalid('precio')" class="error-text">
-          El precio es obligatorio y debe ser mayor que 0
+          El preu és obligatori i ha de ser major que 0
         </div>
       </div>
 
       <div class="form-group">
-        <label for="stock">Stock*</label>
+        <label for="stock">Estoc*</label>
         <input type="number" id="stock" formControlName="stock" min="0" placeholder="0">
         <div *ngIf="isInvalid('stock')" class="error-text">
-          El stock es obligatorio y no puede ser negativo
+          L'estoc és obligatori i no pot ser negatiu
         </div>
       </div>
     </div>
 
     <div class="form-group checkbox-group">
       <input type="checkbox" id="en_oferta" formControlName="en_oferta">
-      <label for="en_oferta">¿Está en oferta?</label>
+      <label for="en_oferta">Està en oferta?</label>
     </div>
 
     <div class="form-group" *ngIf="productoForm.get('en_oferta')?.value">
-      <label for="precio_oferta">Precio de Oferta (€)*</label>
+      <label for="precio_oferta">Preu d'Oferta (€)*</label>
       <input type="number" id="precio_oferta" formControlName="precio_oferta" step="0.01" min="0.01" placeholder="0.00">
       <div *ngIf="isInvalid('precio_oferta')" class="error-text">
-        El precio de oferta es obligatorio y debe ser mayor que 0
+        El preu d'oferta és obligatori i ha de ser major que 0
       </div>
     </div>
 
     <div class="form-group">
-      <label>Imagen del Producto</label>
+      <label>Imatge del Producte</label>
       <div class="image-method-selector">
       
         <div class="method-option" [class.active]="metodoImagen === 'url'" (click)="cambiarMetodoImagen('url')">
@@ -70,18 +76,18 @@
       </div>
       
       <div *ngIf="metodoImagen === 'url'" class="url-container">
-        <input type="text" id="imagen_url" formControlName="imagen_url" placeholder="https://ejemplo.com/imagen.jpg">
-        <button type="button" class="btn-preview" (click)="cargarImagenDesdeUrl()">Vista previa</button>
-        <small>Introduce la URL directa de la imagen</small>
+        <input type="text" id="imagen_url" formControlName="imagen_url" placeholder="https://exemple.com/imatge.jpg">
+        <button type="button" class="btn-preview" (click)="cargarImagenDesdeUrl()">Vista prèvia</button>
+        <small>Introdueix l'URL directa de la imatge</small>
       </div>
       
       <div *ngIf="imagenPreview" class="image-preview">
-        <img [src]="imagenPreview" alt="Vista previa">
+        <img [src]="imagenPreview" alt="Vista prèvia">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="categorias">Categorías*</label>
+      <label for="categorias">Categories*</label>
       <div class="categoria-selector">
         <div *ngFor="let categoria of categorias" class="categoria-option">
           <input type="checkbox"
@@ -92,14 +98,14 @@
         </div>
       </div>
       <div *ngIf="isInvalid('categorias')" class="error-text">
-        Debe seleccionar al menos una categoría
+        Has de seleccionar almenys una categoria
       </div>
     </div>
 
     <div class="form-actions">
-      <button type="button" class="btn-cancel" routerLink="/vendedor/productos">Cancelar</button>
+      <button type="button" class="btn-cancel" routerLink="/vendedor/productos">Cancel·lar</button>
       <button type="submit" class="btn-submit" [disabled]="isSubmitting || productoForm.invalid">
-        {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Producto' : 'Crear Producto') }}
+        {{ isSubmitting ? 'Guardant...' : (isEditing ? 'Actualitzar Producte' : 'Crear Producte') }}
       </button>
     </div>
   </form>
