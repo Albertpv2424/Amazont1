@@ -64,10 +64,11 @@
   border-radius: 4px;
   background-color: #fff;
   flex: 1;
-  max-width: 60%;
+  max-width: 50%; /* Reducido de 60% a 50% para ajustar el ancho */
   margin: 0 15px;
   height: 40px;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Añadido sombra sutil */
 }
 
 .dropdown {
@@ -306,8 +307,7 @@
   }
   
   .search-container {
-    max-width: 60%;
-    margin: 0 5px;
+    display: none; /* Ocultamos el buscador en dispositivos móviles */
   }
   
   .dropdown {
@@ -342,14 +342,11 @@
   }
   
   .search-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 10px 0;
-    order: 3;
+    display: none; /* Ocultamos el buscador en dispositivos móviles pequeños */
   }
   
   .icons {
-    margin-left: auto;
+    margin-left: -6px;
     order: 2;
   }
   
