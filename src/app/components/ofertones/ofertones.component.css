@@ -285,11 +285,13 @@ app-producto:hover {
   }
 }
 
+/* Estilos responsive para ofertones */
 @media (max-width: 768px) {
-  .ofertones {
-    width: 95%;
-    padding: 1rem;
+  .flecha {
+    display: none; /* Oculta las flechas en dispositivos móviles */
   }
+  
+
   
   h1 {
     font-size: 2rem;
