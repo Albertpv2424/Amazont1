@@ -352,3 +352,69 @@ small {
   background-color: #718096;
   color: #e2e8f0;
 }
+
+
+/* Mejoras responsivas para el formulario */
+@media (max-width: 992px) {
+  .form-container {
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 1.2rem;
+    margin: 1.2rem auto;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .categoria-selector {
+    padding: 10px;
+  }
+  
+  .categoria-option {
+    flex-basis: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-cancel, .btn-submit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .image-method-selector {
+    flex-direction: column;
+  }
+  
+  .method-option {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}

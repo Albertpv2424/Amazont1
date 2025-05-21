@@ -566,3 +566,77 @@ textarea.form-control {
     font-size: 1.3rem;
   }
 }
+
+/* Mejoras adicionales para dispositivos muy pequeños */
+@media (max-width: 400px) {
+  .modal-container {
+    width: 98%;
+    padding: 10px;
+  }
+  
+  .form-layout {
+    flex-direction: column;
+  }
+  
+  .imagen-preview-container {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .btn-cerrar {
+    font-size: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn-cancelar, .btn-guardar {
+    width: 100%;
+  }
+}
+
+/* Arreglo para el modo oscuro en productos */
+.dark-mode.productos-container,
+.dark-mode .productos-container {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .header h1 {
+  color: #f0f0f0;
+}
+
+.dark-mode .productos-list {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode table {
+  background-color: #2d2d2d;
+}
+
+.dark-mode th {
+  background-color: #37475a;
+  color: #f0f0f0;
+}
+
+.dark-mode td {
+  border-bottom: 1px solid #444;
+  color: #e0e0e0;
+}
+
+.dark-mode tr:hover {
+  background-color: #3a4556;
+}
+
+.dark-mode .no-productos {
+  background-color: #2d2d2d;
+  color: #f0f0f0;
+}

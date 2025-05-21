@@ -109,3 +109,65 @@
   background-color: #721c24;
   color: #f8d7da;
 }
+
+
+/* Mejoras responsivas para el dashboard de vendedor */
+@media (max-width: 992px) {
+  .vendedor-dashboard {
+    gap: 20px;
+  }
+  
+  .sidebar {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .vendedor-dashboard {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .sidebar a {
+    padding: 8px 15px;
+  }
+  
+  .content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .vendedor-dashboard {
+    gap: 10px;
+  }
+  
+  .sidebar {
+    padding: 10px;
+  }
+  
+  .sidebar h2 {
+    font-size: 1.2rem;
+    padding-bottom: 10px;
+  }
+  
+  .sidebar nav {
+    margin-top: 10px;
+  }
+  
+  .content {
+    padding: 10px;
+  }
+}

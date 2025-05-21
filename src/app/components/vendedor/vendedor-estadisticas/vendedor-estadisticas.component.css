@@ -72,6 +72,11 @@
 .canvas-container {
   height: 300px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 95%;
 }
 
 /* Estilos para las tablas */
@@ -132,6 +137,48 @@ tr:last-child td {
 .dark-mode .estadisticas-container {
   background-color: #1a1a1a;
   color: #f0f0f0;
+}
+
+.dark-mode .stat-card,
+.dark-mode .grafico-card,
+.dark-mode .tabla-card,
+.dark-mode .resumen-card {
+  background-color: #2d2d2d;
+  color: #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.dark-mode .grafico-card h3,
+.dark-mode .tabla-card h3,
+.dark-mode .resumen-card h3 {
+  color: #e0e0e0;
+}
+
+.dark-mode table {
+  background-color: #2d2d2d;
+}
+
+.dark-mode th {
+  background-color: #37475a;
+  color: #f0f0f0;
+}
+
+.dark-mode td {
+  border-bottom: 1px solid #444;
+  color: #e0e0e0;
+}
+
+.dark-mode tr:hover {
+  background-color: #3a4556;
+}
+
+.dark-mode .valor {
+  color: #4dabf5;
+}
+
+/* Asegurar que los gráficos se vean bien en modo oscuro */
+.dark-mode canvas {
+  filter: brightness(0.9) contrast(1.1);
 }
 
 .dark-mode .loading {
@@ -372,6 +419,11 @@ tr:last-child td {
 .canvas-container {
   height: 300px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 95%;
 }
 
 /* Estils per a les taules */
@@ -603,6 +655,11 @@ tr:last-child td {
 .canvas-container {
   height: 300px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 95%;
 }
 
 /* Estils per a les taules */
@@ -834,6 +891,11 @@ tr:last-child td {
 .canvas-container {
   height: 300px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 95%;
 }
 
 /* Estils per a les taules */
@@ -1002,5 +1064,42 @@ tr:hover {
   th, td {
     padding: 0.6rem;
     font-size: 0.85rem;
+  }
+}
+
+/* Mejoras adicionales para dispositivos muy pequeños */
+@media (max-width: 400px) {
+  .estadisticas-container {
+    padding: 0.8rem;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tarjeta {
+    padding: 1rem;
+  }
+  
+  .tarjeta-titulo {
+    font-size: 0.9rem;
+  }
+  
+  .tarjeta-valor {
+    font-size: 1.5rem;
+  }
+  
+  .canvas-container {
+    height: 200px;
+    padding: 0.8rem;
+  }
+  
+  .tabla-container {
+    padding: 0.8rem;
+  }
+  
+  th, td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
 }
