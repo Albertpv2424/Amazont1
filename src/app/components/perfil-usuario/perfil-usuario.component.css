@@ -718,3 +718,105 @@ button:hover {
 .dark-mode .form-container .btn-cancelar:hover {
   background-color: #5a5a5a;
 }
+
+/* Mejoras responsive para perfil usuario */
+@media (max-width: 992px) {
+  .perfil-container {
+    padding: 1.5rem;
+  }
+  
+  .perfil-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .sidebar {
+    max-width: 100%;
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .perfil-container {
+    padding: 1.2rem;
+  }
+  
+  .perfil-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .sidebar {
+    padding: 1.2rem;
+  }
+  
+  .main-content {
+    padding: 1.2rem;
+  }
+  
+  .menu-item {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .datos-personales-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .direcciones-grid, .metodos-pago-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-container {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .perfil-container {
+    padding: 1rem;
+  }
+  
+  .perfil-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .sidebar {
+    padding: 1rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .menu-item {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .form-container {
+    padding: 1rem;
+  }
+  
+  .form-container label {
+    font-size: 0.9rem;
+  }
+  
+  .form-container input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-container .button-group {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .form-container .btn-guardar, .form-container .btn-cancelar {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+}

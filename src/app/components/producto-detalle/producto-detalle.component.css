@@ -351,15 +351,86 @@ div.dark-mode {
   box-sizing: border-box;
 }
 
-/* Responsive design */
+/* Mejoras responsive para producto detalle */
+@media (max-width: 992px) {
+  .producto-detalle {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .producto-imagen {
+    height: 300px;
+  }
+  
+  .opiniones {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 768px) {
   .producto-detalle {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding: 1.2rem;
+  }
+  
+  .producto-imagen {
+    height: 250px;
+  }
+  
+  .producto-info {
     padding: 1rem;
   }
   
   .opiniones {
     grid-column: 1;
+    padding: 1rem;
+  }
+  
+  .galeria-imagenes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .producto-detalle {
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .producto-imagen {
+    height: 200px;
+  }
+  
+  .producto-info {
+    padding: 0.8rem;
+  }
+  
+  .producto-titulo {
+    font-size: 1.4rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.3rem;
+  }
+  
+  .btn-agregar-carrito {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .opiniones {
+    padding: 0.8rem;
+  }
+  
+  .galeria-imagenes {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .opinion {
+    padding: 0.8rem;
   }
 }
 

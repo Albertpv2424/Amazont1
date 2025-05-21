@@ -431,10 +431,11 @@ textarea.form-control {
 .dark-mode .btn-guardar:hover {
   background-color: #ffad33;
 }
-/* Responsive adjustments */
+/* Mejoras responsive para vendedor productos */
 @media (max-width: 992px) {
   .productos-container {
     padding: 1.5rem;
+    margin: 1.5rem auto;
   }
   
   .header h1 {
@@ -443,14 +444,19 @@ textarea.form-control {
   
   .btn-agregar {
     padding: 0.7rem 1.2rem;
-    font-size: 0.9rem;
+  }
+  
+  .modal-content {
+    width: 90%;
+    max-width: 500px;
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .productos-container {
-    padding: 1rem;
-    margin: 1rem auto;
+    padding: 1.2rem;
+    margin: 1.2rem auto;
   }
   
   .header {
@@ -465,6 +471,16 @@ textarea.form-control {
   
   .btn-agregar {
     align-self: flex-start;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .productos-list {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 600px;
   }
   
   .acciones-cell {
@@ -479,30 +495,56 @@ textarea.form-control {
   
   .btn-editar, .btn-eliminar {
     width: 100%;
-    padding: 8px 5px;
+    padding: 6px 5px;
+    font-size: 0.8rem;
   }
   
-  th, td {
-    padding: 10px 8px;
+  .modal-content {
+    width: 95%;
+    padding: 1.2rem;
+  }
+  
+  .image-method-selector {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .image-method-selector button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .productos-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  
+  .header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .btn-agregar {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 0.8rem;
+  }
+  
+  .form-group label {
+    margin-bottom: 0.3rem;
     font-size: 0.9rem;
   }
   
-  .th-imagen, .imagen-cell {
-    width: 60px;
-  }
-  
-  .producto-imagen {
-    max-width: 50px;
-    max-height: 50px;
-  }
-  
-  /* Mejora para visualización en móviles */
-  .productos-list {
-    overflow-x: auto;
-  }
-  
-  table {
-    min-width: 600px; /* Asegura que la tabla no se comprima demasiado */
+  .form-group input, .form-group textarea, .form-group select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
 }
 

@@ -110,3 +110,62 @@
 .dark-mode .producto .descuento {
   background-color: #ff5252;
 }
+
+
+/* Estilos responsive para productos */
+@media (max-width: 1200px) {
+  .imagggg {
+    height: 16vh;
+    width: 16vw;
+  }
+}
+
+@media (max-width: 992px) {
+  .imagggg {
+    height: 14vh;
+    width: 14vw;
+  }
+  
+  .producto {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .imagggg {
+    height: 12vh;
+    width: 25vw;
+  }
+  
+  .producto {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-agregar-carrito {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagggg {
+    height: 10vh;
+    width: 40vw;
+  }
+  
+  .producto {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+  
+  .btn-agregar-carrito {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .producto .descuento {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}

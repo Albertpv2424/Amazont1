@@ -266,3 +266,93 @@ app-producto:hover {
   background-color: #e47911;
   color: #fff;
 }
+
+/* Mejoras responsive para ofertones */
+@media (max-width: 992px) {
+  .ofertones {
+    width: 90%;
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .flecha {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ofertones {
+    width: 95%;
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .flecha {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .ofertas {
+    gap: 1rem;
+  }
+  
+  .oferta-card {
+    min-width: 220px;
+    max-width: 280px;
+    padding: 1.2rem 0.8rem 1rem 0.8rem;
+  }
+  
+  .oferta-img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ofertones {
+    width: 100%;
+    padding: 0.8rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .flecha {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  
+  .ofertas {
+    gap: 0.8rem;
+  }
+  
+  .oferta-card {
+    min-width: 180px;
+    max-width: 240px;
+    padding: 1rem 0.6rem 0.8rem 0.6rem;
+  }
+  
+  .oferta-img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .oferta-card h3 {
+    font-size: 1rem;
+    margin: 0.4rem 0 0.5rem 0;
+  }
+}

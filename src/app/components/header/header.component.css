@@ -273,6 +273,98 @@
   }
 }
 
+/* Mejoras responsive para el header */
+@media (max-width: 992px) {
+  .header-content {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    flex: 0 0 100px;
+    margin-right: 5%;
+  }
+  
+  .search-container {
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 0;
+  }
+  
+  .header-content {
+    padding: 0 10px;
+  }
+  
+  .logo {
+    flex: 0 0 90px;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  
+  .search-container {
+    max-width: 60%;
+    margin: 0 5px;
+  }
+  
+  .dropdown {
+    display: none;
+  }
+  
+  .auth-link {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  
+  .user-greeting {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  
+  .icons img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo {
+    margin-bottom: 10px;
+    flex: 0 0 80px;
+  }
+  
+  .search-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 10px 0;
+    order: 3;
+  }
+  
+  .icons {
+    margin-left: auto;
+    order: 2;
+  }
+  
+  .auth-buttons {
+    margin-right: 0;
+    margin-top: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .search-button {
+    padding: 0 10px;
+  }
+}
+
 /* Estilos para modo oscuro */
 .dark-mode .header {
   background: linear-gradient(to top, #0a0e13, #1a2533);

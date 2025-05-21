@@ -494,7 +494,92 @@
 }
 
 
-/* Añadir estos estilos al final del archivo CSS */
+/* Mejoras responsive para proceso de pago */
+@media (max-width: 992px) {
+  .proceso-pago-container {
+    padding: 1.5rem;
+  }
+  
+  .proceso-pago-card {
+    padding: 1.8rem;
+  }
+  
+  .proceso-pago-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resumen {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .proceso-pago-container {
+    padding: 1rem;
+  }
+  
+  .proceso-pago-card {
+    padding: 1.5rem;
+  }
+  
+  .pasos {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  
+  .paso {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .paso::after {
+    display: none;
+  }
+  
+  .formulario-direccion, .formulario-pago {
+    grid-template-columns: 1fr;
+  }
+  
+  .botones {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .btn-cancelar, .btn-anterior, .btn-siguiente, .btn-confirmar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .proceso-pago-container {
+    padding: 0.8rem;
+  }
+  
+  .proceso-pago-card {
+    padding: 1.2rem;
+  }
+  
+  .paso {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .form-group {
+    margin-bottom: 0.8rem;
+  }
+  
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  input, select {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
 
 /* Eliminar estilos de autocompletado del navegador */
 input:-webkit-autofill,
